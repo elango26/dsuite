@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { BootstrapService } from './services/bootstrap.service';
 import { LoaderComponent } from './loader/loader.component';
 import {MatProgressSpinnerModule} from '@angular/material';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 export function configServiceFactory(config: BootstrapService) {
     return () => config.load();
@@ -54,7 +55,8 @@ export const createTranslateLoader = (http: HttpClient) => {
         useFactory: configServiceFactory,
         deps: [BootstrapService],
         multi: true
-        }
+        },
+        {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
