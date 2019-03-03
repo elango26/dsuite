@@ -1,0 +1,7 @@
+# server side node modules
+
+node_modules/
+
+# client side node modules
+
+client/node_modules/

@@ -1,0 +1,60 @@
+<div id="sidebar">
+    <mat-nav-list>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
+            <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
+            <mat-icon class="sidenav-icon">euro_symbol</mat-icon> {{ 'Payments' | translate }}
+        </a> 
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
+            <mat-icon class="sidenav-icon">bar_chart</mat-icon> {{ 'Reports' | translate }}
+        </a>         
+        <div class="nested-menu">
+            <a mat-list-item (click)="addExpandClass('leads')" [routerLink]="['/leads']">
+                <mat-icon class="sidenav-icon">add</mat-icon> {{ 'Leads' | translate }}
+            </a>
+            <ul class="nested submenu" [class.expand]="showMenu === 'leads'">
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/leads/customers']"><span>{{ 'Customers' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/leads/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/leads/users']"><span>{{ 'Users' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/leads/routes']"><span>{{ 'Routes' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/leads/rates']"><span>{{ 'Rates' | translate }}</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="nested-menu">
+            <a mat-list-item (click)="addExpandClass('transactions')" [routerLink]="['/transactions']">
+                <mat-icon class="sidenav-icon">add_shopping_cart</mat-icon> {{ 'Transactions' | translate }}
+            </a>
+            <ul class="nested submenu" [class.expand]="showMenu === 'transactions'">
+                <li>
+                    <a href="javascript:void(0)"><span>{{ 'Sales' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span>{{ 'Purchase' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span>{{ 'Expenses' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span>{{ 'Return / Spoil' | translate }}</span></a>
+                </li>
+            </ul>
+        </div>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
+            <mat-icon class="sidenav-icon">today</mat-icon> {{ 'Remainders' | translate }}
+        </a>   
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
+            <mat-icon class="sidenav-icon">message</mat-icon> {{ 'SMS Alert' | translate }}
+        </a>   
+    </mat-nav-list>
+</div>
