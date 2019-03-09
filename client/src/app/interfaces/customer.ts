@@ -20,7 +20,3 @@ export interface Customer {
     _id?: string;
     __v?: string;
 }
-
-export interface Customers {
-    Customers: Customer[];
-}

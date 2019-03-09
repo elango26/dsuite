@@ -19,15 +19,31 @@
                 </li>
                 <li>
                     <a href="javascript:void(0)" [routerLink]="['/leads/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
+                </li>                
+            </ul>
+        </div>
+        <div class="nested-menu">
+            <a mat-list-item (click)="addExpandClass('masters')" [routerLink]="['/masters']">
+                <mat-icon class="sidenav-icon">add</mat-icon> {{ 'Masters' | translate }}
+            </a>
+            <ul class="nested submenu" [class.expand]="showMenu === 'masters'">
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/masters/customers']"><span>{{ 'Customers' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/leads/users']"><span>{{ 'Users' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/masters/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/leads/routes']"><span>{{ 'Routes' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/masters/users']"><span>{{ 'Users' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/leads/rates']"><span>{{ 'Rates' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/masters/routes']"><span>{{ 'Routes' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/masters/rates']"><span>{{ 'Rates' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/masters/products']"><span>{{ 'Products' | translate }}</span></a>
                 </li>
             </ul>
         </div>
