@@ -9,7 +9,7 @@
     <mat-form-field *ngFor="let form of form_value.formData" [ngSwitch]="form.type">
         <input *ngSwitchCase="'input'" matInput [attr.type]="form.inputType" [formControlName] = "form.name" [placeholder]="form.placeholder">            
         <textarea *ngSwitchCase="'textarea'" matInput [formControlName] = "form.name" [placeholder]="form.placeholder"></textarea>            
-        <mat-select *ngSwitchCase="'select'" [formControlName] = "form.name" [placeholder]="form.placeholder">
+        <mat-select *ngSwitchCase="'select'" matInput [formControlName] = "form.name" [placeholder]="form.placeholder">
             <mat-option *ngFor="let opt of form.options" [value]="opt.key">{{opt.value}}</mat-option>
         </mat-select>
     </mat-form-field>            

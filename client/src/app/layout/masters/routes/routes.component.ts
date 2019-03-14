@@ -49,6 +49,7 @@ export class RoutesComponent implements OnInit {
 
   openDialog(): void {
     this.route_form_details = [{
+      "order":1,
       "type": "input",
       "inputType": "text",
       "name": "areaName",
@@ -61,7 +62,7 @@ export class RoutesComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CommonModalComponent, {
       width: '300px',
-      data: {formData:this.route_form_details,formTitle:"Routes",url:environment.urls.postRoute }
+      data: {formData:this.route_form_details.sort((a, b) => a.order - b.order),formTitle:"Routes",url:environment.urls.postRoute }
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -13,9 +13,13 @@ import {
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CommonModalComponent } from './common-modal/common-modal.component';
 import { RoutesComponent } from './routes/routes.component';
+import { VendorComponent } from './vendor/vendor.component';
+import { UserComponent } from './user/user.component';
+import { RateComponent } from './rate/rate.component';
+import { ProductsComponent } from './products/products.component';
 
 @NgModule({
-  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent],
+  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent],
   imports: [
     CommonModule,
     FormsModule,

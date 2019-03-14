@@ -11,6 +11,12 @@ export const environment = {
     getCustomer:apiUrl+'/customer/list',
     postCustomer:apiUrl+'/customer/create',
     deleteCustomer:apiUrl+'/customer/delete',
+    getVendor:apiUrl+'/vendor/list',
+    postVendor:apiUrl+'/vendor/create',
+    deleteVendor:apiUrl+'/vendor/delete',
+    getProduct:apiUrl+'/product/list',
+    postProduct:apiUrl+'/product/create',
+    deleteProduct:apiUrl+'/product/delete',
   }
 };
 
