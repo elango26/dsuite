@@ -24,15 +24,15 @@ export class CommonModalComponent {
         let validation = [];
         if(f.validation.required)
           validation.push(Validators.required);
-        if (f.inputType != 'dropdown') {
+        //if (f.inputType != 'dropdown') {
           fieldsCtrls[f.name] = new FormControl(f.value || '', validation);
-        } else {
-          let opts = {};
-          for (let opt of f.options) {
-            opts[opt.key] = new FormControl(opt.value);
-          }
-          fieldsCtrls[f.name] = new FormGroup(opts)
-        }
+        // } else {
+        //   let opts = {};
+        //   for (let opt of f.options) {
+        //     opts[opt.key] = new FormControl(opt.value);
+        //   }
+        //   fieldsCtrls[f.name] = new FormGroup(opts)
+        // }
       }
     this.form = new FormGroup(fieldsCtrls);
     }
