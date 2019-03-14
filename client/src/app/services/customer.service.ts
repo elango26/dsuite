@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class CustomerService {
 
-  apiUrl = environment.apiUrl+'/customer';
+ // apiUrl = environment.apiUrl+'/customer';
 
   constructor(private http:HttpClient) {
     
@@ -20,7 +20,7 @@ export class CustomerService {
   */
   getCustomers (){
 
-    return this.http.get(this.apiUrl+'/customerlist');
+    //return this.http.get(this.apiUrl+'/customerlist');
 
   }
 

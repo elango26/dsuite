@@ -28,7 +28,7 @@ export class CustomersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private commonService: CommonService, public dialog: MatDialog) {
-    //this.customerList = [];
+    
   }
 
   ngOnInit() {

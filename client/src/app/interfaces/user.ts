@@ -1,13 +1,19 @@
 export interface User {
-    contact_no: number;
-    created_at: string;
-    created_by: number;
-    email: string;
-    firstname: string;
-    id: number;
-    is_delete: number;
-    lastname: string;
-    updated_at: string;
-    updated_by: number;
     username: string;
+    password: string;
+    firstName: string;
+    lastLame?: string;
+    email: string;
+    contactNo: string;
+    contactNo1?: string;
+    role: string;
+    is_active?: string;
+    is_delete?: string;
+    createdAt?: string;
+    createdBy?: string;   
+    updatedAt?: string;
+    updatedBy?: string;
+    _id?: string;
+    __v?: string;
 }
+

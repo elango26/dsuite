@@ -7,8 +7,8 @@ export class UserService {
   user:any;
   constructor() { 
     this.user = {
-      id:1,
-      name:'Deepan'
+      _id:"asdasdkafjs23214",
+      username:'Deepan'
     }
   }
 }

@@ -12,13 +12,13 @@ export class CommonService {
 
   constructor(private http: HttpClient, private user: UserService) { }
 
-  getMethod(url){
+  getMethod( url ){
     return this.http.get(url);
   }
 
-  postMethod(url,data){
+  postMethod( url, data){
     // common for all post creation
-    data['createdBy'] = this.user.user.name;
+    data['createdBy'] = this.user.user._id;
     return this.http.post(url,data).pipe(
       catchError(this.handleError)
     );
