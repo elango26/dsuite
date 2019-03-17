@@ -2,7 +2,7 @@ export interface User {
     username: string;
     password: string;
     firstName: string;
-    lastLame?: string;
+    lastName?: string;
     email: string;
     contactNo: string;
     contactNo1?: string;
