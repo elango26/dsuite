@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const rateSchema = mongoose.Schema({
     prod_id : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'Product'
     },
     type : {
         type : String,
@@ -30,12 +31,12 @@ const rateSchema = mongoose.Schema({
         default: 'NO'
     },
     createdBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     },
     updatedBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     }
 }, 
 { 

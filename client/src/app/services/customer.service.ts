@@ -9,19 +9,8 @@ import { map } from 'rxjs/operators';
 })
 export class CustomerService {
 
- // apiUrl = environment.apiUrl+'/customer';
-
   constructor(private http:HttpClient) {
     
-  }
-
-  /*
-  * get customer list
-  */
-  getCustomers (){
-
-    //return this.http.get(this.apiUrl+'/customerlist');
-
   }
 
 }

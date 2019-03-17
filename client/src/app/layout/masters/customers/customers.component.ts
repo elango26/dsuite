@@ -61,15 +61,17 @@ export class CustomersComponent implements OnInit {
 
   openDialog(): void {
     this.customer_form_details = [{
+      "order": 1,
       "type": "input",
       "inputType": "text",
       "name": "customerName",
       "value":"",
       "placeholder": "Customer Name",
       "validation": {
-        "required": false
+        "required": true
       }
     }, {
+      "order": 2,
       "type": "input",
       "inputType": "text",
       "name": "alias",
@@ -79,6 +81,7 @@ export class CustomersComponent implements OnInit {
         "required": true
       }
     }, {
+      "order": 3,
       "type": "input",
       "inputType": "text",
       "name": "firstName",
@@ -88,6 +91,7 @@ export class CustomersComponent implements OnInit {
         "required": true
       }
     }, {
+      "order": 4,
       "type": "input",
       "inputType": "text",
       "name": "lastName",
@@ -97,6 +101,7 @@ export class CustomersComponent implements OnInit {
         "required": true
       }
     }, {
+      "order": 5,
       "type": "input",
       "inputType": "number",
       "name": "contactNo",
@@ -106,6 +111,7 @@ export class CustomersComponent implements OnInit {
         "required": true
       }
     }, {
+      "order": 6,
       "type": "input",
       "inputType": "number",
       "name": "contactNo1",
@@ -115,6 +121,7 @@ export class CustomersComponent implements OnInit {
         "required": false
       }
     }, {
+      "order": 7,
       "type": "textarea",
       "inputType": "textarea",
       "name": "address",
@@ -124,6 +131,7 @@ export class CustomersComponent implements OnInit {
         "required": true
       }
     }, {
+      "order": 8,
       "type": "input",
       "inputType": "text",
       "name": "city",
@@ -133,6 +141,7 @@ export class CustomersComponent implements OnInit {
         "required": true
       }
     }, {
+      "order": 10,
       "type": "input",
       "inputType": "number",
       "name": "pincode",
@@ -142,6 +151,7 @@ export class CustomersComponent implements OnInit {
         "required": true
       }
     }, {
+      "order": 9,
       "type": "select",
       "inputType": "dropdown",
       "name": "route",
@@ -155,7 +165,7 @@ export class CustomersComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CommonModalComponent, {
       width: '600px',
-      data: {formData:this.customer_form_details,formTitle:"Customers",url:environment.urls.postCustomer}
+      data: {formData:this.customer_form_details.sort((a, b) => a.order - b.order),formTitle:"Customers",url:environment.urls.postCustomer}
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const userSchema = mongoose.Schema({
+     
     username : {
         type : String,
         require : true
@@ -13,7 +15,7 @@ const userSchema = mongoose.Schema({
         type : String,
         require : true
     },
-    lastLame : {
+    lastName : {
         type : String,
         require : false
     },
@@ -47,12 +49,12 @@ const userSchema = mongoose.Schema({
         default: 'NO'
     },
     createdBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     },
     updatedBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     }
 }, 
 { 

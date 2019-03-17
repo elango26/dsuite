@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const vendorSchema = mongoose.Schema({
     vendorName : {
@@ -50,12 +51,12 @@ const vendorSchema = mongoose.Schema({
         default: 'NO'
     },
     createdBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     },
     updatedBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     }
 }, 
 { 

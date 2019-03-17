@@ -1,21 +1,44 @@
 const express = require('express');
 const router = express.Router();
+const {ObjectId} = require('mongodb');
 
 const rate = require('../models/rate');
 
-router.get('/ratelist',(req,res,next)=>{
+router.get('/list',(req,res,next)=>{
     
-    rate.find((err,ratelist)=>{
+    rate.aggregate([
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "createdBy",
+            "foreignField": "_id",
+            "as": "createdUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "updatedBy",
+            "foreignField": "_id",
+            "as": "updatedUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "products",
+            "localField": "prod_id",
+            "foreignField": "_id",
+            "as": "product"
+        }}
+    ]).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
-            res.json(ratelist);
+            res.json(list);
         }
     });
 });
-
-router.post('/create',(req,res,next)=>{
     
+router.post('/create',(req,res,next)=>{
+        
     let newRate = new rate(req.body);
 
     newRate.save((err,rate)=>{

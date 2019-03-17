@@ -3,19 +3,41 @@ const router = express.Router();
 
 const product = require('../models/product');
 
-router.get('/productlist',(req,res,next)=>{
+router.get('/list',(req,res,next)=>{
     
-    product.find((err,productlist)=>{
+    product.aggregate([
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "createdBy",
+            "foreignField": "_id",
+            "as": "createdUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "updatedBy",
+            "foreignField": "_id",
+            "as": "updatedUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "vendors",
+            "localField": "vendor_id",
+            "foreignField": "_id",
+            "as": "vendor"
+        }}
+    ]).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
-            res.json(productlist);
+            res.json(list);
         }
     });
 });
-
-router.post('/create',(req,res,next)=>{
     
+router.post('/create',(req,res,next)=>{
+        
     let newProduct = new product(req.body);
 
     newProduct.save((err,product)=>{

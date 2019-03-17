@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const transactionDetailsSchema = mongoose.Schema({
 
     prod_id : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'Product'
     },
     prod_rate_per_unit : {
         type : Number,
@@ -23,8 +24,8 @@ const transactionDetailsSchema = mongoose.Schema({
         require : true
     },
     prod_discount_id : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'Product'
     }
 });
 

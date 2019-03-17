@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const discountSchema = mongoose.Schema({
     prod_id : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'Product'
     },
     to_purchase : {
         type : String,
@@ -34,12 +35,12 @@ const discountSchema = mongoose.Schema({
         default: 'NO'
     },
     createdBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     },
     updatedBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     }
 }, 
 { 

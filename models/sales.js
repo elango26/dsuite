@@ -11,7 +11,7 @@ const salesSchema = mongoose.Schema({
         require : true
     },
     details : {
-        type: Schema.ObjectId,
+        type: Array,
         ref:'transactionDetails'
     },
     is_active : {
@@ -27,12 +27,12 @@ const salesSchema = mongoose.Schema({
         default: 'NO'
     },
     createdBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     },
     updatedBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     }
 }, 
 { 

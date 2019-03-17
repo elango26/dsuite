@@ -10,8 +10,8 @@ const purchaseSchema = mongoose.Schema({
         type : Number,
         require : true
     },
-    details : {
-        type: Schema.ObjectId,
+    details:{
+        type:Array,
         ref:'transactionDetails'
     },
     is_active : {
@@ -27,12 +27,12 @@ const purchaseSchema = mongoose.Schema({
         default: 'NO'
     },
     createdBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     },
     updatedBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     }
 }, 
 { 

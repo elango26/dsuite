@@ -5,17 +5,32 @@ const customer = require('../models/customer');
 
 router.get('/list',(req,res,next)=>{
 
-    customer.find((err,customerlist)=>{
+    customer.aggregate([
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "createdBy",
+            "foreignField": "_id",
+            "as": "createdUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "updatedBy",
+            "foreignField": "_id",
+            "as": "updatedUser"
+        }}
+    ]).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
-            res.json(customerlist);
+            res.json(list);
         }
     });
 });
 
 router.post('/create',(req,res,next)=>{
-    
+
     let newCustomer = new customer(req.body);
 
     newCustomer.save((err,customer)=>{

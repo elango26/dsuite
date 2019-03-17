@@ -1,21 +1,37 @@
 const express = require('express');
 const router = express.Router();
+const {ObjectId} = require('mongodb');
 
 const purchase = require('../models/purchase');
 
 router.get('/list',(req,res,next)=>{
 
-    purchase.find((err,purchaselist)=>{
+    purchase.aggregate([
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "createdBy",
+            "foreignField": "_id",
+            "as": "createdUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "updatedBy",
+            "foreignField": "_id",
+            "as": "updatedUser"
+        }}
+    ]).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
-            res.json(purchaselist);
+            res.json(list);
         }
     });
 });
-
-router.post('/create',(req,res,next)=>{
     
+router.post('/create',(req,res,next)=>{
+        
     let newPurchase = new purchase(req.body);
 
     newPurchase.save((err,purchase)=>{

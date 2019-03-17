@@ -1,19 +1,35 @@
 const express = require('express');
 const router = express.Router();
+const {ObjectId} = require('mongodb');
 
 const employee = require('../models/employee');
 
-router.get('/employeelist',(req,res,next)=>{
+router.get('/list',(req,res,next)=>{
     
-    employee.find((err,employeelist)=>{
+    employee.aggregate([
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "createdBy",
+            "foreignField": "_id",
+            "as": "createdUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "updatedBy",
+            "foreignField": "_id",
+            "as": "updatedUser"
+        }}
+    ]).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
-            res.json(employeelist);
+            res.json(list);
         }
     });
 });
-
+    
 router.post('/create',(req,res,next)=>{
     
     let newEmployee = new employee(req.body);

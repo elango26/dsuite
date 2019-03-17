@@ -5,16 +5,33 @@ const sales = require('../models/sales');
 
 router.get('/list',(req,res,next)=>{
     
-    sales.find((err,saleslist)=>{
+    sales.aggregate([
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "createdBy",
+            "foreignField": "_id",
+            "as": "createdUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "updatedBy",
+            "foreignField": "_id",
+            "as": "updatedUser"
+        }}
+    ]).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
-            res.json(saleslist);
+            res.json(list);
         }
     });
 });
-
+    
 router.post('/create',(req,res,next)=>{
+    
+    if(req.body.createdBy) req.body.createdBy = {_id: ObjectId(req.body.createdBy)}
     
     let newSales = new sales(req.body);
 

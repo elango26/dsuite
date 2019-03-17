@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const productSchema = mongoose.Schema({
     prod_name : {
@@ -14,8 +15,8 @@ const productSchema = mongoose.Schema({
         require : true
     },
     vendor_id : {
-        type : String,
-        require : false
+        type: Schema.ObjectId,
+        ref:'Vendor'
     },
     is_active : {
         type : String,
@@ -30,12 +31,12 @@ const productSchema = mongoose.Schema({
         default: 'NO'
     },
     createdBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     },
     updatedBy : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'User'
     }
 }, 
 { 
