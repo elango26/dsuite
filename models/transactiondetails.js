@@ -3,9 +3,18 @@ const Schema = mongoose.Schema;
 
 const transactionDetailsSchema = mongoose.Schema({
 
+    parent_id : {
+        type: Schema.ObjectId,
+        ref:'Purchase'
+    },
     prod_id : {
         type: Schema.ObjectId,
         ref:'Product'
+    },
+    type : {
+        type : String,
+        require : true,
+        enum: ['SALES','PURCHASE'],
     },
     prod_rate_per_unit : {
         type : Number,
@@ -25,7 +34,7 @@ const transactionDetailsSchema = mongoose.Schema({
     },
     prod_discount_id : {
         type: Schema.ObjectId,
-        ref:'Product'
+        ref:'Discount'
     }
 });
 

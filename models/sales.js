@@ -10,10 +10,6 @@ const salesSchema = mongoose.Schema({
         type : Number,
         require : true
     },
-    details : {
-        type: Array,
-        ref:'transactionDetails'
-    },
     is_active : {
         type : String,
         require : true,
