@@ -2,6 +2,8 @@ export interface Product {
     prod_name: string,
     alias: string,
     brand_name: string,
+    category: string,
+    sub_category: string,
     vendor_id: string,
     is_active?: string;
     is_delete?: string;

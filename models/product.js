@@ -14,6 +14,14 @@ const productSchema = mongoose.Schema({
         type : String,
         require : true
     },
+    category : {
+        type : String,
+        require : true
+    },
+    sub_category : {
+        type : String,
+        require : false
+    },
     vendor_id : {
         type: Schema.ObjectId,
         ref:'Vendor'
