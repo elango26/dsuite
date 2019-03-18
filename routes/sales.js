@@ -81,7 +81,6 @@ router.post('/create',(req,res,next)=>{
                 newtransaction.save((errs,transaction)=>{
                     if(errs){
                         res.json(errs); 
-                        break;
                     }
                     count++
                     if(count === len) res.json({msg:'sales added successfully'});
@@ -106,8 +105,7 @@ router.put('/update/:id',(req,res,next)=>{
                 let newtransaction = new transactionDetails(req.body.details[i]);
                 newtransaction.save((errs,transaction)=>{
                     if(errs){
-                        res.json(errs); 
-                        break;
+                        res.json(errs);
                     }
                     count++
                     if(count === len) res.json({msg:'sales updated successfully'});

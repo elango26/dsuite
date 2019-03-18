@@ -108,7 +108,6 @@ router.post('/create',(req,res,next)=>{
                 newtransaction.save((errs,transaction)=>{
                     if(errs){
                         res.json(errs); 
-                        break;
                     }
                     count++
                     if(count === len) res.json({msg:'purchase added successfully'});
@@ -134,7 +133,6 @@ router.put('/update/:id',(req,res,next)=>{
                 newtransaction.save((errs,transaction)=>{
                     if(errs){
                         res.json(errs); 
-                        break;
                     }
                     count++
                     if(count === len) res.json({msg:'purchase updated successfully'});
