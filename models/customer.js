@@ -39,8 +39,8 @@ const customerSchema = mongoose.Schema({
         require : true
     },
     route : {
-        type : String,
-        require : true
+        type: Schema.ObjectId,
+        ref:'Routes'
     },
     is_active : {
         type : String,

@@ -35,7 +35,7 @@ export class CustomersComponent implements OnInit {
     this.loadCustomer();
     this.commonService.getMethod(environment.urls.getRoute).subscribe((data:Route[]) => {
       for(let val of data){
-        let keyarr = {key:val.areaName,value:val.areaName};
+        let keyarr = {key:val._id,value:val.areaName};
         this.routes.push(keyarr);
       }
     });

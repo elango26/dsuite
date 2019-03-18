@@ -19,7 +19,15 @@ router.get('/list',(req,res,next)=>{
             "localField": "updatedBy",
             "foreignField": "_id",
             "as": "updatedUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "routes",
+            "localField": "route",
+            "foreignField": "_id",
+            "as": "routes"
         }}
+
     ]).exec((err,list)=>{
         if(err){
             res.json(err);

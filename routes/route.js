@@ -31,7 +31,7 @@ router.get('/list',(req,res,next)=>{
 });
     
 router.post('/create',(req,res,next)=>{
-        
+     
     let newRoute = new route(req.body);
 
     newRoute.save((err,route)=>{
