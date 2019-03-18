@@ -4,6 +4,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { Product } from 'src/app/interfaces/product';
+import { CATEGORY, SUBCATEGORY, BRANDS } from 'src/app/constants/contants';
 import { CommonModalComponent } from './../common-modal/common-modal.component';
 import { environment } from 'src/environments/environment';
 
@@ -13,12 +14,13 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  displayedColumns = ['prod_name', 'alias', 'brand_name'];
+  displayedColumns = ['prod_name', 'alias', 'brand_name', 'category', 'sub_category'];
   dataSource: MatTableDataSource<Product>;
 
   customerList: Product[];
   product_form_details : any;
   routes=[];
+  options:any[];
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -79,7 +81,7 @@ export class ProductsComponent implements OnInit {
       },
       "options": [{'key':'HATSUN','value':'HATSUN'},{'key':'AROKYA','value':'AROKYA'}]
     }, {
-      "order": 4,
+      "order": 6,
       "type": "select",
       "inputType": "dropdown",
       "name": "vendor_id",
@@ -89,6 +91,28 @@ export class ProductsComponent implements OnInit {
         "required": true
       },
       "options": [{'key':'HAP','value':'HAP'}]
+    }, {
+      "order": 4,
+      "type": "select",
+      "inputType": "dropdown",
+      "name": "category",
+      "value": "",
+      "placeholder": "Category",
+      "validation": {
+        "required": true
+      },
+      "options": [{'key':'HATSUN','value':'HATSUN'},{'key':'AROKYA','value':'AROKYA'}]
+    }, {
+      "order": 5,
+      "type": "select",
+      "inputType": "dropdown",
+      "name": "sub_category",
+      "value": "",
+      "placeholder": "Sub Category",
+      "validation": {
+        "required": true
+      },
+      "options": [{'key':'HATSUN','value':'HATSUN'},{'key':'AROKYA','value':'AROKYA'}]
     }];
     const dialogRef = this.dialog.open(CommonModalComponent, {
       width: '600px',

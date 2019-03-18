@@ -28,9 +28,11 @@ router.get('/list',(req,res,next)=>{
         }
     });
 });
-    
+
 router.post('/create',(req,res,next)=>{
-        
+
+    let newVendor = new vendor(req.body);
+
     newVendor.save((err,vendor)=>{
         if(err){
             res.json(err);
