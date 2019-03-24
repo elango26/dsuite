@@ -18,7 +18,7 @@ export class ProductsComponent implements OnInit {
   displayedColumns = ['prod_name', 'alias', 'brand_name', 'category', 'sub_category'];
   dataSource: MatTableDataSource<Product>;
 
-  customerList: Product[];
+  productList: Product[];
   product_form_details : any;
   routes=[];
   vendors = [];
@@ -40,8 +40,8 @@ export class ProductsComponent implements OnInit {
 
   loadProduct(){
     this.commonService.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
-      this.customerList = data;
-      this.dataSource = new MatTableDataSource(this.customerList);
+      this.productList = data;
+      this.dataSource = new MatTableDataSource(this.productList);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -87,7 +87,12 @@ export class ProductsComponent implements OnInit {
       "validation": {
         "required": true
       },
-      "options": [{'key':'HATSUN','value':'HATSUN'},{'key':'AROKYA','value':'AROKYA'}]
+      "options": BRANDS.map(val => {
+        return {
+          key: val,
+          value: val
+        };
+      })
     }, {
       "order": 6,
       "type": "select",
@@ -109,7 +114,12 @@ export class ProductsComponent implements OnInit {
       "validation": {
         "required": true
       },
-      "options": [{'key':'HATSUN','value':'HATSUN'},{'key':'AROKYA','value':'AROKYA'}]
+      "options": CATEGORY.map(val => {
+        return {
+          key: val,
+          value: val
+        };
+      })
     }, {
       "order": 5,
       "type": "select",
@@ -120,7 +130,12 @@ export class ProductsComponent implements OnInit {
       "validation": {
         "required": true
       },
-      "options": [{'key':'HATSUN','value':'HATSUN'},{'key':'AROKYA','value':'AROKYA'}]
+      "options": SUBCATEGORY.map(val => {
+        return {
+          key: val,
+          value: val
+        };
+      })
     }];
     const dialogRef = this.dialog.open(CommonModalComponent, {
       width: '600px',

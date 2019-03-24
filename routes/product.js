@@ -36,6 +36,31 @@ router.get('/list',(req,res,next)=>{
     });
 });
     
+router.get('/orderList',(req,res,next)=>{
+    
+    product.aggregate([
+        //{ $match: { status: "A" } },
+        //{ $group: { _id: "$cust_id", total: { $sum: "$amount" } } },
+        //{ $sort: { total: -1 } }
+        { $group: { _id: {category:"$category",sub:"$sub_category"}}},
+        { $group : { 
+            _id :  "$_id.category",
+            terms: { 
+                $push: { 
+                    term:"$_id.sub"
+                }
+            }
+         }
+       }
+    ]).exec((err,list)=>{
+        if(err){
+            res.json(err);
+        }else{
+            res.json(list);
+        }
+    });
+});
+
 router.post('/create',(req,res,next)=>{
         
     let newProduct = new product(req.body);
