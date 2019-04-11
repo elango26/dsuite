@@ -23,6 +23,11 @@ export const environment = {
     getRate:apiUrl+'/rate/list',
     postRate:apiUrl+'/rate/create',
     deleteRate:apiUrl+'/rate/delete',
+    getRateProducts:apiUrl+'/rate/products', 
+    getRateMapping:apiUrl+'/ratemapping/list', 
+    postRateMapping:apiUrl+'/ratemapping/create', 
+    deleteRateMapping:apiUrl+'/ratemapping/delete',
+    getSingleRate:apiUrl+'/ratemapping/rate'
   }
 };
 

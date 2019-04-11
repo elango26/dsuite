@@ -17,9 +17,10 @@ import { VendorComponent } from './vendor/vendor.component';
 import { UserComponent } from './user/user.component';
 import { RateComponent } from './rate/rate.component';
 import { ProductsComponent } from './products/products.component';
+import { CustomModalComponent } from './custom-modal/custom-modal.component';
 
 @NgModule({
-  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent],
+  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent, CustomModalComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -43,6 +44,6 @@ import { ProductsComponent } from './products/products.component';
     MatTooltipModule,
     MatSnackBarModule
   ],
-  entryComponents: [CommonModalComponent]
+  entryComponents: [CommonModalComponent,CustomModalComponent]
 })
 export class MastersModule { }

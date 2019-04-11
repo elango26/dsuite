@@ -1,28 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const rateSchema = mongoose.Schema({
-    prod_id : {
+const ratemappingtocustomerSchema = mongoose.Schema({
+    customer_id : {
         type: Schema.ObjectId,
-        ref:'Product'
+        ref:'Customer'
     },
     type : {
         type : String,
         require : true
-    },
-    customer_id : {
-        type: Schema.ObjectId,
-        ref:'Customer',
-        require : false
-    },
-    price : {
-        type : Number,
-        require : true
-    },
-    tax : {
-        type : String,
-        require : false
-    },
+    }, 
     is_active : {
         type : String,
         require : true,
@@ -48,4 +35,4 @@ const rateSchema = mongoose.Schema({
     timestamps: {} 
 });
 
-const Rate = module.exports = mongoose.model('Rate',rateSchema);
+const Ratemappingtocustomer = module.exports = mongoose.model('Ratemappingtocustomer',ratemappingtocustomerSchema);

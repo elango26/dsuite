@@ -20,3 +20,20 @@ body {
 .mat-form-field{
     width: 230px;
 }
+.rate-form-list{
+    .lable-name,.input-fields{
+        display: inline-block
+    }
+    .single-row{
+        display: inline-flex
+    }
+    .input-fields{
+        display: inline-flex
+    }
+    .single-rate{
+        display: inline-block
+    }
+    mat-form-field{
+        width: 100px;
+    }
+}
