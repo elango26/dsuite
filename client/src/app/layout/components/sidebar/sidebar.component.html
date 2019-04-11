@@ -10,8 +10,8 @@
             <mat-icon class="sidenav-icon">bar_chart</mat-icon> {{ 'Reports' | translate }}
         </a>         
         <div class="nested-menu">
-            <a mat-list-item (click)="addExpandClass('leads')" [routerLink]="['/leads']">
-                <mat-icon class="sidenav-icon">add</mat-icon> {{ 'Leads' | translate }}
+            <a mat-list-item (click)="addExpandClass('leads')" >
+                <mat-icon class="sidenav-icon">input</mat-icon> {{ 'Leads' | translate }}
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'leads'">
                 <li>
@@ -23,7 +23,7 @@
             </ul>
         </div>
         <div class="nested-menu">
-            <a mat-list-item (click)="addExpandClass('masters')" [routerLink]="['/masters']">
+            <a mat-list-item (click)="addExpandClass('masters')" >
                 <mat-icon class="sidenav-icon">add</mat-icon> {{ 'Masters' | translate }}
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'masters'">
@@ -48,12 +48,12 @@
             </ul>
         </div>
         <div class="nested-menu">
-            <a mat-list-item (click)="addExpandClass('transactions')" [routerLink]="['/transactions']">
+            <a mat-list-item (click)="addExpandClass('transactions')">
                 <mat-icon class="sidenav-icon">add_shopping_cart</mat-icon> {{ 'Transactions' | translate }}
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'transactions'">
                 <li>
-                    <a href="javascript:void(0)"><span>{{ 'Sales' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/transactions/sales']"><span>{{ 'Sales' | translate }}</span></a>
                 </li>
                 <li>
                     <a href="javascript:void(0)"><span>{{ 'Purchase' | translate }}</span></a>
