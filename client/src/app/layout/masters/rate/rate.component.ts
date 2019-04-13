@@ -4,6 +4,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Route } from 'src/app/interfaces/route';
 import { Vendor } from 'src/app/interfaces/vendor';
+import { Rate } from 'src/app/interfaces/rate';
 import { Product } from 'src/app/interfaces/product';
 import { CATEGORY, SUBCATEGORY, BRANDS } from 'src/app/constants/contants';
 import { CustomModalComponent } from './../custom-modal/custom-modal.component';
@@ -17,15 +18,11 @@ import { environment } from 'src/environments/environment';
 export class RateComponent implements OnInit {
 
   displayedColumns = ['prod_name', 'retail', 'wholesale1', 'wholesale2', 'purchase'];
-  dataSource: MatTableDataSource<Product>;
+  dataSource: MatTableDataSource<Rate>;
 
-  rateList : any;
+  rateList = [];
   form_details : any;
-  products = [
-    {"key": "all","value": "All"},
-    {"key": "5c8f940bed3f0b247cbf9643","value": "curd"},
-    {"key": "5c8f940bed3f0b247cbf9ddd643","value": "Milk"}
-  ];
+  products = [];
   options:any[];
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -33,22 +30,21 @@ export class RateComponent implements OnInit {
   constructor(private commonService: CommonService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.loadProduct();
-    // this.commonService.getMethod(environment.urls.getRateProducts).subscribe((data:Product[]) => {
-    //   if(data.length > 1) this.products.push({key:'all',value:'All Products'});
-    //   for(let val of data){
-    //     let keyarr = {key:val._id,value:val.prod_name};
-    //    // this.products.push(keyarr);
-    //   }
-    // });
+    this.load();
+    this.commonService.getMethod(environment.urls.getRateProducts).subscribe((data:Product[]) => {
+      if(data.length > 1) this.products.push({key:'all',value:'All Products'});
+      for(let val of data){
+        let keyarr = {key:val._id,value:val.prod_name};
+        this.products.push(keyarr);
+      }
+    });
     this.form_details = [];
   }
 
-  loadProduct(){
-    this.commonService.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
-      for(let val of data){
-       // this.rateList.push(val);
-      }
+  load(){
+    this.commonService.getMethod(environment.urls.getRate).subscribe((data:Rate[]) => {
+      
+      this.rateList = data;
       this.dataSource = new MatTableDataSource(this.rateList);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -87,7 +83,7 @@ export class RateComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       //reload
-      this.loadProduct();
+      this.load();
     });
   }
 

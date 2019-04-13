@@ -16,7 +16,7 @@ export class CustomModalComponent {
   title:string = "";
   url: string;
   dropList:any;
-  fieldList:Rate;
+  fieldList:any;
   constructor(public commonService:CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CustomModalComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
@@ -68,7 +68,7 @@ export class CustomModalComponent {
     }
   
     if(value.key == 'all'){
-      for (let single of this.dropList) {
+      for (let single of options) {
          if(single.key != 'all'){
           let row = {
             prod_id : single.key,

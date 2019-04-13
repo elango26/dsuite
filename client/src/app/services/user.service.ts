@@ -8,15 +8,16 @@ import { CommonService } from './common.service';
 })
 export class UserService {
   user:any;
+  url = environment.urls.getUser;
   constructor(private http: HttpClient) { 
 
-      this.getMethod(environment.urls.getUser).subscribe((data) => {
-        this.user = data[0] ?  data[0] : {};
-      });
+      // this.getMethod().subscribe((data) => {
+      //   this.user = data[0] ?  data[0] : {};
+      // });
   }
 
 
-  getMethod( url ){
-    return this.http.get(url);
+  getMethod(){
+    return this.http.get(this.url);
   }
 }

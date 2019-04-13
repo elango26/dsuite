@@ -17,11 +17,13 @@ const rateSchema = mongoose.Schema({
     },
     price : {
         type : Number,
-        require : true
+        require : true,
+        default: null
     },
     tax : {
         type : String,
-        require : false
+        require : false,
+        default: null
     },
     is_active : {
         type : String,

@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-      <mat-card-title>Products</mat-card-title>
+      <mat-card-title>Rates</mat-card-title>
   </mat-card-header>
   <mat-card-content>
       <section class="example-section">
@@ -21,10 +21,10 @@
   <table mat-table [dataSource]="dataSource" matSort>
 
       <!-- Color Column -->
-      <ng-container matColumnDef="prod_name">
+        <ng-container matColumnDef="prod_name">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
-              <td mat-cell *matCellDef="let row" [style.color]="row.prod_name"> {{row.product.prod_name}} </td>
-          </ng-container>
+              <td mat-cell *matCellDef="let row" [style.color]="row.product.prod_name"> {{row.product.prod_name}} </td>
+        </ng-container>
 
       <!-- Progress Column -->
       <ng-container matColumnDef="retail">

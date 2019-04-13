@@ -9,8 +9,10 @@ import { UserService } from './user.service';
   providedIn: 'root'
 })
 export class CommonService {
-
-  constructor(private http: HttpClient, private user: UserService) { }
+  user:any;
+  constructor(private http: HttpClient,private userservice: UserService) {
+     // this.user = this.getMethod(environment.urls.getUser);
+   }
 
   getMethod( url ){
     return this.http.get(url);
@@ -18,7 +20,8 @@ export class CommonService {
 
   postMethod( url, data){
     // common for all post creation
-    data['createdBy'] = this.user.user._id;
+    //console.log('this.user',this.user);
+    data['createdBy'] = '5cb1765cd833d31d8c81157d';//this.user.user._id;
     return this.http.post(url,data).pipe(
       catchError(this.handleError)
     );

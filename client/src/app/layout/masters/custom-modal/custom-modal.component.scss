@@ -1,0 +1,33 @@
+.rate-form-list{
+    .lable-name,.input-fields{
+        display: inline-block
+    }
+    .lable-name{
+        width: 100px;
+        padding: 10px;
+    }
+    .single-row{
+        padding: 10px 0;
+        display: inline-flex
+    }
+    .input-fields{
+        display: inline-flex
+    }
+    .single-rate{
+        display: inline-block;
+        input{
+            margin-bottom: 5px;
+            padding: 2px;
+        }
+    }
+    mat-form-field{
+        width: 100px;
+    }
+}
+.cs-select-box {
+    width: 30%;
+    padding: 10px;
+    .hide{
+        display: none;
+    }
+}

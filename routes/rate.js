@@ -8,7 +8,6 @@ const product = require('../models/product');
 router.get('/list',(req,res,next)=>{
     
     rate.aggregate([
-        { "$not" : { type : "custom" } },
         {    
         "$lookup": {
             "from": "users",
@@ -35,9 +34,12 @@ router.get('/list',(req,res,next)=>{
             res.json(err);
         }else{
 
-            let result = {};
+            let result = {}, data = [];
             if(list && list.length){
                 for (let i = 0, len = list.length; i < len; i++) {
+
+                    if(list[i].type === 'custom') continue;
+
                     if(!result[list[i].prod_id]) result[list[i].prod_id] = {};
                     if(!result[list[i].prod_id].product) result[list[i].prod_id].product = list[i].product[0];
                     if(!result[list[i].prod_id][list[i].type]) {
@@ -48,22 +50,42 @@ router.get('/list',(req,res,next)=>{
                         }
                     }
                 }
+                Object.keys(result).forEach(function(key) {
+                    if(result[key].product) data.push(result[key]);
+                });
             }
-            res.json(result);
+            res.json(data);
         }
     });
 });
 
 router.get('/products',(req,res,next)=>{
 
-    let productIds = rate.distinct( "prod_id" );
-    product.find( { _id: { $nin: productIds } },(err,list)=>{
+    rate.aggregate([
+        { "$project": { 
+            "prod_id": 1
+        }} 
+    ]).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
-            res.json(list);
+            let productIds = [];
+            if(list && list.length){
+                for (let i = 0, len = list.length; i < len; i++) {
+                    if((productIds.indexOf(list[i].prod_id)) < 0) productIds.push(list[i].prod_id);
+                }
+            }
+            product.find( { _id: { $nin: productIds } },(err,list)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json(list);
+                }
+            });
+
         }
     });
+
 });
     
 router.post('/create',(req,res,next)=>{
@@ -73,11 +95,11 @@ router.post('/create',(req,res,next)=>{
         element.rate.forEach(elem =>{
             if(elem.price){
                 rows.push({
-                    prod_id : element.prod_id,
+                    prod_id : ObjectId(element.prod_id),
                     type : elem.type,
                     price : elem.price,
                     tax : elem.tax,
-                    createdBy : req.body.createdBy
+                    createdBy : ObjectId(req.body.createdBy)
                 });
             }
         });
