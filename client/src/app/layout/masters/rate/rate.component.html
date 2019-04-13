@@ -29,25 +29,25 @@
       <!-- Progress Column -->
       <ng-container matColumnDef="retail">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Retail </th>
-          <td mat-cell *matCellDef="let row"> {{row.retail.price}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.retail.price}} - {{row.retail.tax}} </td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="wholesale1">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Wholesale 1 </th>
-            <td mat-cell *matCellDef="let row"> {{row.wholesale1.price}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.wholesale1.price}} - {{row.wholesale1.tax}}</td>
         </ng-container>
 
         <!-- Name Column -->
       <ng-container matColumnDef="wholesale2">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Wholesale 2 </th>
-            <td mat-cell *matCellDef="let row"> {{row.wholesale2.price}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.wholesale2.price}} - {{row.wholesale2.tax}}</td>
         </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="purchase">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Purchase </th>
-          <td mat-cell *matCellDef="let row"> {{row.purchase.price}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.purchase.price}} - {{row.purchase.tax}}</td>
       </ng-container>
       
 
