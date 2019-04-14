@@ -7,6 +7,7 @@ import { ProductsComponent } from './products/products.component';
 import { VendorComponent } from './vendor/vendor.component';
 import { UserComponent } from './user/user.component';
 import { RateComponent } from './rate/rate.component';
+import { CustomerMappingComponent } from './customer-mapping/customer-mapping.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: 'rates',
     component: RateComponent
+  },
+  {
+    path: 'mapping',
+    component: CustomerMappingComponent
   }
 ];
 

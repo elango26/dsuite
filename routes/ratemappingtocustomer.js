@@ -4,6 +4,7 @@ const {ObjectId} = require('mongodb');
 
 const rate = require('../models/rate');
 const rateMapping = require('../models/ratemappingtocustomer');
+const customer = require('../models/customer');
 
 router.get('/list',(req,res,next)=>{
     
@@ -67,6 +68,35 @@ router.get('/rate',(req,res,next)=>{
         }
     });
 });
+
+router.get('/customers',(req,res,next)=>{
+
+    rateMapping.aggregate([
+        { "$project": { 
+            "customer_id": 1
+        }} 
+    ]).exec((err,list)=>{
+        if(err){
+            res.json(err);
+        }else{
+            let customerIds = [];
+            if(list && list.length){
+                for (let i = 0, len = list.length; i < len; i++) {
+                    if((customerIds.indexOf(list[i].customer_id)) < 0) customerIds.push(list[i].customer_id);
+                }
+            }
+            customer.find( { _id: { $nin: customerIds } },(err,list)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json(list);
+                }
+            });
+
+        }
+    });
+
+});
     
 router.post('/create',(req,res,next)=>{
         
@@ -74,25 +104,26 @@ router.post('/create',(req,res,next)=>{
 
     let rows = [], customRows = [];
     req.body.mapping.forEach(element => {
-
-        rows.push({
-            customer_id : element.customer_id,
-            type : element.type,
-            createdBy : req.body.createdBy
-        });
-
-        if(element.custom && element.type == 'custom'){
-            element.custom.forEach(elem =>{
-                customRows.push({
-                    customer_id : element.customer_id,
-                    prod_id : elem.prod_id,
-                    type : elem.type,
-                    price : elem.price,
-                    tax : elem.tax,
-                    createdBy : req.body.createdBy
-                });
+        if(element.type){
+            rows.push({
+                customer_id : ObjectId(element.customer_id),
+                type : element.type,
+                createdBy : req.body.createdBy
             });
-        }        
+
+            if(element.custom && element.type == 'custom'){
+                element.custom.forEach(elem =>{
+                    customRows.push({
+                        customer_id : element.customer_id,
+                        prod_id : elem.prod_id,
+                        type : elem.type,
+                        price : elem.price,
+                        tax : elem.tax,
+                        createdBy : req.body.createdBy
+                    });
+                });
+            }  
+        }      
     });
 
     rateMapping.collection.insert(rows,(err,ratemappting)=>{
@@ -127,7 +158,7 @@ router.put('/update/:id',(req,res,next)=>{
 
 router.delete('/delete/:id',(req,res,next)=>{
     
-    rate.remove({_id:req.params.id},(err,result)=>{
+    rateMapping.remove({_id:req.params.id},(err,result)=>{
         if(err){
             res.json(err);
         }else{

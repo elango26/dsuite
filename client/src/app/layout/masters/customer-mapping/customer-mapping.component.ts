@@ -2,28 +2,29 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { Route } from 'src/app/interfaces/route';
-import { Vendor } from 'src/app/interfaces/vendor';
 import { Rate } from 'src/app/interfaces/rate';
 import { Product } from 'src/app/interfaces/product';
-import { CATEGORY, SUBCATEGORY, BRANDS } from 'src/app/constants/contants';
+import { CustomerMapping } from 'src/app/interfaces/customermapping';
+import { Customer } from 'src/app/interfaces/customer';
 import { CustomModalComponent } from './../custom-modal/custom-modal.component';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-rate',
-  templateUrl: './rate.component.html',
-  styleUrls: ['./rate.component.scss']
+  selector: 'app-customer-mapping',
+  templateUrl: './customer-mapping.component.html',
+  styleUrls: ['./customer-mapping.component.scss']
 })
-export class RateComponent implements OnInit {
+export class CustomerMappingComponent implements OnInit {
 
-  displayedColumns = ['prod_name', 'retail', 'wholesale1', 'wholesale2', 'purchase'];
+  displayedColumns = ['customer_name', 'rate_type'];
   dataSource: MatTableDataSource<Rate>;
 
-  rateList = [];
+  list = [];
   form_details : any;
-  products = [];
+  customers = [];
   options:any[];
+  rateTranslate = {'retail':'Retail','wholesale1':'Wholesale 1','wholesale2':"Wholesale 2",'purchase':'Purchase','custom':'Custom'};
+    
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -31,21 +32,21 @@ export class RateComponent implements OnInit {
 
   ngOnInit() {
     this.load();
-    this.commonService.getMethod(environment.urls.getRateProducts).subscribe((data:Product[]) => {
-      if(data.length > 1) this.products.push({key:'all',value:'All Products'});
+    this.commonService.getMethod(environment.urls.getMappingCustomers).subscribe((data:Customer[]) => {
+      if(data.length > 1) this.customers.push({key:'all',value:'All Customers'});
       for(let val of data){
-        let keyarr = {key:val._id,value:val.prod_name};
-        this.products.push(keyarr);
+        let keyarr = {key:val._id,value:val.customerName};
+        this.customers.push(keyarr);
       }
     });
     this.form_details = [];
   }
 
   load(){
-    this.commonService.getMethod(environment.urls.getRate).subscribe((data:Rate[]) => {
+    this.commonService.getMethod(environment.urls.getRateMapping).subscribe((data:CustomerMapping[]) => {
       
-      this.rateList = data;
-      this.dataSource = new MatTableDataSource(this.rateList);
+      this.list = data;
+      this.dataSource = new MatTableDataSource(this.list);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -66,19 +67,19 @@ export class RateComponent implements OnInit {
         "order": 1,
         "type": "select",
         "inputType": "dropdown",
-        "name": "prod_name",
+        "name": "customer_name",
         "value": "",
-        "placeholder": "Select Product",
+        "placeholder": "Select Customer",
         "validation": {
           "required": true
         },
-        "options": this.products
+        "options": this.customers
       }
   ]
     
     const dialogRef = this.dialog.open(CustomModalComponent, {
       width: '1300px',
-      data: {dispalay:'rateMapping',formData:this.form_details.sort((a, b) => a.order - b.order),formTitle:"Rate",url:environment.urls.postRate}
+      data: {dispalay:'customerMapping',formData:this.form_details.sort((a, b) => a.order - b.order),formTitle:"Rate",url:environment.urls.postRateMapping}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -86,5 +87,6 @@ export class RateComponent implements OnInit {
       this.load();
     });
   }
+
 
 }

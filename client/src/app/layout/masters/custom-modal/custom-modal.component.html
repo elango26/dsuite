@@ -11,8 +11,8 @@
        
        <div class="rate-form-select">
           <div *ngFor="let form of form_value.formData" >
-               <select class="cs-select-box" (change)="onDropDownSelect(form.options,$event.target.value)" placeholder="form.placeholder">
-                  <option class="hide" value="" disabled selected>Select Product</option>
+               <select class="cs-select-box" (change)="onDropDownSelect(form_value.dispalay,form.options,$event.target.value)" placeholder="form.placeholder">
+                  <option class="hide" value="" disabled selected>{{form.placeholder}}</option>
                   <option *ngFor="let opt of form.options; let idx = index" [value]="idx">{{opt.value}}</option>
               </select>
             </div>   
@@ -26,13 +26,25 @@
               <div class="input-fields">
                 <div class="single-rate" *ngFor="let cRate of data.rate" >
 
-                  <input (ngModel) = "cRate.price" type="'text'"  placeholder="{{cRate.priceText}}">
+                  <input [(ngModel)]="cRate.price" name="cRate.price" type="'text'"  placeholder="{{cRate.priceText}}">
                   
-                  <input (ngModel) = "cRate.tax" type="'text'" placeholder="{{cRate.taxText}}">
+                  <input [(ngModel)]="cRate.tax" name="cRate.tax" type="'text'" placeholder="{{cRate.taxText}}">
                  
                 </div>
               </div>
               </div>
+          </ng-container>
+          <ng-container *ngIf="fieldList.mapping.length"> 
+              <div *ngFor="let data of fieldList.mapping" class="single-row">
+                <div class="lable-name">
+                  <label>{{data.customer_name}}</label>
+                </div>
+                <div class="input-fields">
+                  <div class="single-rate" *ngFor="let cRate of data.rateType" >
+                      <span [ngClass]="{'selected': data.type == cRate.type}" class="rate-btn" (click)="data.type = cRate.type">{{cRate.display}}</span>
+                  </div>
+                </div>
+                </div>
             </ng-container>
        </div>
   

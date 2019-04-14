@@ -18,9 +18,10 @@ import { UserComponent } from './user/user.component';
 import { RateComponent } from './rate/rate.component';
 import { ProductsComponent } from './products/products.component';
 import { CustomModalComponent } from './custom-modal/custom-modal.component';
+import { CustomerMappingComponent } from './customer-mapping/customer-mapping.component';
 
 @NgModule({
-  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent, CustomModalComponent],
+  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent, CustomModalComponent, CustomerMappingComponent],
   imports: [
     CommonModule,
     FormsModule,

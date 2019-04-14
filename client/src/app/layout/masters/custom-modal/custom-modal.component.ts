@@ -15,17 +15,16 @@ export class CustomModalComponent {
   form: FormGroup;
   title:string = "";
   url: string;
-  dropList:any;
   fieldList:any;
   constructor(public commonService:CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CustomModalComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
       this.title = form_value.formTitle;
       this.url = form_value.url;
-      this.dropList = (form_value.dropList) ? form_value.dropList : false;
       let fieldsCtrls = {};
       this.fieldList = {
-        rates:[]
+        rates:[],
+        mapping:[]
       };
       for (let f of form_value.formData) {
         let validation = [];
@@ -48,10 +47,48 @@ export class CustomModalComponent {
     this.dialogRef.close();
   }
 
-  onDropDownSelect(options,index){
-    
-    this.fieldList.rates = [];
+  onDropDownSelect(action,options,index){
+    if(action == 'rateMapping'){
+      this.rateMapping(options,index);
+    }else{
+      this.customerMapping(options,index);
+    }
+  }
+
+  customerMapping(options,index){
+    this.fieldList.mapping = [];
     let value = options[index];
+    let rateType = [
+                    { type:'retail',display:"Retail"},
+                    { type:'wholesale1',display:"Wholesale 1"},
+                    { type:'wholesale2',display:"Wholesale 2"},
+                    { type:'purchase',display:"Purchase"}
+                  ];
+    if(value.key == 'all'){
+      for (let single of options) {
+          if(single.key != 'all'){
+          let row = {
+            customer_id : single.key,
+            customer_name : single.value,
+            type: '',
+            rateType : rateType
+          }
+          this.fieldList.mapping.push(row);
+          }
+      }
+    }else{
+      let row = {
+        customer_id : value.key,
+        customer_name : value.value,
+        type: '',
+        rateType : rateType
+      }
+      this.fieldList.mapping.push(row);
+    }
+  }
+
+  requestFormat(options,value){
+    let result = [];
     let rateType = ['retail','wholesale1','wholesale2','purchase'];
     let placeholde = {'retail':'Retail','wholesale1':'Wholesale 1','wholesale2':"Wholesale 2",'purchase':'Purchase'};
     let rate = [];
@@ -75,7 +112,7 @@ export class CustomModalComponent {
             prod_name : single.value,
             rate : rate
           }
-          this.fieldList.rates.push(row);
+          result.push(row);
          }
       }
     }else{
@@ -84,14 +121,22 @@ export class CustomModalComponent {
         prod_name : value.value,
         rate : rate
       }
-      this.fieldList.rates.push(row);
+      result.push(row);
     }
+    return result;
+  }
+
+  rateMapping(options,index){
     
+    this.fieldList.rates = [];
+    let value = options[index];
+    this.fieldList.rates = this.requestFormat(options,value);
+
   }
 
   onSubmit(){
  
-    if(this.form.status == "VALID"){  
+    //if(this.form.status == "VALID"){  
       
       this.commonService.postMethod(this.url,this.fieldList).subscribe(data =>{
         this.onNoClick();
@@ -103,7 +148,7 @@ export class CustomModalComponent {
           duration: 500,
         });
       });
-    }
+    //}
   }
 
 }
