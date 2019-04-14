@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 
 import { CommonService } from 'src/app/services/common.service';
 import { Rate } from 'src/app/interfaces/rate';
+import { Product } from 'src/app/interfaces/product';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-custom-modal',
@@ -16,9 +18,11 @@ export class CustomModalComponent {
   title:string = "";
   url: string;
   fieldList:any;
+  productList = [];
   constructor(public commonService:CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CustomModalComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
+
       this.title = form_value.formTitle;
       this.url = form_value.url;
       let fieldsCtrls = {};
@@ -26,22 +30,15 @@ export class CustomModalComponent {
         rates:[],
         mapping:[]
       };
-      for (let f of form_value.formData) {
-        let validation = [];
-        if(f.validation.required)
-          validation.push(Validators.required);
-        //if (f.inputType != 'dropdown') {
-          fieldsCtrls[f.name] = new FormControl(f.value || '', validation);
-        // } else {
-        //   let opts = {};
-        //   for (let opt of f.options) {
-        //     opts[opt.key] = new FormControl(opt.value);
-        //   }
-        //   fieldsCtrls[f.name] = new FormGroup(opts)
-        // }
-      }
-    this.form = new FormGroup(fieldsCtrls);
-    }
+      this.form = new FormGroup(fieldsCtrls);
+
+      this.commonService.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
+        for(let val of data){
+          let keyarr = {key:val._id,value:val.prod_name};
+          this.productList.push(keyarr);
+        }
+      });
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -55,6 +52,13 @@ export class CustomModalComponent {
     }
   }
 
+  assignCustomArray(type,indx){
+    if((type == 'custom' && !this.fieldList.mapping[indx].custom) || 
+    (type == 'custom' && this.fieldList.mapping[indx].custom && this.fieldList.mapping[indx].custom.length == 0)){
+      this.fieldList.mapping[indx].custom = this.requestFormat(this.productList,{key:'all'});
+    }
+  }
+
   customerMapping(options,index){
     this.fieldList.mapping = [];
     let value = options[index];
@@ -62,7 +66,8 @@ export class CustomModalComponent {
                     { type:'retail',display:"Retail"},
                     { type:'wholesale1',display:"Wholesale 1"},
                     { type:'wholesale2',display:"Wholesale 2"},
-                    { type:'purchase',display:"Purchase"}
+                    { type:'purchase',display:"Purchase"},
+                    { type:'custom',display:"Custom"}
                   ];
     if(value.key == 'all'){
       for (let single of options) {

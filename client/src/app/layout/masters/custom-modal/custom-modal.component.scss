@@ -10,8 +10,35 @@
         padding: 10px 0;
         display: inline-flex
     }
+    .single-row-nw{
+        padding: 10px 0;
+        display: inline-block;
+    }
+    .action-box{
+        border-top: 1px solid #ccc;
+        padding: 10px 0px 10px 10px;
+    }
     .input-fields{
         display: inline-flex
+    }
+    .rate-btn.save-btn{
+        background-color: #3f51b5;
+        color: #fff;
+    }
+    .rate-btn{
+        margin-right: 8px;
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+        cursor: pointer;
+        border: none;
+        text-align: center;
+        line-height: 36px;
+        padding: 10px 16px;
+        border-radius: 4px;
+        background-color: #fff;
+    }
+    .cus-rate-box{
+        border: 1px solid #cccc;
+        margin: 10px 0;
     }
     .single-rate{
         display: inline-block;
@@ -19,17 +46,7 @@
             margin-bottom: 5px;
             padding: 2px;
         }
-        .rate-btn{
-            margin-right: 8px;
-            box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-            cursor: pointer;
-            border: none;
-            text-align: center;
-            line-height: 36px;
-            padding: 10px 16px;
-            border-radius: 4px;
-            background-color: #fff;
-        }
+        
         .rate-btn.selected{
             background-color: #449d44;
             color: #fff;

@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CustomerMappingComponent implements OnInit {
 
-  displayedColumns = ['customer_name', 'rate_type'];
+  displayedColumns = ['customer_name', 'rate_type', 'view'];
   dataSource: MatTableDataSource<Rate>;
 
   list = [];
@@ -32,13 +32,6 @@ export class CustomerMappingComponent implements OnInit {
 
   ngOnInit() {
     this.load();
-    this.commonService.getMethod(environment.urls.getMappingCustomers).subscribe((data:Customer[]) => {
-      if(data.length > 1) this.customers.push({key:'all',value:'All Customers'});
-      for(let val of data){
-        let keyarr = {key:val._id,value:val.customerName};
-        this.customers.push(keyarr);
-      }
-    });
     this.form_details = [];
   }
 
@@ -49,6 +42,14 @@ export class CustomerMappingComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.list);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    });
+
+    this.commonService.getMethod(environment.urls.getMappingCustomers).subscribe((data:Customer[]) => {
+      if(data.length > 1) this.customers.push({key:'all',value:'All Customers'});
+      for(let val of data){
+        let keyarr = {key:val._id,value:val.customerName};
+        this.customers.push(keyarr);
+      }
     });
   }
 

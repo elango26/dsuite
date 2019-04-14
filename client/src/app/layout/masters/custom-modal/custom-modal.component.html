@@ -35,16 +35,39 @@
               </div>
           </ng-container>
           <ng-container *ngIf="fieldList.mapping.length"> 
-              <div *ngFor="let data of fieldList.mapping" class="single-row">
-                <div class="lable-name">
-                  <label>{{data.customer_name}}</label>
-                </div>
-                <div class="input-fields">
-                  <div class="single-rate" *ngFor="let cRate of data.rateType" >
-                      <span [ngClass]="{'selected': data.type == cRate.type}" class="rate-btn" (click)="data.type = cRate.type">{{cRate.display}}</span>
+              <div *ngFor="let data of fieldList.mapping; let idx = index" class="single-row-nw">
+                <div>
+                  <div class="lable-name">
+                    <label>{{data.customer_name}}</label>
+                  </div>
+                  <div class="input-fields">
+                    <div class="single-rate" *ngFor="let cRate of data.rateType" >
+                        <span [ngClass]="{'selected': data.type == cRate.type}" class="rate-btn" (click)="data.status = 'true';data.type = cRate.type;assignCustomArray(data.type,idx);">{{cRate.display}}</span>
+                    </div>
                   </div>
                 </div>
-                </div>
+                <ng-container *ngIf="data.status == 'true' && data.type == 'custom' && data.custom.length">
+                  <div class="cus-rate-box">
+                    
+                    <div *ngFor="let cusMap of data.custom" class="single-row">
+                      <div class="lable-name">
+                        <label>{{cusMap.prod_name}}</label>
+                      </div>
+                      <div class="input-fields">
+                        <div class="single-rate" *ngFor="let cRate of cusMap.rate" >
+                          <input [(ngModel)]="cRate.price" name="cRate.price" type="'text'"  placeholder="{{cRate.priceText}}">
+                          <input [(ngModel)]="cRate.tax" name="cRate.tax" type="'text'" placeholder="{{cRate.taxText}}">
+                        </div>
+                      </div>
+                    </div>
+                
+                    <div class="action-box">
+                        <span class="rate-btn" (click)="data.custom = []">Cancel</span>
+                        <span class="rate-btn save-btn" (click)="data.status = 'false'">Save</span>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
             </ng-container>
        </div>
   
