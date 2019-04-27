@@ -1,0 +1,24 @@
+<div class="mb-20" fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+  <div fxFlex="50" class="flex-display">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div *ngFor="let cat of strucProductList | keyvalue">
+        <div *ngFor="let sub of strucProductList[cat.key] | keyvalue">
+        <mat-card class="mat-card" *ngFor="let brands of strucProductList[cat.key][sub.key] | keyvalue">
+          <mat-card-header>
+              <mat-card-title>{{brands.key}} {{sub.key}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <section class="example-section">
+              <mat-form-field *ngFor="let prod of strucProductList[cat.key][sub.key][brands.key] | keyvalue" class="input-prod example-margin">
+                  <input matInput [formControlName]="prod.value.alias" [placeholder]="prod.value.alias" aria-label="prod.alias" type="number" size="10"/>                  
+              </mat-form-field>              
+            </section>
+          </mat-card-content>
+        </mat-card>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="button">Cancel</button>
+    <button mat-raised-button color="primary" cdkFocusInitial type="submit">Submit</button>
+    </form>
+  </div>
+</div>
