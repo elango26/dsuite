@@ -28,7 +28,9 @@ export const environment = {
     postRateMapping:apiUrl+'/ratemapping/create', 
     deleteRateMapping:apiUrl+'/ratemapping/delete',
     getSingleRate:apiUrl+'/ratemapping/rate',
-    getMappingCustomers:apiUrl+'/ratemapping/customers'
+    getMappingCustomers:apiUrl+'/ratemapping/customers',
+    getSales:apiUrl+'/sales/list',
+    postSales:apiUrl+'/sales/create'
   }
 };
 

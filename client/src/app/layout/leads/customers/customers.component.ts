@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Customer } from 'src/app/interfaces/customer';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
+import { ProdtableComponent } from '../../common/prodtable/prodtable.component';
 
 
 @Component({
@@ -12,7 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CustomersComponent implements OnInit {
 
-  displayedColumns = ['customerName', 'alias', 'route'];
+  displayedColumns = ['customerName', 'alias', 'route','actions'];
   dataSource: MatTableDataSource<Customer>;
 
   public customerList: Customer[];
@@ -20,7 +22,7 @@ export class CustomersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private commonService: CommonService) {
+  constructor(private commonService: CommonService, private dialog: MatDialog) {
     //this.customerList = [];
   }
 
@@ -42,6 +44,17 @@ export class CustomersComponent implements OnInit {
       if (this.dataSource.paginator) {
           this.dataSource.paginator.firstPage();
       }
+  }
+
+  openOrderModal(){
+    const dialogRef = this.dialog.open(ProdtableComponent, {
+      width: '800px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //reload
+    });
   }
 }
 

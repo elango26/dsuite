@@ -4,23 +4,38 @@ import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { UserService } from './user.service';
+import { Product } from 'src/app/interfaces/product';
+import { Rate } from 'src/app/interfaces/rate';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
   user:any;
+  products:Product[];
+  product_rate:Rate[];
   constructor(private http: HttpClient,private userservice: UserService) {
-     // this.user = this.getMethod(environment.urls.getUser);
+    console.log("service called");
+    // this.user = this.getMethod(environment.urls.getUser);
+    // fetch product details
+    this.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
+      this.products = data;
+    });
+    // fetch rate 
+    this.getMethod(environment.urls.getRate).subscribe((data:Rate[]) => {
+      this.product_rate = data;
+    });
    }
 
-  getMethod( url ){
+  getProductPrice(prod_id:string): Rate{
+    return this.product_rate.filter(key => key.product._id == prod_id)[0];
+  }
+
+  getMethod( url:string ){
     return this.http.get(url);
   }
 
-  postMethod( url, data){
-    // common for all post creation
-    //console.log('this.user',this.user);
+  postMethod( url:string, data:any){
     data['createdBy'] = '5cb1765cd833d31d8c81157d';//this.user.user._id;
     return this.http.post(url,data).pipe(
       catchError(this.handleError)

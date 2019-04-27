@@ -1,15 +1,15 @@
+import { Product } from "./product";
+
+export interface priceObj {
+    id:string;
+    price:number;
+    tax:number;
+}
+
 export interface Rate {
-    rates:[
-        // {
-        //     prod_name: string,
-        //     prod_id:string,
-        //     rate:[
-        //         {
-        //             type:string,
-        //             price:string,
-        //             tax:string
-        //         }
-        //     ]
-        // }
-    ]
+    product:Product;
+    purchase:priceObj;
+    retail:priceObj;
+    wholesale1:priceObj;
+    wholesale2:priceObj;
 }

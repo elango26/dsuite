@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const salesSchema = mongoose.Schema({
+    customer_id: {
+        type: Schema.ObjectId,
+        ref: 'Customer'
+    },
     sale_date : {
         type: String, 
         require : true

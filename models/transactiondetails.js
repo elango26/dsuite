@@ -5,7 +5,7 @@ const transactionDetailsSchema = mongoose.Schema({
 
     parent_id : {
         type: Schema.ObjectId,
-        ref:'Purchase'
+        ref:'Sales'
     },
     prod_id : {
         type: Schema.ObjectId,
@@ -21,7 +21,7 @@ const transactionDetailsSchema = mongoose.Schema({
         require : true
     },
     prod_quan : {
-        type : String,
+        type : Number,
         require : true
     },
     prod_tax : {

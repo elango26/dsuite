@@ -1,10 +1,12 @@
-.input-prod {
-    width: 50px;
+table {
+    width: 100%;
 }
 
-.example-h2 {
-    margin: 10px;
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
 }
+
 
 .example-section {
     display: flex;
@@ -13,20 +15,51 @@
     height: 60px;
 }
 
+.prod-col{
+    width: 70%;
+}
+
+.quantity-col{
+    width: 30%;
+}
+
+.customer-col{
+    width: 70%;
+    font-size: 1.34em;
+    
+}
+.date-col{
+    width: 30%;
+    font-size: 1.34em;
+    
+}
 .example-margin {
     margin: 10px;
 }
 
-.mat-slider-horizontal {
-    width: 300px;
+.clearpix {
+    margin-top: 10px;
 }
 
-.mat-slider-vertical {
-    height: 300px;
+.norecords{
+    text-align: center;
+    font: menu;
 }
 
-.mat-card {
-    margin: 10px;
-    width: auto;
-    display: inline-block;
+.desc-bg{
+    background-color: #BEC4EE;
+}
+
+.invoice-title{
+    font-weight: bold;
+    font-size: 2em;
+    padding-bottom: 1em;
+}
+
+.pull-right{
+    display:block;
+    text-align: right;
+    button{
+        margin-left: 0.23em;
+    }
 }

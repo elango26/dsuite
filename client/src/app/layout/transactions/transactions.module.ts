@@ -5,9 +5,10 @@ import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule
+  MatSliderModule, MatSlideToggleModule, MatTableModule
 } from '@angular/material';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatButtonModule} from '@angular/material/button';
 import { TransactionsRoutingModule } from './transactions-routing.module';
 import { SalesComponent } from './sales/sales.component';
 
@@ -29,6 +30,9 @@ import { SalesComponent } from './sales/sales.component';
     MatNativeDateModule,
     MatSelectModule,
     MatSliderModule,
+    MatTableModule,
+    MatButtonModule,
+    MatSnackBarModule,
     FlexLayoutModule.withConfig({addFlexToParent: false}) 
   ]
 })
