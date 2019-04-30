@@ -26,7 +26,6 @@ export class SalesComponent implements OnInit {
   custForm: FormGroup;
   productList: Product[];
   customerList: Customer[];
-  formData: Sales;
   transaction_desc: TransactionDesc[]=[];
   filteredOptions: Observable<Product[]>;
   customerFilteredOptions: Observable<Customer[]>;
@@ -39,7 +38,7 @@ export class SalesComponent implements OnInit {
     });
     this.custForm = new FormGroup({
       'customerName': new FormControl('',Validators.required),
-      'curDate': new FormControl('',Validators.required)
+      'curDate': new FormControl(new Date(),Validators.required)
     });
   }
 
@@ -131,12 +130,13 @@ export class SalesComponent implements OnInit {
 
   _saveOrder(type:string):void{
     console.log("Method hits "+type);
-    this.formData.customer_id = this.custForm.value.customerName._id;
-    this.formData.sale_date = this.custForm.value.curDate;
-    this.formData.total_amount = this.getTotalCost();
-    this.formData.details = this.transaction_desc;
-
-    this.commonService.postMethod(environment.urls.postSales,this.formData).subscribe(data =>{
+    let data: Sales = {
+      customer_id: this.custForm.value.customerName._id,
+      sale_date: this.custForm.value.curDate,
+      total_amount: this.getTotalCost(),
+      details: this.transaction_desc
+    }
+    this.commonService.postMethod(environment.urls.postSales,data).subscribe(data =>{
       this.snackBar.open("Saved successfully!!", "Success", {
         duration: 500,
       });

@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Customer } from 'src/app/interfaces/customer';
+import { Leads } from 'src/app/interfaces/leads';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { ProdtableComponent } from '../../common/prodtable/prodtable.component';
-
 
 @Component({
   selector: 'app-customers',
@@ -14,7 +14,7 @@ import { ProdtableComponent } from '../../common/prodtable/prodtable.component';
 })
 export class CustomersComponent implements OnInit {
 
-  displayedColumns = ['customerName', 'alias', 'route','actions'];
+  displayedColumns = ['customerName', 'alias', 'route','totalAmount','actions'];
   dataSource: MatTableDataSource<Customer>;
 
   public customerList: Customer[];
@@ -28,13 +28,12 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit() {
 
-      this.commonService.getMethod(environment.urls.getCustomer).subscribe((data: Customer[]) => {
+      this.commonService.getMethod(environment.urls.getLeads).subscribe((data: Leads[]) => {
           this.customerList = data;
           this.dataSource = new MatTableDataSource(this.customerList);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
       });
-
   }
 
   applyFilter(filterValue: string) {

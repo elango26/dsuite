@@ -59,14 +59,14 @@
       <!-- Name Column -->
       <ng-container matColumnDef="quantity">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity</th>
-            <td mat-cell *matCellDef="let row"> {{row.prod_quan}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.prod_quan | number : '1.2-2'}} </td>
             <td mat-footer-cell *matFooterCellDef>  </td>
         </ng-container>
 
         <!-- Name Column -->
       <ng-container matColumnDef="rate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate </th>
-            <td mat-cell *matCellDef="let row"> {{row.prod_rate_per_unit}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.prod_rate_per_unit|number : '1.2-2'}} </td>
             <td mat-footer-cell *matFooterCellDef> Total </td>
         </ng-container>
 
@@ -79,8 +79,8 @@
 
       <ng-container matColumnDef="amount">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
-        <td mat-cell *matCellDef="let row"> {{row.sub_amount}}</td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotalCost()}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.sub_amount|currency:'INR'}}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalCost()|currency:'INR'}} </td>
       </ng-container>   
       
       <ng-container matColumnDef="action">

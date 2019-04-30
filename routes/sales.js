@@ -20,6 +20,13 @@ router.get('/list',(req,res,next)=>{
             "localField": "updatedBy",
             "foreignField": "_id",
             "as": "updatedUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "customers",
+            "localField": "customer_id",
+            "foreignField": "_id",
+            "as": "customerDetail"
         }}
     ]).exec((err,list)=>{
         if(err){
