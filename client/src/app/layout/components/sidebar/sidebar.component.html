@@ -6,9 +6,19 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
             <mat-icon class="sidenav-icon">euro_symbol</mat-icon> {{ 'Payments' | translate }}
         </a> 
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
-            <mat-icon class="sidenav-icon">bar_chart</mat-icon> {{ 'Reports' | translate }}
-        </a>         
+        <div class="nested-menu">
+            <a mat-list-item (click)="addExpandClass('reports')" >
+                <mat-icon class="sidenav-icon">bar_chart</mat-icon> {{ 'Reports' | translate }}
+            </a>
+            <ul class="nested submenu" [class.expand]="showMenu === 'reports'">
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/reports/recentsales']"><span>{{ 'Recent Sales' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/reports/recentpurchase']"><span>{{ 'Recent Purchase' | translate }}</span></a>
+                </li>                
+            </ul>
+        </div>        
         <div class="nested-menu">
             <a mat-list-item (click)="addExpandClass('leads')" >
                 <mat-icon class="sidenav-icon">input</mat-icon> {{ 'Leads' | translate }}

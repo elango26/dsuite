@@ -20,6 +20,7 @@ const purchase = require('./routes/purchase');
 const discount = require('./routes/discount');
 const employee = require('./routes/employee');
 const leads = require('./routes/leads');
+const reports = require('./routes/reports');
 
 // connect to mongodb
 mongoose.connect('mongodb://localhost:27017/dsuite');
@@ -62,6 +63,7 @@ app.use('/api/purchase',purchase);
 app.use('/api/discount',discount);
 app.use('/api/employee',employee);
 app.use('/api/leads',leads);
+app.use('/api/reports',reports);
 
 // test server for home page
 app.get('/',(req,res)=>{

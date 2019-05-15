@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const transactionDetailsSchema = mongoose.Schema({
 
     parent_id : {
-        type: Schema.ObjectId,
-        ref:'Sales'
+        type: Schema.ObjectId
     },
     prod_id : {
         type: Schema.ObjectId,

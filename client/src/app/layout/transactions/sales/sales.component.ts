@@ -75,7 +75,7 @@ export class SalesComponent implements OnInit {
     this.customerFilteredOptions = this.custForm.get("customerName").valueChanges
       .pipe(
         startWith(''),
-        map(value => this._custFilter(value))
+        map(value => (value && value.length >= 1) ?this._custFilter(value):[])
       );
   }
 
@@ -83,7 +83,7 @@ export class SalesComponent implements OnInit {
     this.filteredOptions = this.form.get("productName").valueChanges
       .pipe(
         startWith(''),
-        map(value => this._filter(value))
+        map(value => (value && value.length >= 1) ? this._filter(value):[])
       );
   }
 
@@ -101,48 +101,51 @@ export class SalesComponent implements OnInit {
     if(this.form.status == "VALID"){
       let product = this.form.value.productName;
       let rate = this.commonService.getProductPrice(product._id);
+      console.log(rate);
       let trans_desc:TransactionDesc = {
         prod_name:product.prod_name,
         prod_id : product._id,
         prod_quan : this.form.value.quantity,
         prod_rate_per_unit : rate['wholesale1'].price,
-        prod_tax : rate['wholesale1'].tax,
-        sub_amount : rate['wholesale1'].price * this.form.value.quantity,
+        tax: rate['wholesale1'].tax?rate['wholesale1'].tax:0,
+        prod_tax : rate['wholesale1'].tax ? (rate['wholesale1'].price * this.form.value.quantity)*rate['wholesale1'].tax/100:0,
+        sub_amount : (rate['wholesale1'].price * this.form.value.quantity)
       }
       this.transaction_desc.push(trans_desc);
 
-      this.form.reset();
-      this.prodField.nativeElement.focus();
+      this.form.reset();      
       this.dataSource = new MatTableDataSource(this.transaction_desc);      
       this._callFilter();
+      this.prodField.nativeElement.focus();
     }    
   }
 
   _remove(n:number):void{
     this.transaction_desc.splice(n,1);
     this.dataSource = new MatTableDataSource(this.transaction_desc);
-    console.log(this.dataSource);
   }
 
   getTotalCost():number {
-    return this.transaction_desc.map(t => t.sub_amount).reduce((acc, value) => acc + value, 0);
+    return this.transaction_desc.map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.map(t => t.prod_tax).reduce((acc, value) => acc + value, 0);
   }
 
   _saveOrder(type:string):void{
-    console.log("Method hits "+type);
     let data: Sales = {
       customer_id: this.custForm.value.customerName._id,
       sale_date: this.custForm.value.curDate,
       total_amount: this.getTotalCost(),
       details: this.transaction_desc
     }
-    this.commonService.postMethod(environment.urls.postSales,data).subscribe(data =>{
+    this.transaction_desc = [];
+    this.form.reset();
+    this.custForm.reset();
+    this.commonService.postMethod(environment.urls.postSales,data).subscribe(data =>{      
       this.snackBar.open("Saved successfully!!", "Success", {
         duration: 500,
       });
     },error =>{
       this.snackBar.open(error, "Error", {
-        duration: 500,
+        duration: 600,
       });
     });
   }

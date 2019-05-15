@@ -49,10 +49,8 @@ router.get('/list',(req,res,next)=>{
                             "count": { $sum: 1 }
                             }
                         }
-                    ]).exec((err,detail)=>{       
-                        console.log('details:'+detail);                 
-                        if(!err) list[key]['totalAmount'] = detail;
-                        console.log('key,list::'+key+':'+list.length);
+                    ]).exec((err,detail)=>{ 
+                        if(!err) list[key]['totalAmount'] = detail;                        
                         if(key == list.length-1)
                             res.json(list);
                     }); 

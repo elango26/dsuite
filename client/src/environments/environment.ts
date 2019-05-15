@@ -31,7 +31,8 @@ export const environment = {
     getMappingCustomers:apiUrl+'/ratemapping/customers',
     getSales:apiUrl+'/sales/list',
     postSales:apiUrl+'/sales/create',
-    getLeads:apiUrl+'/leads/list'
+    getLeads:apiUrl+'/leads/list',
+    getRecentSales:apiUrl+'/reports/list'
   }
 };
 

@@ -2,6 +2,7 @@ export interface TransactionDesc {
     prod_id:string;
     prod_quan:number;
     prod_tax:number;
+    tax:number;
     prod_rate_per_unit:number;
     sub_amount:number;
     prod_name:string;
