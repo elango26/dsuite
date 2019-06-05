@@ -10,9 +10,10 @@ import {
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSliderModule, MatSlideToggleModule
 } from '@angular/material';
+import { RecentPurchaseComponent } from './recent-purchase/recent-purchase.component';
 
 @NgModule({
-  declarations: [RecentsalesComponent],
+  declarations: [RecentsalesComponent, RecentPurchaseComponent],
   imports: [
     CommonModule,
     ReportsRoutingModule,

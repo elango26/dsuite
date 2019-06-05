@@ -13,7 +13,7 @@ const transactionDetailsSchema = mongoose.Schema({
     type : {
         type : String,
         require : true,
-        enum: ['SALES','PURCHASE'],
+        enum: ['SALES','PURCHASE','DAMAGE'],
     },
     prod_rate_per_unit : {
         type : Number,
@@ -34,6 +34,12 @@ const transactionDetailsSchema = mongoose.Schema({
     prod_discount_id : {
         type: Schema.ObjectId,
         ref:'Discount'
+    },
+    is_delivered: {
+        type: Boolean,
+        require: true,
+        enum: [true,false],
+        default: true
     }
 });
 

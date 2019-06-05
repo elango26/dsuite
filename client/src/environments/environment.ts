@@ -5,6 +5,16 @@ let apiUrl = 'http://localhost:3000/api';
 export const environment = {
   production: false,
   urls:{
+    //dashboard
+    //payments
+    //reports
+    getRecentSales:apiUrl+'/reports/sales',
+    getRecentPurchase:apiUrl+'/reports/purchase',
+
+    //Leads
+    getLeads:apiUrl+'/leads/list',
+
+    //masters
     getRoute:apiUrl+'/route/list',
     postRoute:apiUrl+'/route/create',
     deleteRoute:apiUrl+'/route/delete/',
@@ -29,10 +39,19 @@ export const environment = {
     deleteRateMapping:apiUrl+'/ratemapping/delete',
     getSingleRate:apiUrl+'/ratemapping/rate',
     getMappingCustomers:apiUrl+'/ratemapping/customers',
+    
+    //transactions
     getSales:apiUrl+'/sales/list',
     postSales:apiUrl+'/sales/create',
-    getLeads:apiUrl+'/leads/list',
-    getRecentSales:apiUrl+'/reports/list'
+    getPurchase:apiUrl+'/purchase/list',
+    postPurchase:apiUrl+'/purchase/create',
+    getExpense:apiUrl+'/expense/list',
+    postExpense:apiUrl+'/expense/create',
+    getDamage:apiUrl+'/damage/list',
+    postDamage:apiUrl+'/damage/create',
+    //remainders
+    //alerts
+    
   }
 };
 

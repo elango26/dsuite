@@ -1,0 +1,75 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <mat-card >
+        <mat-card-header>
+            <mat-card-title>Expenses</mat-card-title>
+        </mat-card-header>
+        <mat-card-content flex="50">
+            <section class="example-section">
+                <mat-form-field class="example-margin">
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field>
+            </section>
+        </mat-card-content>
+        
+        <div class="mat-elevation-z8" flex="50">
+            <table mat-table [dataSource]="dataSource" matSort>
+        
+                <!-- <ng-container matColumnDef="sno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Area Name </th>
+                    <td mat-cell *matCellDef="let row" [style.color]="row.areaName"> {{row.areaName}} </td>
+                </ng-container> -->
+
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+                    <td mat-cell *matCellDef="let row"> {{row.type}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                    <td mat-cell *matCellDef="let row"> {{row.description}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                    <td mat-cell *matCellDef="let row" > {{row.amount | currency:'INR'}} </td>
+                </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+    </mat-card>
+
+    <mat-card>
+        <form [formGroup]="form" (ngSubmit)="submit_form()">
+        <mat-card-header>
+            <mat-card-title>Add New Expense</mat-card-title>
+        </mat-card-header>
+        <mat-card-content flex="50">
+            <section class="example-section">
+                <mat-form-field class="example-margin">
+                    <mat-select matInput placeholder="Type" formControlName="type">
+                            <mat-option *ngFor="let opt of expense_types" [value]="opt.key">{{opt.value}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </section>
+            <section class="example-section">
+                <mat-form-field class="example-margin">
+                    <textarea matInput rows="4" placeholder="Description" formControlName="description"></textarea>
+                </mat-form-field>
+            </section>
+            <section class="example-section">
+                <mat-form-field class="example-margin">
+                    <input matInput (keyup)="applyFilter($event.target.value)" formControlName="amount" placeholder="Amount">
+                </mat-form-field>
+            </section>
+            <section class="example-section">
+                <button type="submit" mat-raised-button color="primary">Submit</button>
+            </section>
+
+        </mat-card-content>
+        </form>
+    </mat-card>
+</div>

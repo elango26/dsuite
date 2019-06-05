@@ -1,0 +1,119 @@
+<mat-card>
+  <mat-card-header>
+      <mat-card-title class="invoice-title">Returns / Spoilages</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>      
+        <form [formGroup]="custForm" (keyup.enter)="onSubmit()">
+          <section class="example-section">
+              <mat-form-field class="example-margin customer-col">
+                  <input type="text" autofocus placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
+                  <mat-autocomplete #customer="matAutocomplete" [displayWith]="displayCustomerFn">
+                    <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
+                      {{customer.customerName}}
+                    </mat-option>
+                  </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field class="example-margin date-col">
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="curDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+          </section>
+        </form>    
+    </mat-card-content>
+<mat-card class="desc-bg">
+  <mat-card-content>
+    <form [formGroup]="form" (keyup.enter)="onSubmit()">
+      <section class="example-section">
+          <mat-form-field class="example-margin prod-col">
+              <input type="text" #productName placeholder="Product Name / Code" aria-label="Number" matInput formControlName="productName" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let option of filteredOptions | async"  [value]="option">
+                  {{option.prod_name}}
+                </mat-option>
+              </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field class="example-margin quantity-col">
+            <input matInput formControlName="quantity" placeholder="Quantity" type="number">
+          </mat-form-field>
+      </section>
+    </form>
+  </mat-card-content>
+
+  <div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> S No </th>
+          <td mat-cell *matCellDef="let row;let i = index;" > {{i+1}} </td>
+          <td mat-footer-cell *matFooterCellDef>  </td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="productName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.prod_name}} </td>
+          <td mat-footer-cell *matFooterCellDef>  </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity</th>
+            <td mat-cell *matCellDef="let row"> {{row.prod_quan | number : '1.2-2'}} </td>
+            <td mat-footer-cell *matFooterCellDef>  </td>
+        </ng-container>
+
+        <!-- Name Column -->
+      <ng-container matColumnDef="rate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate </th>
+            <td mat-cell *matCellDef="let row"> {{row.prod_rate_per_unit|currency:'INR'}} </td>
+            <td mat-footer-cell *matFooterCellDef> Total </td>
+        </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="tax">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tax </th>
+          <td mat-cell *matCellDef="let row"> {{row.prod_tax|currency:'INR'}}@{{row.tax|number : '1.2-2'}}%</td>
+          <td mat-footer-cell *matFooterCellDef>  </td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+        <td mat-cell *matCellDef="let row"> {{row.sub_amount|currency:'INR'}}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalCost()|currency:'INR'}} </td>
+      </ng-container>   
+      <ng-container matColumnDef="is_delivered">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Is Delivered </th>
+        <td mat-cell *matCellDef="let row; let n = index">
+          <!-- <span (click)="_remove(n)"><i class="material-icons">
+            delete_forever
+            </i></span> -->
+            <mat-checkbox [(ngModel)]="row.is_delivered"></mat-checkbox>
+        </td>
+        <td mat-footer-cell *matFooterCellDef>  </td>
+      </ng-container> 
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+        <td mat-cell *matCellDef="let row; let n = index">
+          <span (click)="_remove(n)"><i class="material-icons">
+            delete_forever
+            </i></span>
+        </td>
+        <td mat-footer-cell *matFooterCellDef>  </td>
+      </ng-container> 
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+  </table>
+  <ng-container *ngIf="!dataSource || dataSource._data._value.length === 0">
+      <mat-card class="norecords">Please add products !!</mat-card>
+  </ng-container>
+  </div>
+  </mat-card>
+  <br>
+  <div class="pull-right">
+    <button mat-raised-button color="primary" [disabled]="!dataSource || dataSource._data._value.length === 0" (click)="_saveOrder('print')">Print</button>
+    <button mat-raised-button color="primary" [disabled]="!dataSource || dataSource._data._value.length === 0" (click)="_saveOrder('save')">Save</button>
+  </div>
+</mat-card>

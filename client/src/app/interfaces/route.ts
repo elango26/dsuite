@@ -1,5 +1,5 @@
 export interface Route {
-    _id?:string,
+    _id?:string;
     areaName:string;
     is_active:string;
     is_delete:string;

@@ -5,15 +5,19 @@ import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule, MatTableModule
+  MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatPaginatorModule
 } from '@angular/material';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatButtonModule} from '@angular/material/button';
+import {MatGridListModule} from '@angular/material/grid-list';
 import { TransactionsRoutingModule } from './transactions-routing.module';
 import { SalesComponent } from './sales/sales.component';
+import { PurchaseComponent } from './purchase/purchase.component';
+import { ExpensesComponent } from './expenses/expenses.component';
+import { DamagesComponent } from './damages/damages.component';
 
 @NgModule({
-  declarations: [SalesComponent],
+  declarations: [SalesComponent, PurchaseComponent, ExpensesComponent, DamagesComponent],
   imports: [
     CommonModule,
     TransactionsRoutingModule,
@@ -33,6 +37,9 @@ import { SalesComponent } from './sales/sales.component';
     MatTableModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatDialogModule,
+    MatPaginatorModule,
+    MatGridListModule,
     FlexLayoutModule.withConfig({addFlexToParent: false}) 
   ]
 })

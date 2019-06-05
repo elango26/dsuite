@@ -1,0 +1,65 @@
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.prod-col{
+    width: 70%;
+}
+
+.quantity-col{
+    width: 30%;
+}
+
+.customer-col{
+    width: 70%;
+    font-size: 1.34em;
+    
+}
+.date-col{
+    width: 30%;
+    font-size: 1.34em;
+    
+}
+.example-margin {
+    margin: 10px;
+}
+
+.clearpix {
+    margin-top: 10px;
+}
+
+.norecords{
+    text-align: center;
+    font: menu;
+}
+
+.desc-bg{
+    background-color: rgb(212, 213, 221);
+}
+
+.invoice-title{
+    font-weight: bold;
+    font-size: 2em;
+    padding-bottom: 1em;
+}
+
+.pull-right{
+    display:block;
+    text-align: right;
+    button{
+        margin-left: 0.23em;
+    }
+}

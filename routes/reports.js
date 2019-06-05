@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const {ObjectId} = require('mongodb');
 const sales = require('../models/sales');
+const purchase = require('../models/purchase');
 const transactionDetails = require('../models/transactiondetails');
 
-router.get('/list',(req,res,next)=>{
+router.get('/sales',(req,res,next)=>{
     
     sales.aggregate([
         {    
@@ -39,7 +40,12 @@ router.get('/list',(req,res,next)=>{
 
                     transactionDetails.aggregate([
                         {
-                            "$match": { parent_id: ObjectId(list[i]._id) }
+                            "$match": { 
+                                "$and": [ 
+                                        {parent_id: ObjectId(list[i]._id) },
+                                        {type: 'SALES' }
+                                    ]
+                            }
                         },
                         {    
                         "$lookup": {
@@ -69,5 +75,76 @@ router.get('/list',(req,res,next)=>{
     });
 });
 
+router.get('/purchase',(req,res,next)=>{
+    
+    purchase.aggregate([
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "createdBy",
+            "foreignField": "_id",
+            "as": "createdUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "users",
+            "localField": "updatedBy",
+            "foreignField": "_id",
+            "as": "updatedUser"
+        }},
+        {    
+        "$lookup": {
+            "from": "vendors",
+            "localField": "vendor_id",
+            "foreignField": "_id",
+            "as": "vendorDetail"
+        }}
+    ]).exec((err,list)=>{
+        if(err){
+            res.json(err);
+        }else{            
+            let result = [];
+            if(list && list.length){
+                let processedCount = 0;
+                for (let i = 0, len = list.length; i < len; i++) {
+
+                    transactionDetails.aggregate([
+                        {
+                            "$match": { 
+                                "$and": [ 
+                                        {parent_id: ObjectId(list[i]._id) },
+                                        {type: 'PURCHASE' }
+                                    ]
+                            }                           
+                        },
+                        {    
+                        "$lookup": {
+                            "from": "products",
+                            "localField": "prod_id",
+                            "foreignField": "_id",
+                            "as": "product"
+                        }},
+                        {    
+                        "$lookup": {
+                            "from": "discounts",
+                            "localField": "prod_discount_id",
+                            "foreignField": "_id",
+                            "as": "discount"
+                        }}
+                    ]).exec((err,detail)=>{                        
+                        if(!err) list[processedCount].details = detail;
+                        result.push(list[processedCount]);
+                        processedCount++;
+                        if(processedCount === len){
+                            res.json(result);
+                        } 
+                    }); 
+                }
+            }else{
+                res.json(result);
+            }
+        }
+    });
+});
 
 module.exports = router;
