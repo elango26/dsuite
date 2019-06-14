@@ -23,6 +23,7 @@ const leads = require('./routes/leads');
 const reports = require('./routes/reports');
 const expense = require('./routes/expense');
 const damage = require('./routes/damage');
+const payment = require('./routes/payments');
 
 // connect to mongodb
 mongoose.connect('mongodb://localhost:27017/dsuite');
@@ -68,6 +69,7 @@ app.use('/api/leads',leads);
 app.use('/api/reports',reports);
 app.use('/api/expense',expense);
 app.use('/api/damage',damage);
+app.use('/api/payment',payment);
 
 // test server for home page
 app.get('/',(req,res)=>{

@@ -3,7 +3,7 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
             <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' | translate }}
         </a>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/payment/payments']">
             <mat-icon class="sidenav-icon">euro_symbol</mat-icon> {{ 'Payments' | translate }}
         </a> 
         <div class="nested-menu">
@@ -16,6 +16,9 @@
                 </li>
                 <li>
                     <a href="javascript:void(0)" [routerLink]="['/reports/recentpurchase']"><span>{{ 'Recent Purchase' | translate }}</span></a>
+                </li> 
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/reports/recentdamages']"><span>{{ 'Recent Damages' | translate }}</span></a>
                 </li>                
             </ul>
         </div>        

@@ -7,6 +7,9 @@ export const environment = {
   urls:{
     //dashboard
     //payments
+    getPayment:apiUrl+'/payment/list',
+    postPayment:apiUrl+'/payment/create',
+
     //reports
     getRecentSales:apiUrl+'/reports/sales',
     getRecentPurchase:apiUrl+'/reports/purchase',

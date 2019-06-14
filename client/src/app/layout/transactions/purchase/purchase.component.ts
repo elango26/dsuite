@@ -138,6 +138,7 @@ export class PurchaseComponent implements OnInit {
       details: this.transaction_desc
     }
     this.transaction_desc = [];
+    this.dataSource = new MatTableDataSource(this.transaction_desc);
     this.form.reset();
     this.vendorForm.reset();
     this.commonService.postMethod(environment.urls.postPurchase,data).subscribe(data =>{      

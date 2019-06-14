@@ -11,9 +11,10 @@ import {
   MatSliderModule, MatSlideToggleModule
 } from '@angular/material';
 import { RecentPurchaseComponent } from './recent-purchase/recent-purchase.component';
+import { RecentdamagesComponent } from './recentdamages/recentdamages.component';
 
 @NgModule({
-  declarations: [RecentsalesComponent, RecentPurchaseComponent],
+  declarations: [RecentsalesComponent, RecentPurchaseComponent, RecentdamagesComponent],
   imports: [
     CommonModule,
     ReportsRoutingModule,

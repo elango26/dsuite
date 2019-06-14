@@ -4,6 +4,7 @@ const {ObjectId} = require('mongodb');
 const sales = require('../models/sales');
 const transactionDetails = require('../models/transactiondetails');
 const customer = require('../models/customer');
+const payments = require('../models/payments');
 
 router.get('/list',(req,res,next)=>{
 
@@ -33,15 +34,23 @@ router.get('/list',(req,res,next)=>{
         if(err){
             res.json(err);
         }else{
-            console.log('insdie leads');
-            console.log('length:'+list.length);
-            if(list && list.length > 0){                
-                for(key in list){       
-                    console.log('id:'+list[key]._id);             
+            if(list && list.length > 0){  
+                let processedCount = 0;  
+                let len = list.length;            
+                for(key in list){      
                     sales.aggregate([
                         {
                             "$match": { customer_id: ObjectId(list[key]._id) }
                         },
+                        // {
+                        //     "$project": { 
+                        //         credit: {   
+                        //             "$cond": ["$credit", "$amount", {
+                        //                 "$subtract": [0, "$amount"]
+                        //             }]
+                        //         } 
+                        //     }
+                        // },
                         {
                         "$group": {    
                             "_id": "$customer_id",                            
@@ -49,12 +58,40 @@ router.get('/list',(req,res,next)=>{
                             "count": { $sum: 1 }
                             }
                         }
-                    ]).exec((err,detail)=>{ 
-                        if(!err) list[key]['totalAmount'] = detail;                        
-                        if(key == list.length-1)
+                    ]).exec((err,credit)=>{ 
+                        console.log("hey::"+credit);
+                        let amount = 0;
+                        if(!err) {
+                            payments.aggregate([
+                                {
+                                    "$match": { customer_id: ObjectId(list[key]._id) }
+                                },
+                                {
+                                "$group": {    
+                                    "_id": "$customer_id",                            
+                                    "totalAmt": { $sum: "$amount"}                                    
+                                    }
+                                }
+                            ]).exec((err,debit)=>{
+                                console.log("inside pay::"+credit[0].totalAmt);
+                                if(!err){
+                                    amount = debit[0].totalAmt;
+                                    console.log("Insiee:"+ amount);
+                                }else{
+                                    console.log("err::"+ err);
+                                }                              
+                            });                            
+                        }
+                        console.log("last"+amount);
+                        list[processedCount]['totalAmount'] = credit[0].totalAmt - amount;
+                        processedCount++;
+                        if(processedCount === len){
                             res.json(list);
+                        } 
                     }); 
-                }
+                }                
+            }else{
+                res.json(list);
             }   
             //res.json(list);        
         }

@@ -137,6 +137,7 @@ export class SalesComponent implements OnInit {
       details: this.transaction_desc
     }
     this.transaction_desc = [];
+    this.dataSource = new MatTableDataSource(this.transaction_desc);
     this.form.reset();
     this.custForm.reset();
     this.commonService.postMethod(environment.urls.postSales,data).subscribe(data =>{      
