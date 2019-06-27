@@ -7,7 +7,6 @@ const customer = require('../models/customer');
 const payments = require('../models/payments');
 
 router.get('/list',(req,res,next)=>{
-
     customer.aggregate([
         {    
         "$lookup": {
@@ -29,73 +28,58 @@ router.get('/list',(req,res,next)=>{
             "localField": "route",
             "foreignField": "_id",
             "as": "routes"
-        }}
-    ]).exec((err,list)=>{
+        }},
+        {    
+        "$lookup": {
+            "from": "sales",
+            "localField": "_id",
+            "foreignField": "customer_id",
+            "as": "sales"
+        }},
+        { "$unwind": "$sales" },
+        {
+            "$group": {
+                "_id": "$sales.customer_id",                            
+                "debit": { $sum: "$sales.total_amount" },
+                "debit_count": { $sum: 1 },
+                "customer":{
+                    $push:"$$ROOT"
+                }            
+            }
+        },
+        {
+            $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$customer", 0 ] }, "$$ROOT" ] } }
+        },
+        { $project: { customer: 0, sales: 0 } },
+        {    
+        "$lookup": {
+            "from": "payments",
+            "localField": "_id",
+            "foreignField": "customer_id",
+            "as": "payments"
+        }},
+        { "$unwind": "$payments" },
+        {
+            "$group": {
+                "_id": "$payments.customer_id",                            
+                "credit": { $sum: "$payments.amount" },
+                "credit_count": { $sum: 1 },
+                "customer": {
+                    $push: '$$ROOT'
+                }
+            }
+        },
+        {
+            $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$customer", 0 ] }, "$$ROOT" ] } }
+        },
+        { $project: { customer: 0, payments: 0 } },
+    ]).exec((err,leads)=>{
         if(err){
             res.json(err);
         }else{
-            if(list && list.length > 0){  
-                let processedCount = 0;  
-                let len = list.length;            
-                for(key in list){      
-                    sales.aggregate([
-                        {
-                            "$match": { customer_id: ObjectId(list[key]._id) }
-                        },
-                        // {
-                        //     "$project": { 
-                        //         credit: {   
-                        //             "$cond": ["$credit", "$amount", {
-                        //                 "$subtract": [0, "$amount"]
-                        //             }]
-                        //         } 
-                        //     }
-                        // },
-                        {
-                        "$group": {    
-                            "_id": "$customer_id",                            
-                            "totalAmt": { $sum: "$total_amount" },
-                            "count": { $sum: 1 }
-                            }
-                        }
-                    ]).exec((err,credit)=>{ 
-                        console.log("hey::"+credit);
-                        let amount = 0;
-                        if(!err) {
-                            payments.aggregate([
-                                {
-                                    "$match": { customer_id: ObjectId(list[key]._id) }
-                                },
-                                {
-                                "$group": {    
-                                    "_id": "$customer_id",                            
-                                    "totalAmt": { $sum: "$amount"}                                    
-                                    }
-                                }
-                            ]).exec((err,debit)=>{
-                                console.log("inside pay::"+credit[0].totalAmt);
-                                if(!err){
-                                    amount = debit[0].totalAmt;
-                                    console.log("Insiee:"+ amount);
-                                }else{
-                                    console.log("err::"+ err);
-                                }                              
-                            });                            
-                        }
-                        console.log("last"+amount);
-                        list[processedCount]['totalAmount'] = credit[0].totalAmt - amount;
-                        processedCount++;
-                        if(processedCount === len){
-                            res.json(list);
-                        } 
-                    }); 
-                }                
-            }else{
-                res.json(list);
-            }   
-            //res.json(list);        
+            res.json(leads);
         }
-    });
+    });   
 });
 
 module.exports = router;
