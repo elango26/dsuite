@@ -16,6 +16,7 @@ export const environment = {
 
     //Leads
     getLeads:apiUrl+'/leads/list',
+    postOrder:apiUrl+'/order/create',
 
     //masters
     getRoute:apiUrl+'/route/list',

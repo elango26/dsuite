@@ -13,7 +13,7 @@ const transactionDetailsSchema = mongoose.Schema({
     type : {
         type : String,
         require : true,
-        enum: ['SALES','PURCHASE','DAMAGE'],
+        enum: ['SALES','PURCHASE','DAMAGE','ORDER'],
     },
     prod_rate_per_unit : {
         type : Number,

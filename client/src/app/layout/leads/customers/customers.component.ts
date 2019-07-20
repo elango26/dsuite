@@ -45,10 +45,12 @@ export class CustomersComponent implements OnInit {
       }
   }
 
-  openOrderModal(){
+  openOrderModal(customer:Leads){
     const dialogRef = this.dialog.open(ProdtableComponent, {
-      width: '800px',
-      data: {}
+      width: 'auto',
+      height:'auto',
+      data: {customer:customer,url:environment.urls.postOrder},
+      panelClass: 'custom-modalbox'
     });
 
     dialogRef.afterClosed().subscribe(result => {

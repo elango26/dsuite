@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ProdtableComponent } from './prodtable/prodtable.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
+  MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatButtonModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSliderModule, MatSlideToggleModule
 } from '@angular/material';
@@ -27,6 +28,8 @@ import {
     MatNativeDateModule,
     MatSelectModule,
     MatSliderModule,
+    MatTabsModule,
+    MatButtonModule,
     FlexLayoutModule.withConfig({addFlexToParent: false}) 
   ],
   exports: [ProdtableComponent],
