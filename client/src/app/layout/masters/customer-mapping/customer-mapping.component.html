@@ -23,18 +23,13 @@
         <!-- Color Column -->
           <ng-container matColumnDef="customer_name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
-                <td mat-cell *matCellDef="let row" [style.color]="row.customer[0].customerName"> {{row.customer[0].customerName}} </td>
+                <td mat-cell *matCellDef="let row" [style.color]="row.customerName"> {{row.customerName}} </td>
           </ng-container>
   
-        <!-- Progress Column -->
-        <ng-container matColumnDef="rate_type">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate Type </th>
-            <td mat-cell *matCellDef="let row"> {{ rateTranslate[row.type]}}</td>
-        </ng-container>
         <ng-container matColumnDef="view">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> View </th>
                 <td mat-cell *matCellDef="let row"> 
-                    <span class="view-btn"> View </span>
+                    <span class="view-btn" (click)="openDialog(row._id)"> View </span>
                 </td>
             </ng-container>
 
@@ -43,8 +38,5 @@
     </table>
   
     <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-    </div>
-    <div class="clearpix"> 
-      <button mat-raised-button color ="primary" (click)="openDialog()">Add New</button>
     </div>
   </mat-card>

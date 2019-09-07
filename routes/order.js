@@ -4,6 +4,38 @@ const {ObjectId} = require('mongodb');
 const orders = require('../models/order');
 const transactionDetails = require('../models/transactiondetails');
 
+router.get('/searchOrders',(req,res,next)=>{
+    orders.aggregate([
+        {
+            $project:{
+                customer_id: '$customer_id',
+                yearMonthDayUTC: { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
+            }
+        },
+        {
+            $lookup:{
+                from: 'transactiondetails',
+                localField: '_id',
+                foreignField: 'parent_id',
+                as: 'details'
+            }
+        },
+        {
+            $match:{
+                yearMonthDayUTC: req.query.searchDate,
+                customer_id:ObjectId(req.query.id)
+            }
+        }
+    ]).exec((err,list) => {
+        //'2019-09-03'
+        if(!err){
+            res.json(list);
+        }else{
+            res.json("err"+err);
+        }
+    });    
+});
+
 router.get('/list',(req,res,next)=>{
     
     orders.aggregate([
@@ -72,18 +104,33 @@ router.get('/list',(req,res,next)=>{
 router.post('/create',(req,res,next)=>{
     
     if(req.body.createdBy) req.body.createdBy = {_id: ObjectId(req.body.createdBy)}
-    
+    // if(req.body._id)
+    //     req.body._id = ObjectId(req.body._id);
+
     let newOrders = new orders(req.body);
+    if(req.body._id)
+        newOrders.isNew = false;
+    //     req.body._id = ObjectId(req.body._id);
+    
 
     newOrders.save((err,orders)=>{
         if(err){
             res.json(err);
         }else{
-            if(!req.body.details || !req.body.details.length) res.json({msg:'Order updated successfully'});
+            if(!req.body.details || !req.body.details.length) res.json({msg:'Please enter orders'});
             let count = 0;
+            //removing all trasaction details 
+            if(req.body._id){
+                const query = { parent_id : ObjectId(req.body._id) };
+
+                transactionDetails.deleteMany(query)
+                .then(result => console.log(`Deleted ${result.deletedCount} item(s).`))
+                .catch(err => console.error(`Delete failed with error: ${err}`));
+            }                
+            //inserting new transactions
             for (let i = 0, len = req.body.details.length; i < len; i++) {
                 req.body.details[i].parent_id = orders._id;
-                req.body.details[i].type = "ORDER";
+                req.body.details[i].type = "ORDER";                
                 let newtransaction = new transactionDetails(req.body.details[i]);
                 newtransaction.save((errs,transaction)=>{
                     if(errs){

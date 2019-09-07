@@ -1,0 +1,50 @@
+<form >
+<mat-card>
+  <mat-card-title>Deliveries</mat-card-title>
+  <mat-card-content>
+    <section class="example-section">
+        <mat-form-field class="example-margin">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+        <mat-form-field class="example-margin">
+            <mat-select placeholder="Route" >
+                <mat-option value="1">Option 1</mat-option>
+                <mat-option value="2">Option 2</mat-option>
+                <mat-option value="3">Option 3</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-margin">
+          <input matInput [matDatepicker]="picker" placeholder="Choose a date" name="delDate" (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)" [(ngModel)]="delDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </section>
+    <mat-accordion class="example-headers-align">
+      <ng-container *ngFor="let row of deliveryList;let i = index">
+        <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" >            
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{row._id.customer.customerName}}
+            </mat-panel-title>
+            <mat-panel-description>
+              <span>&nbsp;</span>
+              <span *ngIf="row._id.orders">Order Received</span>
+              <mat-icon>account_circle</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-chip-list *ngIf="row._id.orders">
+              <mat-chip *ngFor="let order of row.details">{{order.products.alias}}: {{order.prod_quan}} </mat-chip>                                           
+          </mat-chip-list>   
+          <div class="example-button-row">        
+            <button mat-stroked-button color="warn" (click)="editOrder(row)">Edit</button>      
+          </div> 
+          <mat-action-row>
+            <button mat-button color="warn" *ngIf="i!=0" (click)="prevStep()">Previous</button>
+            <button mat-button color="primary" *ngIf="i != deliveryList.length - 1" (click)="nextStep()">Next</button>
+          </mat-action-row> 
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>
+</form>

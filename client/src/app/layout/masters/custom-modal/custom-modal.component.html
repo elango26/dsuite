@@ -1,78 +1,93 @@
 <form (ngSubmit)="onSubmit()">
-  <h1 mat-dialog-title>{{title}}</h1>
+  <h1 mat-dialog-title><span *ngIf="isEdit">{{edit_form.product.brand_name}}: {{edit_form.product.prod_name}}</span><span *ngIf="!isEdit">{{title}}</span></h1>
   <div mat-dialog-content>
   <mat-card>
     <!-- <mat-card-header>
         <mat-card-title>{{title}}</mat-card-title>
     </mat-card-header> -->
-    <mat-card-content class="common-modal">  
-      
-      <div class="rate-form">
-       
-       <div class="rate-form-select">
+    <mat-card-content class="common-modal">       
+       <div class="rate-form-select" *ngIf="!isEdit">
           <div *ngFor="let form of form_value.formData" >
-               <select class="cs-select-box" (change)="onDropDownSelect(form_value.dispalay,form.options,$event.target.value)" placeholder="form.placeholder">
-                  <option class="hide" value="" disabled selected>{{form.placeholder}}</option>
-                  <option *ngFor="let opt of form.options; let idx = index" [value]="idx">{{opt.value}}</option>
+              <select class="cs-select-box" (change)="onDropDownSelect(form_value.source,form.options,$event.target.value)" placeholder="form.placeholder">
+                <option class="hide" value="" disabled selected>{{form.placeholder}}</option>
+                <option *ngFor="let opt of form.options; let idx = index" [value]="idx">{{opt.value}}</option>
               </select>
-            </div>   
+          </div>   
        </div>
-       <div class="rate-form-list">
-          <ng-container *ngIf="fieldList.rates.length">
-            <div *ngFor="let data of fieldList.rates" class="single-row">
-              <div class="lable-name">
-                <label>{{data.prod_name}}</label>
-              </div>
-              <div class="input-fields">
-                <div class="single-rate" *ngFor="let cRate of data.rate" >
-
-                  <input [(ngModel)]="cRate.price" name="cRate.price" type="'text'"  placeholder="{{cRate.priceText}}">
-                  
-                  <input [(ngModel)]="cRate.tax" name="cRate.tax" type="'text'" placeholder="{{cRate.taxText}}">
-                 
-                </div>
-              </div>
-              </div>
-          </ng-container>
-          <ng-container *ngIf="fieldList.mapping.length"> 
-              <div *ngFor="let data of fieldList.mapping; let idx = index" class="single-row-nw">
-                <div>
-                  <div class="lable-name">
-                    <label>{{data.customer_name}}</label>
-                  </div>
-                  <div class="input-fields">
-                    <div class="single-rate" *ngFor="let cRate of data.rateType" >
-                        <span [ngClass]="{'selected': data.type == cRate.type}" class="rate-btn" (click)="data.status = 'true';data.type = cRate.type;assignCustomArray(data.type,idx);">{{cRate.display}}</span>
-                    </div>
-                  </div>
-                </div>
-                <ng-container *ngIf="data.status == 'true' && data.type == 'custom' && data.custom.length">
-                  <div class="cus-rate-box">
-                    
-                    <div *ngFor="let cusMap of data.custom" class="single-row">
-                      <div class="lable-name">
-                        <label>{{cusMap.prod_name}}</label>
-                      </div>
-                      <div class="input-fields">
-                        <div class="single-rate" *ngFor="let cRate of cusMap.rate" >
-                          <input [(ngModel)]="cRate.price" name="cRate.price" type="'text'"  placeholder="{{cRate.priceText}}">
-                          <input [(ngModel)]="cRate.tax" name="cRate.tax" type="'text'" placeholder="{{cRate.taxText}}">
-                        </div>
-                      </div>
-                    </div>
-                
-                    <div class="action-box">
-                        <span class="rate-btn" (click)="data.custom = []">Cancel</span>
-                        <span class="rate-btn save-btn" (click)="data.status = 'false'">Save</span>
-                    </div>
-                  </div>
-                </ng-container>
-              </div>
-            </ng-container>
-       </div>
-  
-      </div>
-      
+       
+      <ng-container>
+        <mat-card class="mat-accord" *ngIf="isEdit">
+          <mat-accordion>
+          <ng-container *ngFor="let rates_avail of edit_form.product.rate_avail| keyvalue;let i = index">
+          <mat-expansion-panel >            
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{rates_avail.key}}
+              </mat-panel-title>
+              <mat-panel-description>
+                <span>Count: {{rates_avail.value.length}}</span>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-chip-list *ngFor="let price_list of rates_avail.value;let j=index">
+                <mat-chip>Price: {{price_list.price}}</mat-chip>                
+                <mat-chip color="primary" selected>Tax: {{price_list.tax}}%</mat-chip>
+                <mat-chip >Effective date: {{price_list.effective_date|date:'short'}}</mat-chip> 
+                <mat-chip>
+                  <mat-form-field>
+                    <mat-select matInput name="is_active{{i}}{{j}}" [(ngModel)]="price_list.is_active" placeholder="Status">
+                        <mat-option value="YES">Active</mat-option>
+                        <mat-option value="NO">In-Active</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                </mat-chip>               
+            </mat-chip-list>            
+            
+          </mat-expansion-panel>
+        </ng-container>
+          </mat-accordion>
+        </mat-card>
+      </ng-container>
+      <ng-container *ngIf="fieldList.rates.length">
+        <div *ngFor="let data of fieldList.rates; let j = index" class="inline-flex">
+          <mat-card class="mat-card" *ngFor="let cRate of data.rate;let i = index">
+              <mat-card-header>
+                  <mat-card-title>{{cRate.title}}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <section class="example-section">
+                    <mat-form-field class="example-width">
+                        <input matInput [(ngModel)]="cRate.price" name="{{cRate.title+'price'+i+j}}" type="'text'"  placeholder="Price">
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="example-width">
+                        <input matInput [(ngModel)]="cRate.tax" name="{{cRate.title+'tax'+i+j}}" type="'text'" placeholder="Tax">  
+                    </mat-form-field>           
+                </section>
+              </mat-card-content>
+            </mat-card>
+          <div>
+            <mat-card class="mat-card-invert">
+              <mat-card-header>
+                  <mat-card-title>Action</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-form-field class="example-width">
+                  <input matInput [matDatepicker]="picker" [(ngModel)]="data.effective_date" name="effective_date" placeholder="Effective date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <br>
+                <mat-form-field class="example-width">                
+                  <mat-select matInput [(ngModel)]="data.is_active" name="is_active" placeholder="Status">
+                      <mat-option value="YES">Active</mat-option>
+                      <mat-option value="NO">In-Active</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </ng-container>  
     </mat-card-content>
   </mat-card>
   </div>

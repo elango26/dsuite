@@ -10,7 +10,7 @@ import { MatTableModule } from '@angular/material';
 import {
   MatPaginatorModule, MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule
+  MatSliderModule, MatSlideToggleModule, MatIconModule
 } from '@angular/material';
 
 @NgModule({
@@ -31,6 +31,7 @@ import {
     MatSliderModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
+    MatIconModule,
     DsuiteModule
   ]
 })

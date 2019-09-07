@@ -3,6 +3,7 @@ const router = express.Router();
 const {ObjectId} = require('mongodb');
 
 const rate = require('../models/rate');
+const product = require('../models/product');
 const rateMapping = require('../models/ratemappingtocustomer');
 const customer = require('../models/customer');
 
@@ -100,49 +101,117 @@ router.get('/customers',(req,res,next)=>{
     
 router.post('/create',(req,res,next)=>{
         
-    let newRate = new rate(req.body);
+    //let newRate = new rate(req.body);
+    let updateObj = [];
+    for(obj of req.body) {        
+        if(obj.rates.length > 0){
+            for(val of obj.rates){
+                let newRate = {
+                    customer_id: val.customer_id,
+                    type: val.type,
+                    createdBy: req.body.createdBy,
+                    prod_id: val.prod_id
+                }
+                updateObj.push({
+                    updateOne: {
+                        filter: { customer_id: ObjectId(val.customer_id), prod_id: ObjectId(val.prod_id) },
+                        update: { $set: newRate},
+                        upsert: true
+                    }
+                })
+            }            
+        }        
+    }
 
-    let rows = [], customRows = [];
-    req.body.mapping.forEach(element => {
-        if(element.type){
-            rows.push({
-                customer_id : ObjectId(element.customer_id),
-                type : element.type,
-                createdBy : req.body.createdBy
-            });
+    try {
+        rateMapping.bulkWrite(updateObj);
+        res.json({msg:"Rate updated successfully"});
+    }catch (e){
+        res.json({msg:"Error occurred!!"});
+    }
+    // let rows = [], customRows = [];
+    // req.body.mapping.forEach(element => {
+    //     if(element.type){
+    //         rows.push({
+    //             customer_id : ObjectId(element.customer_id),
+    //             type : element.type,
+    //             createdBy : req.body.createdBy
+    //         });
 
-            if(element.custom && element.type == 'custom'){
-                element.custom.forEach(elem =>{
-                    customRows.push({
-                        customer_id : element.customer_id,
-                        prod_id : elem.prod_id,
-                        type : elem.type,
-                        price : elem.price,
-                        tax : elem.tax,
-                        createdBy : req.body.createdBy
-                    });
-                });
-            }  
-        }      
-    });
+    //         if(element.custom && element.type == 'custom'){
+    //             element.custom.forEach(elem =>{
+    //                 customRows.push({
+    //                     customer_id : element.customer_id,
+    //                     prod_id : elem.prod_id,
+    //                     type : elem.type,
+    //                     price : elem.price,
+    //                     tax : elem.tax,
+    //                     createdBy : req.body.createdBy
+    //                 });
+    //             });
+    //         }  
+    //     }      
+    // });
 
-    rateMapping.collection.insert(rows,(err,ratemappting)=>{
+    // rateMapping.collection.insert(rows,(err,ratemappting)=>{
+    //     if(err){
+    //         res.json(err);
+    //     }else{
+    //         if(customRows.length){
+    //             rate.collection.insert(customRows,(errs,rate)=>{
+    //                 if(errs){
+    //                     res.json(errs);
+    //                 }else{
+    //                     res.json({msg:'rate mapping added successfully'});
+    //                 }
+    //             });
+    //         }else{
+    //             res.json({msg:'rate mapping successfully'});
+    //         }
+    //     }
+    // });
+});
+
+router.get('/getRateTypeByCustomer/:id',(req,res,next)=>{
+    rateMapping.aggregate([
+        {
+            "$match": { customer_id: ObjectId(req.params.id) }
+        }       
+    ]).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
-            if(customRows.length){
-                rate.collection.insert(customRows,(errs,rate)=>{
-                    if(errs){
-                        res.json(errs);
-                    }else{
-                        res.json({msg:'rate mapping added successfully'});
-                    }
-                });
-            }else{
-                res.json({msg:'rate mapping successfully'});
-            }
+            res.json(list);
         }
     });
+});
+
+router.get('/getRateByCustomer/:id',(req,res,next)=>{
+    product.aggregate([
+        {
+            "$lookup": {
+                from: 'ratemappingtocustomers',
+                as: 'rates',
+                let: { prod_id: '$_id' },
+                pipeline: [
+                        {
+                          $match: {
+                            $expr: {
+                              $and: [
+                                { $eq: ['$prod_id', '$$prod_id'] },
+                                { $eq: ['$customer_id',ObjectId(req.params.id)]}
+                              ]
+                            }
+                          }
+                        }
+                      ]
+              }
+        },
+        //{ "$unwind": "$rates" }
+    ]).exec((err,list) => {
+        if(!err)
+        res.json(list);
+    });    
 });
 
 router.put('/update/:id',(req,res,next)=>{

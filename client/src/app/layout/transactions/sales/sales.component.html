@@ -3,11 +3,11 @@
       <mat-card-title class="invoice-title">Sales Invoice</mat-card-title>
   </mat-card-header>
   <mat-card-content>      
-        <form [formGroup]="custForm" (keyup.enter)="onSubmit()">
+        <form [formGroup]="custForm">
           <section class="example-section">
               <mat-form-field class="example-margin customer-col">
                   <input type="text" autofocus placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
-                  <mat-autocomplete #customer="matAutocomplete" [displayWith]="displayCustomerFn">
+                  <mat-autocomplete (optionSelected)='loadCustomerRateType($event.option.value)' #customer="matAutocomplete" [displayWith]="displayCustomerFn">
                     <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
                       {{customer.customerName}}
                     </mat-option>

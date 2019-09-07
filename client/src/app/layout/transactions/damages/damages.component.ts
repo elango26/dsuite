@@ -29,6 +29,8 @@ export class DamagesComponent implements OnInit {
   transaction_desc: TransactionDesc[]=[];
   filteredOptions: Observable<Product[]>;
   customerFilteredOptions: Observable<Customer[]>;
+  sale_type: string = "Retail";
+  sale_type_arr: any[];
 
   @ViewChild("productName") prodField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar) { 
@@ -97,19 +99,30 @@ export class DamagesComponent implements OnInit {
     return this.customerList.filter(customer => customer.customerName.toLowerCase().includes(filterValue));
   }
 
+  //load customer rate type for all products
+  public loadCustomerRateType(cust:Customer){
+    this.commonService.getMethod(environment.urls.getRateTypeByCustomer+'/'+cust._id).subscribe((data:any) => {
+      this.sale_type_arr = data;
+    });
+  }
+
   onSubmit(){
     if(this.form.status == "VALID"){
       let product = this.form.value.productName;
-      let rate = this.commonService.getProductPrice(product._id);
+      if(this.sale_type_arr){
+        let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id)[0]; //find customer rate type
+        this.sale_type = customer_rate_type.type;
+      }
+      let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
       console.log(rate);
       let trans_desc:TransactionDesc = {
         prod_name:product.prod_name,
         prod_id : product._id,
         prod_quan : this.form.value.quantity,
-        prod_rate_per_unit : rate['purchase'].price,
+        prod_rate_per_unit : rate.price,
         tax: 0,
         prod_tax : 0,
-        sub_amount : (rate['purchase'].price * this.form.value.quantity),
+        sub_amount : (rate.price * this.form.value.quantity),
         is_delivered: true
       }
       this.transaction_desc.push(trans_desc);

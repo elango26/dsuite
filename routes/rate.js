@@ -5,6 +5,81 @@ const {ObjectId} = require('mongodb');
 const rate = require('../models/rate');
 const product = require('../models/product');
 
+router.get('/rate_list',(req,res,next)=>{
+    rate.aggregate([
+        {
+            "$group":{
+                "_id": "$prod_id",
+                "rates": {
+                  $push: "$$ROOT"
+                }
+            }
+        },
+        {             
+            "$lookup": {
+                "from": 'products',
+                "localField": '_id',
+                "foreignField": '_id',
+                "as": 'products'
+            }
+        },
+        {
+            "$replaceRoot":{
+                newRoot: {
+                  $mergeObjects: [{ $arrayElemAt: [ "$products", 0 ] },"$$ROOT"]
+                }
+            }
+        },
+        {
+            "$project":{
+                "products": 0
+            }
+        }        
+    ]).exec((err,list)=>{
+        if(err){
+            res.json(err);
+        }else{
+            var product = [];
+            if(list.length > 0){
+                for (const key in list) {
+                    result = {};
+                    result["product"] = list[key];
+                    for(const j in list[key].rates){
+                        if(!result["product"]["rate_avail"])
+                            result["product"]["rate_avail"] = {};
+                        if(!result["product"]["rate_avail"][list[key].rates[j].type])
+                            result["product"]["rate_avail"][list[key].rates[j].type] = [];
+
+                        result["product"]["rate_avail"][list[key].rates[j].type].push(list[key].rates[j]);
+
+                        
+
+                        let arr_date = new Date(list[key].rates[j].effective_date);
+                        if(list[key].rates[j].is_active == "YES" && arr_date.getTime() <= new Date().getTime()){
+                            if(!result["product"]["rate_active"])
+                                result["product"]["rate_active"] = {};
+                            if(!result["product"]["rate_active"][list[key].rates[j].type])
+                                result["product"]["rate_active"][list[key].rates[j].type] = {};
+                            if(result["product"]["rate_active"][list[key].rates[j].type].effective_date){
+                                let exist_date = new Date(result["product"]["rate_active"][list[key].rates[j].type].effective_date);
+                                let new_date = new Date(list[key].rates[j]);
+                                if(exist_date.getTime() < new_date.getTime()){
+                                    result["product"]["rate_active"][list[key].rates[j].type] = list[key].rates[j];
+                                }
+                            }else{
+                                // first exec
+                                result["product"]["rate_active"][list[key].rates[j].type] = list[key].rates[j];
+                            }
+                        }                            
+                    }
+                    product.push(result);
+                }
+            }
+            res.json(product);
+        }
+    });
+});
+
 router.get('/list',(req,res,next)=>{
     
     rate.aggregate([
@@ -33,7 +108,6 @@ router.get('/list',(req,res,next)=>{
         if(err){
             res.json(err);
         }else{
-
             let result = {}, data = [];
             if(list && list.length){
                 for (let i = 0, len = list.length; i < len; i++) {
@@ -46,7 +120,9 @@ router.get('/list',(req,res,next)=>{
                         result[list[i].prod_id][list[i].type] = {
                             id : list[i]._id,
                             price : list[i].price,
-                            tax : list[i].tax
+                            tax : list[i].tax,
+                            effective_date: list[i].effective_date,
+                            is_active: list[i].is_active
                         }
                     }
                 }
@@ -96,6 +172,8 @@ router.post('/create',(req,res,next)=>{
             if(elem.price){
                 rows.push({
                     prod_id : ObjectId(element.prod_id),
+                    is_active: element.is_active,
+                    effective_date: element.effective_date,
                     type : elem.type,
                     price : elem.price,
                     tax : elem.tax,
@@ -112,6 +190,30 @@ router.post('/create',(req,res,next)=>{
             res.json({msg:'rate added successfully'});
         }
     });
+});
+
+router.post('/bulk_update',(req,res,next)=>{
+    //console.log(req);
+    let updateObj = [];
+    for(key in req.body.edit_form){
+        //console.log(key+" ::obj:: "+ req.body.edit_form[key]);
+        for(val of req.body.edit_form[key]){
+            updateObj.push({
+                updateOne: {
+                    filter: { _id:ObjectId(val._id) },
+                    update: { $set: val}
+                }
+            })
+        }
+    }
+    //console.log("arr::"+updateObj);
+    try {
+        rate.bulkWrite(updateObj);
+        res.json({msg:"Rate updated successfully"});
+    }catch (e){
+        res.json({msg:"Error occurred!!"});
+    }
+    
 });
 
 router.put('/update/:id',(req,res,next)=>{

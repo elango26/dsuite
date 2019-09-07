@@ -6,6 +6,9 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/payment/payments']">
             <mat-icon class="sidenav-icon">euro_symbol</mat-icon> {{ 'Payments' | translate }}
         </a> 
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/orders/deliveries']">
+            <mat-icon class="sidenav-icon">local_shipping</mat-icon> {{ 'Deliveries' | translate }}
+        </a> 
         <div class="nested-menu">
             <a mat-list-item (click)="addExpandClass('reports')" >
                 <mat-icon class="sidenav-icon">bar_chart</mat-icon> {{ 'Reports' | translate }}

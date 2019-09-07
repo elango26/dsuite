@@ -10,6 +10,8 @@ import {
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule,
 } from '@angular/material';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatChipsModule} from '@angular/material/chips';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CommonModalComponent } from './common-modal/common-modal.component';
 import { RoutesComponent } from './routes/routes.component';
@@ -19,9 +21,10 @@ import { RateComponent } from './rate/rate.component';
 import { ProductsComponent } from './products/products.component';
 import { CustomModalComponent } from './custom-modal/custom-modal.component';
 import { CustomerMappingComponent } from './customer-mapping/customer-mapping.component';
+import { RateMappingComponent } from './rate-mapping/rate-mapping.component';
 
 @NgModule({
-  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent, CustomModalComponent, CustomerMappingComponent],
+  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent, CustomModalComponent, CustomerMappingComponent, RateMappingComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -43,8 +46,10 @@ import { CustomerMappingComponent } from './customer-mapping/customer-mapping.co
     MatButtonModule,
     MatDialogModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatChipsModule
   ],
-  entryComponents: [CommonModalComponent,CustomModalComponent]
+  entryComponents: [CommonModalComponent,CustomModalComponent,RateMappingComponent]
 })
 export class MastersModule { }

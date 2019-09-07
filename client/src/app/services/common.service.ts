@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { UserService } from './user.service';
 import { Product } from 'src/app/interfaces/product';
 import { Rate } from 'src/app/interfaces/rate';
+import { RateMapping } from '../interfaces/rateMapping';
 
 @Injectable({
   providedIn: 'root'
@@ -14,24 +15,25 @@ export class CommonService {
   user:any;
   products:Product[];
   product_rate:Rate[];
+  rate_type:RateMapping[];
   constructor(private http: HttpClient,private userservice: UserService) {
     console.log("service called");
-    // this.user = this.getMethod(environment.urls.getUser);
-    // fetch product details
-    this.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
-      this.products = data;
-    });
+    //this.user = this.getMethod(environment.urls.getUser);
+    //fetch product details
+    // this.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
+    //   this.products = data;
+    // });
     // fetch rate 
     this.getMethod(environment.urls.getRate).subscribe((data:Rate[]) => {
       this.product_rate = data;
     });
    }
 
-  getProductPrice(prod_id:string): Rate{
-    return this.product_rate.filter(key => key.product._id == prod_id)[0];
+  getProductPrice(prod_id:string,type:string): Rate{
+    return this.product_rate.filter((key:any) => key.product._id == prod_id)[0][type];
   }
 
-  getMethod( url:string ){
+  getMethod( url:string){
     return this.http.get(url);
   }
 

@@ -9,6 +9,8 @@ export const environment = {
     //payments
     getPayment:apiUrl+'/payment/list',
     postPayment:apiUrl+'/payment/create',
+    //deliveries
+    getDeliveries:apiUrl+'/deliveries/list',
 
     //reports
     getRecentSales:apiUrl+'/reports/sales',
@@ -17,6 +19,7 @@ export const environment = {
     //Leads
     getLeads:apiUrl+'/leads/list',
     postOrder:apiUrl+'/order/create',
+    searchOrder:apiUrl+'/order/searchOrders',
 
     //masters
     getRoute:apiUrl+'/route/list',
@@ -34,15 +37,19 @@ export const environment = {
     getUser:apiUrl+'/user/list',
     postUser:apiUrl+'/user/create',
     deleteUser:apiUrl+'/user/delete',
+    getRateList: apiUrl+'/rate/rate_list',
     getRate:apiUrl+'/rate/list',
     postRate:apiUrl+'/rate/create',
     deleteRate:apiUrl+'/rate/delete',
+    updateBulkRate:apiUrl+'/rate/bulk_update',
     getRateProducts:apiUrl+'/rate/products', 
-    getRateMapping:apiUrl+'/ratemapping/list', 
+    getRateMapping:apiUrl+'/ratemapping/list', //removed
     postRateMapping:apiUrl+'/ratemapping/create', 
     deleteRateMapping:apiUrl+'/ratemapping/delete',
     getSingleRate:apiUrl+'/ratemapping/rate',
-    getMappingCustomers:apiUrl+'/ratemapping/customers',
+    getMappingCustomers:apiUrl+'/ratemapping/customers', //removed
+    getRateByCustomer:apiUrl+'/ratemapping/getRateByCustomer',
+    getRateTypeByCustomer:apiUrl+'/ratemapping/getRateTypeByCustomer',
     
     //transactions
     getSales:apiUrl+'/sales/list',

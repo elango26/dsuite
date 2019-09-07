@@ -28,6 +28,10 @@ router.get('/sales',(req,res,next)=>{
             "localField": "customer_id",
             "foreignField": "_id",
             "as": "customerDetail"
+        }},
+        {
+        "$sort":{
+            "sale_date":-1
         }}
     ]).exec((err,list)=>{
         if(err){
@@ -98,6 +102,10 @@ router.get('/purchase',(req,res,next)=>{
             "localField": "vendor_id",
             "foreignField": "_id",
             "as": "vendorDetail"
+        }},
+        {
+        "$sort":{
+            "purchase_date":-1
         }}
     ]).exec((err,list)=>{
         if(err){

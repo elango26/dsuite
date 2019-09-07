@@ -66,3 +66,29 @@
         display: none;
     }
 }
+
+.inline-flex {
+    display: inline-flex;
+}
+
+.example-width{
+    width: 6em;
+}
+.mat-card {
+    margin-right: 0.2em;
+}
+.mat-card-invert{
+    background-color: #FFCCCC;
+}
+.mat-card-header .mat-card-title {
+    font-size: 16px;
+}
+.mat-card-content {
+    font-size: 16px;
+}
+.mat-card-header .mat-card-title {
+    margin-bottom: 4px;
+}
+.mat-accord {
+    margin-bottom:1em;
+}

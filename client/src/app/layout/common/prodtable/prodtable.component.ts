@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl, Validators, FormBuilder } 
     from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
@@ -25,22 +26,52 @@ export class ProdtableComponent implements OnInit {
   customer:any;
   url:string;
   delDate:Date;
-  constructor(private commonService: CommonService, public snackBar: MatSnackBar,
+  edit_details:any;
+  order_details:any;
+  isEdit:boolean = false;
+  constructor(private datePipe: DatePipe, private commonService: CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<ProdtableComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
       this.customer = form_value.customer;
       this.url = form_value.url;
+      switch(form_value.source){
+        case 'leads':
+          this.delDate = new Date();
+          this.delDate.setDate(this.delDate.getDate() + 1);
+          this.loadExistingOrder(this.customer,this.delDate);
+          break;
+        case 'delivery':
+          this.delDate = new Date(form_value.order_date);
+          this.isEdit = form_value.isEdit;
+          this.edit_details = form_value.edit_details;
+          this.order_details = form_value.order_details;
+          break;
+        default:
+          this.delDate = new Date();
+          this.delDate.setDate(this.delDate.getDate() + 1);
+      }
     }
 
   ngOnInit() {
     this.category = CATEGORY;
     this.subcategory = SUBCATEGORY;
     this.brand = BRANDS;
-    this.loadProduct();
-    this.delDate = new Date();
+    this.loadProduct();    
     let formC = {};
     formC["name"] = new FormControl("");
     this.form = new FormGroup(formC);
+  }
+
+  loadExistingOrder(cust:any,reqDate:any){
+    //console.log(this.datePipe.transform(reqDate,"yyyy-MM-dd"));
+    let query = '?id='+cust._id+'&searchDate='+this.datePipe.transform(reqDate,"yyyy-MM-dd");
+    this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
+      if(data.length > 0){
+        this.isEdit = true;
+        this.edit_details = data[0].details;
+        this.order_details = data[0];
+      }
+    });
   }
 
   loadProduct(){
@@ -55,8 +86,21 @@ export class ProdtableComponent implements OnInit {
         if(tempArr[val.category][val.sub_category][val.brand_name] == undefined )
           tempArr[val.category][val.sub_category][val.brand_name] = [];
 
+          val['class'] = '';
+        if(this.isEdit){
+          let quan = this.edit_details.filter((det:any) => det.prod_id == val._id);
+          if(quan.length > 0){
+            val['class'] = "input-bg-color";
+            fieldsCtrls[val.alias] = new FormControl(quan[0]['prod_quan']);
+          }else{
+            fieldsCtrls[val.alias] = new FormControl(0);
+          }
+        }else{
+          fieldsCtrls[val.alias] = new FormControl(0);
+        }
+
         tempArr[val.category][val.sub_category][val.brand_name].push(val);
-        fieldsCtrls[val.alias] = new FormControl(0);
+        
         this.productList[val.alias] = {
           id:val._id,
           name:val.prod_name
@@ -94,23 +138,32 @@ export class ProdtableComponent implements OnInit {
           this.transaction_desc.push(trans_desc);
         }
       }
-      console.log(this.transaction_desc);
-      let data = {
-        customer_id: this.customer._id,
-        order_date: this.delDate,
-        details: this.transaction_desc
+      if(this.transaction_desc.length > 0){
+        let data = {
+          customer_id: this.customer._id,
+          order_date: this.delDate,
+          details: this.transaction_desc
+        }
+
+        if(this.order_details && this.isEdit)
+          data['_id'] = this.order_details._id;
+        
+        this.commonService.postMethod(this.url,data).subscribe(resp =>{    
+          this.transaction_desc = [];
+          this.form.reset();  
+          this.snackBar.open("Saved successfully!!", "Success", {
+            duration: 500,
+          });
+        },error =>{
+          this.snackBar.open(error, "Error", {
+            duration: 600,
+          });
+        });
+      } else {
+        this.snackBar.open("Please enter order", "Error", {
+          duration: 1000,
+        });
       }
-      this.transaction_desc = [];
-      this.form.reset();
-      this.commonService.postMethod(this.url,data).subscribe(data =>{      
-        this.snackBar.open("Saved successfully!!", "Success", {
-          duration: 500,
-        });
-      },error =>{
-        this.snackBar.open(error, "Error", {
-          duration: 600,
-        });
-      });
     }  
   } 
 

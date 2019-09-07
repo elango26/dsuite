@@ -6,6 +6,10 @@ const ratemappingtocustomerSchema = mongoose.Schema({
         type: Schema.ObjectId,
         ref:'Customer'
     },
+    prod_id : {
+        type: Schema.ObjectId,
+        ref:'Product'
+    },
     type : {
         type : String,
         require : true

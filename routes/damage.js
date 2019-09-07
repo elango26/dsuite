@@ -27,6 +27,10 @@ router.get('/list',(req,res,next)=>{
             "localField": "customer_id",
             "foreignField": "_id",
             "as": "customerDetail"
+        }},
+        {
+        "$sort":{
+            "damage_date":-1
         }}
     ]).exec((err,list)=>{
         if(err){

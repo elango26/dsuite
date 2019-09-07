@@ -36,10 +36,14 @@ router.get('/list',(req,res,next)=>{
             "foreignField": "customer_id",
             "as": "sales"
         }},
-        { "$unwind": "$sales" },
+        { "$unwind": {
+            path: '$sales',
+            //includeArrayIndex: 'sales',
+            preserveNullAndEmptyArrays: true
+          }},
         {
             "$group": {
-                "_id": "$sales.customer_id",                            
+                "_id": "$_id",                            
                 "debit": { $sum: "$sales.total_amount" },
                 "debit_count": { $sum: 1 },
                 "customer":{
@@ -58,10 +62,14 @@ router.get('/list',(req,res,next)=>{
             "foreignField": "customer_id",
             "as": "payments"
         }},
-        { "$unwind": "$payments" },
+        { "$unwind": {
+            path: '$payments',
+            //includeArrayIndex: '<<string>>',
+            preserveNullAndEmptyArrays: true
+        }},
         {
             "$group": {
-                "_id": "$payments.customer_id",                            
+                "_id": "$_id",                            
                 "credit": { $sum: "$payments.amount" },
                 "credit_count": { $sum: 1 },
                 "customer": {

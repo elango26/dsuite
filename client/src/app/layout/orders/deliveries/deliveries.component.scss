@@ -1,0 +1,35 @@
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.example-margin {
+    margin: 10px;
+}
+
+.example-button-row {
+    margin-top: 0.4em;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-form-field {
+  margin-right: 12px;
+}

@@ -6,7 +6,7 @@ import { Route } from 'src/app/interfaces/route';
 import { Vendor } from 'src/app/interfaces/vendor';
 import { Rate } from 'src/app/interfaces/rate';
 import { Product } from 'src/app/interfaces/product';
-import { CATEGORY, SUBCATEGORY, BRANDS } from 'src/app/constants/contants';
+import { CATEGORY, SUBCATEGORY, BRANDS, RATE_TYPE } from 'src/app/constants/contants';
 import { CustomModalComponent } from './../custom-modal/custom-modal.component';
 import { environment } from 'src/environments/environment';
 
@@ -16,23 +16,24 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./rate.component.scss']
 })
 export class RateComponent implements OnInit {
-
-  displayedColumns = ['prod_name', 'retail', 'wholesale1', 'wholesale2', 'purchase'];
-  dataSource: MatTableDataSource<Rate>;
-
+  displayedColumns:any[];
+  dataSource: MatTableDataSource<any>;
   rateList = [];
   form_details : any;
   products = [];
-  options:any[];
+  options:any[];  
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private commonService: CommonService, public dialog: MatDialog) { }
+  constructor(private commonService: CommonService, public dialog: MatDialog) {
+    this.displayedColumns = RATE_TYPE.rate_type;
+    this.displayedColumns.unshift("prod_name");
+    this.displayedColumns.push("action")
+  }
 
   ngOnInit() {
     this.load();
     this.commonService.getMethod(environment.urls.getRateProducts).subscribe((data:Product[]) => {
-      if(data.length > 1) this.products.push({key:'all',value:'All Products'});
       for(let val of data){
         let keyarr = {key:val._id,value:val.prod_name};
         this.products.push(keyarr);
@@ -42,8 +43,7 @@ export class RateComponent implements OnInit {
   }
 
   load(){
-    this.commonService.getMethod(environment.urls.getRate).subscribe((data:Rate[]) => {
-      
+    this.commonService.getMethod(environment.urls.getRateList).subscribe((data:any[]) => {
       this.rateList = data;
       this.dataSource = new MatTableDataSource(this.rateList);
       this.dataSource.paginator = this.paginator;
@@ -60,6 +60,33 @@ export class RateComponent implements OnInit {
       }
   }
 
+  _editRate(row:any): void {
+    this.form_details = [
+      {
+        "order": 1,
+        "type": "select",
+        "inputType": "dropdown",
+        "name": "prod_name",
+        "value": "",
+        "placeholder": "Select Product",
+        "validation": {
+          "required": true
+        },
+        "options": this.products
+      }
+    ]
+    
+    const dialogRef = this.dialog.open(CustomModalComponent, {
+      width: '1300px',
+      data: {source:"rate",formData:this.form_details.sort((a, b) => a.order - b.order),formTitle:"Rate",url:environment.urls.postRate,editRate:row}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //reload
+      this.load();
+    });
+  }
+
   openDialog(): void {
     this.form_details = [
       {
@@ -74,11 +101,11 @@ export class RateComponent implements OnInit {
         },
         "options": this.products
       }
-  ]
+    ]
     
     const dialogRef = this.dialog.open(CustomModalComponent, {
       width: '1300px',
-      data: {dispalay:'rateMapping',formData:this.form_details.sort((a, b) => a.order - b.order),formTitle:"Rate",url:environment.urls.postRate}
+      data: {source:"rate",formData:this.form_details.sort((a, b) => a.order - b.order),formTitle:"Rate",url:environment.urls.postRate}
     });
 
     dialogRef.afterClosed().subscribe(result => {

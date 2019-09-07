@@ -7,9 +7,9 @@ export interface priceObj {
 }
 
 export interface Rate {
-    product:Product;
-    purchase:priceObj;
-    retail:priceObj;
-    wholesale1:priceObj;
-    wholesale2:priceObj;
+    effective_date: string;
+    id: string;
+    is_active: string;
+    price: number;
+    tax: number;
 }

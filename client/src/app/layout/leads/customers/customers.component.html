@@ -46,8 +46,10 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
             <td mat-cell *matCellDef="let row"> 
-                <button (click)="openOrderModal(row)">O</button>
-                <button>P</button>
+                <div class="icon-div">
+                    <a (click)="openOrderModal(row)"><mat-icon class="sidenav-icon">add_shopping_cart</mat-icon></a>
+                    <a><mat-icon class="sidenav-icon">attach_money</mat-icon></a>                
+                </div>
             </td>
         </ng-container>
         

@@ -14,7 +14,7 @@
 }
 
 .example-margin {
-    margin: 10px;
+    margin: 0 0 0 0.5em;
 }
 
 .mat-slider-horizontal {
@@ -50,4 +50,21 @@
     padding: 0.5em;
     color: #fff;
     // display: block;
+}
+
+.font-smaller {
+    font-size: small;
+}
+
+.date-col {
+    width: 7.0em;
+    float: right;
+}
+
+.reduce-margin{
+    margin-top: -13px;
+}
+
+.input-bg-color {
+    background-color: lightpink;
 }

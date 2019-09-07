@@ -7,7 +7,7 @@ const ordersSchema = mongoose.Schema({
         ref: 'Customer'
     },
     order_date : {
-        type: String, 
+        type: Date, 
         require : true
     },
     is_active : {

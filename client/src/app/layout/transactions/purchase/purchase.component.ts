@@ -30,6 +30,7 @@ export class PurchaseComponent implements OnInit {
   transaction_desc: TransactionDesc[]=[];
   filteredOptions: Observable<Product[]>;
   vendorFilteredOptions: Observable<Vendor[]>;
+  purchase_type: string = "Purchase";
 
   @ViewChild("productName") prodField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar) { 
@@ -101,16 +102,16 @@ export class PurchaseComponent implements OnInit {
   onSubmit(){
     if(this.form.status == "VALID"){
       let product = this.form.value.productName;
-      let rate = this.commonService.getProductPrice(product._id);
+      let rate = this.commonService.getProductPrice(product._id,this.purchase_type); // find rate based oo type
       console.log(rate);
       let trans_desc:TransactionDesc = {
         prod_name:product.prod_name,
         prod_id : product._id,
         prod_quan : this.form.value.quantity,
-        prod_rate_per_unit : rate['purchase'].price,
-        tax: rate['purchase'].tax?rate['purchase'].tax:0,
-        prod_tax : rate['purchase'].tax ? (rate['purchase'].price * this.form.value.quantity)*rate['purchase'].tax/100:0,
-        sub_amount : (rate['purchase'].price * this.form.value.quantity)
+        prod_rate_per_unit : rate.price,
+        tax: rate.tax?rate.tax:0,
+        prod_tax : rate.tax ? (rate.price * this.form.value.quantity)*rate.tax/100:0,
+        sub_amount : (rate.price * this.form.value.quantity)
       }
       this.transaction_desc.push(trans_desc);
 

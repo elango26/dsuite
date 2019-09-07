@@ -21,34 +21,55 @@
   <table mat-table [dataSource]="dataSource" matSort>
 
       <!-- Color Column -->
-        <ng-container matColumnDef="prod_name">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
-              <td mat-cell *matCellDef="let row" [style.color]="row.product.prod_name"> {{row.product.prod_name}} </td>
-        </ng-container>
+    <ng-container matColumnDef="prod_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="prod"> Product Name </th>
+            <td mat-cell *matCellDef="let row" [style.color]="row.product.prod_name"> {{row.product.prod_name}} </td>
+    </ng-container>
 
       <!-- Progress Column -->
-      <ng-container matColumnDef="retail">
+      <ng-container matColumnDef="Retail">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Retail </th>
-          <td mat-cell *matCellDef="let row"> {{row.retail.price}} - {{row.retail.tax}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.product.rate_active["Retail"]?row.product.rate_active["Retail"].price +" - "+ row.product.rate_active["Retail"].tax:"-"}} </td>
       </ng-container>
 
       <!-- Name Column -->
-      <ng-container matColumnDef="wholesale1">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Wholesale 1 </th>
-            <td mat-cell *matCellDef="let row"> {{row.wholesale1.price}} - {{row.wholesale1.tax}}</td>
+      <ng-container matColumnDef="Purchase">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Purchase </th>
+            <td mat-cell *matCellDef="let row"> {{row.product.rate_active["Purchase"]?row.product.rate_active["Purchase"].price+" - "+row.product.rate_active["Purchase"].tax:"-"}}</td>
         </ng-container>
 
         <!-- Name Column -->
-      <ng-container matColumnDef="wholesale2">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Wholesale 2 </th>
-            <td mat-cell *matCellDef="let row"> {{row.wholesale2.price}} - {{row.wholesale2.tax}}</td>
+      <ng-container matColumnDef="Wholesale">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Wholesale </th>
+            <td mat-cell *matCellDef="let row"> {{row.product.rate_active["Wholesale"]?row.product.rate_active["Wholesale"].price+" - "+row.product.rate_active["Wholesale"].tax:"-"}}</td>
         </ng-container>
 
       <!-- Name Column -->
-      <ng-container matColumnDef="purchase">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Purchase </th>
-          <td mat-cell *matCellDef="let row"> {{row.purchase.price}} - {{row.purchase.tax}}</td>
+      <ng-container matColumnDef="Silver">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Silver </th>
+          <td mat-cell *matCellDef="let row"> {{row.product.rate_active["Silver"]?row.product.rate_active["Silver"].price+" - "+row.product.rate_active["Silver"].tax:"-"}}</td>
       </ng-container>
+
+       <!-- Name Column -->
+        <ng-container matColumnDef="Gold">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Gold </th>
+            <td mat-cell *matCellDef="let row"> {{row.product.rate_active["Gold"]?row.product.rate_active["Gold"].price+" - "+row.product.rate_active["Gold"].tax:"-"}}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="Diamond">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Diamond </th>
+            <td mat-cell *matCellDef="let row"> {{row.product.rate_active["Diamond"]?row.product.rate_active["Diamond"].price+" - "+row.product.rate_active["Diamond"].tax:"-"}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+            <td mat-cell *matCellDef="let row">
+                    <span (click)="_editRate(row)"><i class="material-icons">
+                    edit
+                    </i></span>
+            </td>
+        </ng-container>
       
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

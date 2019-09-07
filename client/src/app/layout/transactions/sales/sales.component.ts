@@ -29,6 +29,8 @@ export class SalesComponent implements OnInit {
   transaction_desc: TransactionDesc[]=[];
   filteredOptions: Observable<Product[]>;
   customerFilteredOptions: Observable<Customer[]>;
+  sale_type: string = "Retail";
+  sale_type_arr: any[];
 
   @ViewChild("productName") prodField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar) { 
@@ -67,9 +69,16 @@ export class SalesComponent implements OnInit {
     return prod ? prod.prod_name : undefined;
   }
 
+  //load customer rate type for all products
+  public loadCustomerRateType(cust:Customer){
+    this.commonService.getMethod(environment.urls.getRateTypeByCustomer+'/'+cust._id).subscribe((data:any) => {
+      this.sale_type_arr = data;
+    });
+  }
+
   displayCustomerFn(cust?: Customer): string | undefined {
     return cust ? cust.customerName : undefined;
-  }
+  }  
 
   private _callCustomerFilter(){
     this.customerFilteredOptions = this.custForm.get("customerName").valueChanges
@@ -98,18 +107,24 @@ export class SalesComponent implements OnInit {
   }
 
   onSubmit(){
+    console.log('submit');
     if(this.form.status == "VALID"){
       let product = this.form.value.productName;
-      let rate = this.commonService.getProductPrice(product._id);
-      console.log(rate);
+      if(this.sale_type_arr){
+        let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id)[0]; //find customer rate type
+        this.sale_type = customer_rate_type.type;
+      }
+      let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
+
+      console.log("final rate"+rate);
       let trans_desc:TransactionDesc = {
         prod_name:product.prod_name,
         prod_id : product._id,
         prod_quan : this.form.value.quantity,
-        prod_rate_per_unit : rate['wholesale1'].price,
-        tax: rate['wholesale1'].tax?rate['wholesale1'].tax:0,
-        prod_tax : rate['wholesale1'].tax ? (rate['wholesale1'].price * this.form.value.quantity)*rate['wholesale1'].tax/100:0,
-        sub_amount : (rate['wholesale1'].price * this.form.value.quantity)
+        prod_rate_per_unit : rate.price,
+        tax: rate.tax?rate.tax:0,
+        prod_tax : rate.tax ? (rate.price * this.form.value.quantity)*rate.tax/100:0,
+        sub_amount : (rate.price * this.form.value.quantity)
       }
       this.transaction_desc.push(trans_desc);
 

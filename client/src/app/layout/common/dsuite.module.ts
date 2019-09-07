@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProdtableComponent } from './prodtable/prodtable.component';
 
@@ -34,5 +34,6 @@ import {
   ],
   exports: [ProdtableComponent],
   entryComponents: [ProdtableComponent],
+  providers: [DatePipe]
 })
 export class DsuiteModule { }
