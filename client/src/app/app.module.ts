@@ -45,8 +45,8 @@ export const createTranslateLoader = (http: HttpClient) => {
                 deps: [HttpClient]
             }
         }),
-        TransactionsModule,
-        OrdersModule
+        //TransactionsModule,
+        //OrdersModule
     ],
     providers: [],
     bootstrap: [AppComponent]

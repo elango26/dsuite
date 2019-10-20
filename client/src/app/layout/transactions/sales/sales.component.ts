@@ -118,8 +118,10 @@ export class SalesComponent implements OnInit {
 
       console.log("final rate"+rate);
       let trans_desc:TransactionDesc = {
+        rate_type: this.sale_type,
         prod_name:product.prod_name,
         prod_id : product._id,
+        product_id: product.product_id,
         prod_quan : this.form.value.quantity,
         prod_rate_per_unit : rate.price,
         tax: rate.tax?rate.tax:0,

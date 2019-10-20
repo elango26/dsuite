@@ -1,5 +1,6 @@
 export interface Expense {
     _id:string;
+    expense_id:string;
     type:string;
     description:string;
     amount:number;

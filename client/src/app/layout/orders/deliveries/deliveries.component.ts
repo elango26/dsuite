@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { ProdtableComponent } from '../../common/prodtable/prodtable.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { Product } from 'src/app/interfaces/product';
 
 @Component({
   selector: 'app-deliveries',
@@ -29,6 +30,8 @@ export class DeliveriesComponent implements OnInit {
   }
 
   deliveryList:any[];
+  productList:any[];
+  consolidatedList:any[];
 
   constructor(private datePipe: DatePipe, private commonService: CommonService, private dialog: MatDialog) { 
     this.delDate = new Date();
@@ -36,10 +39,34 @@ export class DeliveriesComponent implements OnInit {
 
   ngOnInit() {
     this.loadDelivers();    
+    this.loadConsolidatedOrders()
   }
 
   public addEvent(etype,event){
     this.loadDelivers();
+    this.loadConsolidatedOrders();
+  }
+
+  private loadConsolidatedOrders(){
+    let q = '?order_date='+this.datePipe.transform(this.delDate,"yyyy-MM-dd");
+    this.commonService.getMethod(environment.urls.getConsolidatedOrderList+q).subscribe((data:any[])=>{      
+      this.generateCosolidatedList(data);
+    });
+  }
+
+  private generateCosolidatedList(consList:any[]){
+    console.log("Product list");
+    let list = this.commonService.getProductList();
+    for(let key in list){
+      let count = consList.find(cons => cons._id == list[key]._id);
+      if(count){
+        list[key]['count'] = count.count;
+      }else{
+        list[key]['count'] = 0;
+      }
+    }
+    console.log(list);
+    this.consolidatedList = list;
   }
 
   private loadDelivers(){
@@ -64,6 +91,17 @@ export class DeliveriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       //reload
+    });
+  }
+
+  public placeOrder(){
+    let data = {
+      "orderdate":this.datePipe.transform(this.delDate,"yyyy-MM-dd"),
+      "customerid":"all"
+    }
+    this.commonService.postMethod(environment.urls.postOrderSales,data).subscribe((data:any)=>{
+      console.log("post order");
+      console.log(data);
     });
   }
 

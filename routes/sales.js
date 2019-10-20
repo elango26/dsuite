@@ -3,6 +3,7 @@ const router = express.Router();
 const {ObjectId} = require('mongodb');
 const sales = require('../models/sales');
 const transactionDetails = require('../models/transactiondetails');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
     
@@ -72,27 +73,33 @@ router.get('/list',(req,res,next)=>{
 router.post('/create',(req,res,next)=>{
     
     if(req.body.createdBy) req.body.createdBy = {_id: ObjectId(req.body.createdBy)}
-    
-    let newSales = new sales(req.body);
+    sales.countDocuments(function(err, count) {
+        if(!err){    
+            req.body['sale_id'] = common.padding(count+1,7,'POS');
+            let newSales = new sales(req.body);
 
-    newSales.save((err,sales)=>{
-        if(err){
-            res.json(err);
-        }else{
-            if(!req.body.details || !req.body.details.length) res.json({msg:'sales updated successfully'});
-            let count = 0;
-            for (let i = 0, len = req.body.details.length; i < len; i++) {
-                req.body.details[i].parent_id = sales._id;
-                req.body.details[i].type = "SALES";
-                let newtransaction = new transactionDetails(req.body.details[i]);
-                newtransaction.save((errs,transaction)=>{
-                    if(errs){
-                        res.json(errs); 
+            newSales.save((err,sales)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    if(!req.body.details || !req.body.details.length) res.json({msg:'sales updated successfully'});
+                    let count = 0;
+                    for (let i = 0, len = req.body.details.length; i < len; i++) {
+                        req.body.details[i].parent_id = sales._id;
+                        req.body.details[i].type = "SALES";
+                        let newtransaction = new transactionDetails(req.body.details[i]);
+                        newtransaction.save((errs,transaction)=>{
+                            if(errs){
+                                res.json(errs); 
+                            }
+                            count++
+                            if(count === len) res.json({msg:'sales added successfully'});
+                        });
                     }
-                    count++
-                    if(count === len) res.json({msg:'sales added successfully'});
-                });
-            }
+                }
+            });
+        }else{
+            res.json({msg:'Error in count:: Sales'});
         }
     });
 });

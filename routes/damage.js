@@ -3,6 +3,7 @@ const router = express.Router();
 const {ObjectId} = require('mongodb');
 const damage = require('../models/damage');
 const transactionDetails = require('../models/transactiondetails');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
     
@@ -74,29 +75,35 @@ router.get('/list',(req,res,next)=>{
 });
     
 router.post('/create',(req,res,next)=>{
+    damage.countDocuments(function(err, count) {
+        if(!err){   
     
-    if(req.body.createdBy) req.body.createdBy = {_id: ObjectId(req.body.createdBy)}
-    
-    let newDamage = new damage(req.body);
+            if(req.body.createdBy) req.body.createdBy = {_id: ObjectId(req.body.createdBy)}
+            req.body['damage_id'] = common.padding(count+1,7,'W');
+            let newDamage = new damage(req.body);
 
-    newDamage.save((err,damage)=>{
-        if(err){
-            res.json(err);
-        }else{
-            if(!req.body.details || !req.body.details.length) res.json({msg:'Damage updated successfully'});
-            let count = 0;
-            for (let i = 0, len = req.body.details.length; i < len; i++) {
-                req.body.details[i].parent_id = damage._id;
-                req.body.details[i].type = "DAMAGE";
-                let newtransaction = new transactionDetails(req.body.details[i]);
-                newtransaction.save((errs,transaction)=>{
-                    if(errs){
-                        res.json(errs); 
+            newDamage.save((err,damage)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    if(!req.body.details || !req.body.details.length) res.json({msg:'Damage updated successfully'});
+                    let count = 0;
+                    for (let i = 0, len = req.body.details.length; i < len; i++) {
+                        req.body.details[i].parent_id = damage._id;
+                        req.body.details[i].type = "DAMAGE";
+                        let newtransaction = new transactionDetails(req.body.details[i]);
+                        newtransaction.save((errs,transaction)=>{
+                            if(errs){
+                                res.json(errs); 
+                            }
+                            count++
+                            if(count === len) res.json({msg:'Damage added successfully'});
+                        });
                     }
-                    count++
-                    if(count === len) res.json({msg:'Damage added successfully'});
-                });
-            }
+                }
+            });
+        }else{
+            res.json({msg:'Error in count:: Damage'});
         }
     });
 });

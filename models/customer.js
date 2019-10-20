@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const customerSchema = mongoose.Schema({
+    customer_id:{
+        type : String,
+        require : true,
+        unique: true
+    },
     customerName : {
         type : String,
         require : true
@@ -61,6 +66,10 @@ const customerSchema = mongoose.Schema({
     updatedBy : {
         type: Schema.ObjectId,
         ref:'User'
+    },
+    index : {
+        type: Number,
+        require : true
     }
 }, 
 { 

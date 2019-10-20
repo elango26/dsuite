@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const user = require('../models/user');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
 
@@ -30,14 +31,19 @@ router.get('/list',(req,res,next)=>{
 });
 
 router.post('/create',(req,res,next)=>{
-    
-    let newUser = new user(req.body);
-
-    newUser.save((err,userRes)=>{
-        if(err){
-            res.json(err);
+    user.countDocuments(function(err, count) {
+        if(!err){    
+            req.body['user_id'] = common.padding(count+1,7,'USR');
+            let newUser = new user(req.body);
+            newUser.save((err,userRes)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                res.json({msg:'user added successfully'});
+                }
+            });
         }else{
-          res.json({msg:'user added successfully'});
+            res.json({msg:'Error in count:: User'});
         }
     });
 });

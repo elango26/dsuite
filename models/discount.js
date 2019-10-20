@@ -10,6 +10,14 @@ const discountSchema = mongoose.Schema({
         type : String,
         require : true
     },
+    discount_type: {
+        type : String,
+        require : true
+    },
+    discount_constraint: {
+        type: String,
+        require: true
+    },
     to_off : {
         type : String,
         require : true

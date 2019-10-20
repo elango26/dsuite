@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const product = require('../models/product');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
     
@@ -61,15 +62,37 @@ router.get('/orderList',(req,res,next)=>{
     });
 });
 
-router.post('/create',(req,res,next)=>{
-        
-    let newProduct = new product(req.body);
+router.get("/getcount",(req,res,next)=> {
+    product.countDocuments(function(err, count) {
 
-    newProduct.save((err,product)=>{
-        if(err){
-            res.json(err);
+        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+        if (err)
+            res.send(err)
+
+        var obj = {
+            'count': common.padding(count+1,7,"SKU"),
+            'length': '2'
+        }
+        res.json(obj); // return return the count in JSON format
+    });
+});
+
+router.post('/create',(req,res,next)=>{
+    product.countDocuments(function(err, count) {
+        if(!err){
+            req.body['product_id'] = common.padding(count+1,7,'SKU');
+            req.body['index'] = count;
+    
+            let newProduct = new product(req.body);            
+            newProduct.save((err,product)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json({msg:'product added successfully'});
+                }
+            });
         }else{
-            res.json({msg:'product added successfully'});
+            res.json({msg:'Error in count:: Product'});
         }
     });
 });

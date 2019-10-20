@@ -3,6 +3,7 @@ const router = express.Router();
 const {ObjectId} = require('mongodb');
 
 const expense = require('../models/expense');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
     
@@ -31,14 +32,20 @@ router.get('/list',(req,res,next)=>{
 });
     
 router.post('/create',(req,res,next)=>{
-     
-    let newExpense = new expense(req.body);
+    expense.countDocuments(function(err, count) {
+        if(!err){     
+            req.body['expense_id'] = common.padding(count+1,7,'EXP');
+            let newExpense = new expense(req.body);
 
-    newExpense.save((err,expense)=>{
-        if(err){
-            res.json(err);
+            newExpense.save((err,expense)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json({msg:'Expense added successfully'});
+                }
+            });
         }else{
-            res.json({msg:'Expense added successfully'});
+            res.json({msg:'Error in count:: Expense'});
         }
     });
 });

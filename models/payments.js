@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const paymentSchema = mongoose.Schema({
+    payment_id:{
+        type : String,
+        require : true,
+        unique: true
+    },
     payment_type : {
         type : String,
         require : true,

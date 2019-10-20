@@ -1,0 +1,18 @@
+<mat-card>
+    <mat-card-title>Customers</mat-card-title>
+    <mat-card-content>
+        <mat-form-field class="example-margin">
+            <mat-select matInput name="routename" [ngModel]="selectedRoute" (ngModelChange)="onRouteChange($event)">
+                <mat-option *ngFor="let opt of routes" [value]="opt.key">{{opt.value}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-card-content>
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let cus of customerList" cdkDrag>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      {{cus.customerName}}
+    </div>  
+  </div>
+  <br>
+  <button mat-raised-button color="primary"  (click)="onSubmit()">Submit</button>
+</mat-card>

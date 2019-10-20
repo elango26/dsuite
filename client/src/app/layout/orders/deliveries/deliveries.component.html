@@ -1,5 +1,12 @@
 <form >
 <mat-card>
+    <mat-card-content>
+        <mat-chip-list aria-label="Orders">         
+          <mat-chip color="accent" *ngFor="let list of consolidatedList">{{list.alias}}:{{list.count}}</mat-chip>
+        </mat-chip-list>
+    </mat-card-content>
+</mat-card>
+<mat-card>
   <mat-card-title>Deliveries</mat-card-title>
   <mat-card-content>
     <section class="example-section">
@@ -45,6 +52,8 @@
         </mat-expansion-panel>
       </ng-container>
     </mat-accordion>
+    <br>
+    <button mat-raised-button color="primary"  (click)="placeOrder()">Place Order</button>
   </mat-card-content>
 </mat-card>
 </form>

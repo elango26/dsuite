@@ -8,3 +8,9 @@ export class RATE_TYPE {
         return ['Retail','Purchase','Wholesale','Silver','Gold','Diamond']
     }
 };
+
+export class DISCOUNT_TYPE { 
+    public static get discount_type():any[]{
+        return ['Discount','Percentage','Units']
+    }
+};

@@ -20,17 +20,24 @@ export class CommonService {
     console.log("service called");
     //this.user = this.getMethod(environment.urls.getUser);
     //fetch product details
-    // this.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
-    //   this.products = data;
-    // });
+    this.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
+      this.products = data;
+    });
     // fetch rate 
-    this.getMethod(environment.urls.getRate).subscribe((data:Rate[]) => {
+    // this.getMethod(environment.urls.getRate).subscribe((data:Rate[]) => {
+    //   this.product_rate = data;
+    // });
+    this.getMethod(environment.urls.getRateList).subscribe((data:any[]) => {
       this.product_rate = data;
     });
    }
+  
+  getProductList(){
+    return this.products;
+  }
 
   getProductPrice(prod_id:string,type:string): Rate{
-    return this.product_rate.filter((key:any) => key.product._id == prod_id)[0][type];
+    return this.product_rate.filter((key:any) => key.product._id == prod_id)[0]['product']['rate_active'][type];
   }
 
   getMethod( url:string){

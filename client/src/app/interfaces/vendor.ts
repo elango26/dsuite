@@ -1,4 +1,5 @@
 export interface Vendor {
+    vendor_id: string;
     vendorName: string;
     contactPerson: string;
     firstName: string;

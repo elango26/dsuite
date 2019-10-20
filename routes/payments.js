@@ -3,10 +3,56 @@ const router = express.Router();
 const {ObjectId} = require('mongodb');
 
 const payment = require('../models/payments');
+const sales = require('../models/sales');
+const common = require('./common');
+
+router.get('/getOutstanding',(req,res,next)=>{
+    sales.aggregate([
+        {"$group": {
+            _id: '$customer_id',
+            total_sales: {
+              $sum: '$total_amount'
+            }
+          }
+        },
+        {"$match":{
+            _id: ObjectId(req.query.cust_id)
+        }}
+    ]).exec((err,list)=>{
+        if(!err){            
+            if(list != null){                            
+                payment.aggregate([
+                    {"$group":{
+                        _id: '$customer_id',
+                        total_payment: {
+                          $sum: '$amount'
+                        }
+                    }},
+                    {"$match":{
+                        _id: ObjectId(req.query.cust_id)
+                    }}
+                ]).exec((err,pay)=>{
+                    if(!err){
+                        var response = {
+                            'customer_id': req.query.cust_id,
+                            'total_sales': (list && list[0])?list[0].total_sales:0,
+                            'total_payment': (pay && pay[0])?pay[0].total_payment:0,
+                        }
+                        res.json(response);
+                    }else{
+                        res.json("Error in payment fetch");
+                    }
+                })
+            }            
+        }else{
+            res.json("Error occurred!!");
+        }
+        
+    })
+});
 
 router.get('/list',(req,res,next)=>{
-    
-    payment.aggregate([
+    let aggregateArr = [
         {    
         "$lookup": {
             "from": "users",
@@ -27,8 +73,25 @@ router.get('/list',(req,res,next)=>{
             "localField": "customer_id",
             "foreignField": "_id",
             "as": "customer"
+        }},
+        { 
+        "$sort" : { 
+            "createdAt" : -1
+        }},
+        {"$addFields":{
+            'localdate':{ "$dateToString": { format: "%d-%m-%Y", date: "$createdAt", timezone: "+05:30" } }
         }}
-    ]).exec((err,list)=>{
+    ];
+
+    if(req.query.cust_id){
+        aggregateArr.push({
+            "$match":{
+                customer_id: ObjectId(req.query.cust_id)
+            }
+        });
+    }
+    
+    payment.aggregate(aggregateArr).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
@@ -38,14 +101,20 @@ router.get('/list',(req,res,next)=>{
 });
     
 router.post('/create',(req,res,next)=>{
-     
-    let newPayment = new payment(req.body);
+    payment.countDocuments(function(err, count) {
+        if(!err){         
+            req.body['payment_id'] = common.padding(count+1,7,'PAY');   
+            let newPayment = new payment(req.body);
 
-    newPayment.save((err,payment)=>{
-        if(err){
-            res.json(err);
+            newPayment.save((err,payment)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json({msg:'Payment added successfully'});
+                }
+            });
         }else{
-            res.json({msg:'Payment added successfully'});
+            res.json({msg:'Error in count:: Payment'});
         }
     });
 });

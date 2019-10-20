@@ -4,79 +4,14 @@ const {ObjectId} = require('mongodb');
 
 const rate = require('../models/rate');
 const product = require('../models/product');
+const common = require('./common');
 
-router.get('/rate_list',(req,res,next)=>{
-    rate.aggregate([
-        {
-            "$group":{
-                "_id": "$prod_id",
-                "rates": {
-                  $push: "$$ROOT"
-                }
-            }
-        },
-        {             
-            "$lookup": {
-                "from": 'products',
-                "localField": '_id',
-                "foreignField": '_id',
-                "as": 'products'
-            }
-        },
-        {
-            "$replaceRoot":{
-                newRoot: {
-                  $mergeObjects: [{ $arrayElemAt: [ "$products", 0 ] },"$$ROOT"]
-                }
-            }
-        },
-        {
-            "$project":{
-                "products": 0
-            }
-        }        
-    ]).exec((err,list)=>{
-        if(err){
-            res.json(err);
-        }else{
-            var product = [];
-            if(list.length > 0){
-                for (const key in list) {
-                    result = {};
-                    result["product"] = list[key];
-                    for(const j in list[key].rates){
-                        if(!result["product"]["rate_avail"])
-                            result["product"]["rate_avail"] = {};
-                        if(!result["product"]["rate_avail"][list[key].rates[j].type])
-                            result["product"]["rate_avail"][list[key].rates[j].type] = [];
-
-                        result["product"]["rate_avail"][list[key].rates[j].type].push(list[key].rates[j]);
-
-                        
-
-                        let arr_date = new Date(list[key].rates[j].effective_date);
-                        if(list[key].rates[j].is_active == "YES" && arr_date.getTime() <= new Date().getTime()){
-                            if(!result["product"]["rate_active"])
-                                result["product"]["rate_active"] = {};
-                            if(!result["product"]["rate_active"][list[key].rates[j].type])
-                                result["product"]["rate_active"][list[key].rates[j].type] = {};
-                            if(result["product"]["rate_active"][list[key].rates[j].type].effective_date){
-                                let exist_date = new Date(result["product"]["rate_active"][list[key].rates[j].type].effective_date);
-                                let new_date = new Date(list[key].rates[j]);
-                                if(exist_date.getTime() < new_date.getTime()){
-                                    result["product"]["rate_active"][list[key].rates[j].type] = list[key].rates[j];
-                                }
-                            }else{
-                                // first exec
-                                result["product"]["rate_active"][list[key].rates[j].type] = list[key].rates[j];
-                            }
-                        }                            
-                    }
-                    product.push(result);
-                }
-            }
-            res.json(product);
-        }
+router.get('/rate_list',(req,res,next)=>{    
+    let resp = common.getRateList();
+    resp.then(function(result) {
+        res.json(result);
+    }, function(err){
+        console.log("its error in rate js: method: rate_list");
     });
 });
 
@@ -173,7 +108,7 @@ router.post('/create',(req,res,next)=>{
                 rows.push({
                     prod_id : ObjectId(element.prod_id),
                     is_active: element.is_active,
-                    effective_date: element.effective_date,
+                    effective_date: new Date(element.effective_date),
                     type : elem.type,
                     price : elem.price,
                     tax : elem.tax,

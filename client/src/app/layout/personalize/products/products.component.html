@@ -1,0 +1,20 @@
+<mat-card>
+    <mat-card-title>Products</mat-card-title>
+    <mat-card-content>
+        <mat-form-field class="example-margin">
+            <mat-select placeholder="Route" >
+                <mat-option value="1">Option 1</mat-option>
+                <mat-option value="2">Option 2</mat-option>
+                <mat-option value="3">Option 3</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-card-content>
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let prod of productList" cdkDrag>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      {{prod.prod_name}}
+    </div>  
+  </div>
+  <br>
+  <button mat-raised-button color="primary"  (click)="onSubmit()">Submit</button>
+</mat-card>

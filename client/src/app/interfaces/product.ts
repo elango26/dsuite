@@ -1,4 +1,5 @@
 export interface Product {
+    product_id:string;
     prod_name: string,
     alias: string,
     brand_name: string,
@@ -11,6 +12,7 @@ export interface Product {
     createdBy?: string;   
     updatedAt?: string;
     updatedBy?: string;
+    index:number;
     _id?: string;
     __v?: string;
 }

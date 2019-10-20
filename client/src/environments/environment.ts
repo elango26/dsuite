@@ -9,8 +9,10 @@ export const environment = {
     //payments
     getPayment:apiUrl+'/payment/list',
     postPayment:apiUrl+'/payment/create',
+    getOutstanding:apiUrl+'/payment/getOutstanding', // pass customer id
     //deliveries
     getDeliveries:apiUrl+'/deliveries/list',
+    getConsolidatedOrderList:apiUrl+'/deliveries/consolidatelist',    
 
     //reports
     getRecentSales:apiUrl+'/reports/sales',
@@ -20,6 +22,7 @@ export const environment = {
     getLeads:apiUrl+'/leads/list',
     postOrder:apiUrl+'/order/create',
     searchOrder:apiUrl+'/order/searchOrders',
+    postOrderSales:apiUrl+'/order/placeOrders',
 
     //masters
     getRoute:apiUrl+'/route/list',
@@ -60,6 +63,11 @@ export const environment = {
     postExpense:apiUrl+'/expense/create',
     getDamage:apiUrl+'/damage/list',
     postDamage:apiUrl+'/damage/create',
+
+    //personalize
+    customerSort:apiUrl+'/personalize/customer',
+    productSort:apiUrl+'/personalize/product',
+    modifyIndex:apiUrl+'/personalize/modifyIndex',
     //remainders
     //alerts
     

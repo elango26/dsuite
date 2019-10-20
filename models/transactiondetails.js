@@ -10,10 +10,18 @@ const transactionDetailsSchema = mongoose.Schema({
         type: Schema.ObjectId,
         ref:'Product'
     },
+    product_id: {
+        type : String,
+        require : true
+    },
     type : {
         type : String,
         require : true,
         enum: ['SALES','PURCHASE','DAMAGE','ORDER'],
+    },
+    rate_type: {
+        type : String,
+        require : true
     },
     prod_rate_per_unit : {
         type : Number,

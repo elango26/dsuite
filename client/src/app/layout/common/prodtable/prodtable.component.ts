@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { Product } from 'src/app/interfaces/product';
 import { CATEGORY, SUBCATEGORY, BRANDS } from '../../../constants/contants';
 import { TransactionDesc } from 'src/app/interfaces/transaction';
+import { Customer } from 'src/app/interfaces/customer';
 
 @Component({
   selector: 'app-prodtable',
@@ -29,9 +30,11 @@ export class ProdtableComponent implements OnInit {
   edit_details:any;
   order_details:any;
   isEdit:boolean = false;
+  sale_type_arr: any[];
   constructor(private datePipe: DatePipe, private commonService: CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<ProdtableComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
+      this.loadCustomerRateType(form_value.customer);
       this.customer = form_value.customer;
       this.url = form_value.url;
       switch(form_value.source){
@@ -62,14 +65,38 @@ export class ProdtableComponent implements OnInit {
     this.form = new FormGroup(formC);
   }
 
+  public loadCustomerRateType(cust:Customer){
+    console.log("customer rate type loaded");
+    this.commonService.getMethod(environment.urls.getRateTypeByCustomer+'/'+cust._id).subscribe((data:any) => {
+      this.sale_type_arr = data;
+    });
+  }
+
   loadExistingOrder(cust:any,reqDate:any){
     //console.log(this.datePipe.transform(reqDate,"yyyy-MM-dd"));
-    let query = '?id='+cust._id+'&searchDate='+this.datePipe.transform(reqDate,"yyyy-MM-dd");
+    let query = '?id='+cust._id+'&searchDate='+this.datePipe.transform(reqDate,"yyyy-MM-dd")+"&delivered=NO";
     this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
       if(data.length > 0){
         this.isEdit = true;
         this.edit_details = data[0].details;
         this.order_details = data[0];
+      }
+    });
+  }
+
+  private repeatOrder(){
+    console.log('repeat order');
+    let query = '?id='+this.customer._id+'&searchDate='+this.datePipe.transform(new Date(),"yyyy-MM-dd")+"&delivered=YES";
+    this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
+      if(data.length > 0){
+        this.isEdit = true;
+        this.edit_details = data[0].details;
+        this.order_details = data[0];
+        this.loadProduct();    
+      }else{
+        this.snackBar.open("No Orders found!!", "Success", {
+          duration: 500,
+        });
       }
     });
   }
@@ -103,6 +130,7 @@ export class ProdtableComponent implements OnInit {
         
         this.productList[val.alias] = {
           id:val._id,
+          product_id:val.product_id,
           name:val.prod_name
         }
       }
@@ -126,8 +154,10 @@ export class ProdtableComponent implements OnInit {
         if(quan > 0){
           let product = this.productList[key];        
           let trans_desc:TransactionDesc = {
+            rate_type: this.sale_type_arr.filter(key => key.prod_id == product.id)[0].type,
             prod_name: product.name,
             prod_id : product.id,
+            product_id: product.product_id,
             prod_quan : quan,
             prod_rate_per_unit : 0,
             tax: 0,

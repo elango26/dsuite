@@ -7,7 +7,8 @@
       <mat-card-content flex="50">
           <section class="example-section">
             <mat-form-field class="example-margin customer-col">
-                <input type="text" autofocus placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
+                <span matSuffix [className]="outstandingDet.classname">&nbsp; <i>{{outstandingDet.amount | currency}}</i></span>
+                <input type="text" autofocus placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer" [readonly]="dedicatedCustomer">
                 <mat-autocomplete #customer="matAutocomplete" [displayWith]="displayCustomerFn">
                   <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
                     {{customer.customerName}}
@@ -29,8 +30,8 @@
           </section>
           <section class="example-section">
               <button type="submit" mat-raised-button color="primary">Submit</button>
+              <button type="button" (click)="closeModal()" mat-raised-button color="default">Cancel</button>
           </section>
-
       </mat-card-content>
       </form>
   </mat-card>
@@ -58,8 +59,11 @@
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
                   <td mat-cell *matCellDef="let row"> {{row.payment_type}} </td>
               </ng-container>
-
-              <ng-container matColumnDef="customer">
+              <ng-container matColumnDef="date" *ngIf="dedicatedCustomer">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                <td mat-cell *matCellDef="let row"> {{row.localdate}} </td>
+              </ng-container>
+              <ng-container matColumnDef="customer" *ngIf="!dedicatedCustomer">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer </th>
                   <td mat-cell *matCellDef="let row"> {{row.customer[0].customerName}} </td>
               </ng-container>

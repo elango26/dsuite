@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DsuiteModule } from '../common/dsuite.module';
+import { PaymentModule } from '../payment/payment.module';
 
 import { LeadsRoutingModule } from './leads-routing.module';
 import { CustomersComponent } from './customers/customers.component';
@@ -32,7 +33,8 @@ import {
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatIconModule,
-    DsuiteModule
+    DsuiteModule,
+    PaymentModule
   ]
 })
 export class LeadsModule { }

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {ObjectId} = require('mongodb');
 
+const common = require('./common');
 const route = require('../models/route');
 
 router.get('/list',(req,res,next)=>{
@@ -31,14 +32,20 @@ router.get('/list',(req,res,next)=>{
 });
     
 router.post('/create',(req,res,next)=>{
-     
-    let newRoute = new route(req.body);
+    route.countDocuments(function(err, count) {
+        if(!err){    
+            req.body['route_id'] = common.padding(count+1,7,'R');
+            let newRoute = new route(req.body);
 
-    newRoute.save((err,route)=>{
-        if(err){
-            res.json(err);
+            newRoute.save((err,route)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json({msg:'route added successfully'});
+                }
+            });
         }else{
-            res.json({msg:'route added successfully'});
+            res.json({msg:'Error in count:: Route'});
         }
     });
 });

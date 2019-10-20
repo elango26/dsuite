@@ -1,5 +1,7 @@
 export interface TransactionDesc {
+    rate_type:string;
     prod_id:string;
+    product_id:string;
     prod_quan:number;
     prod_tax:number;
     tax:number;
@@ -32,6 +34,7 @@ export interface Damage {
 
 export interface ProdDescription {
     prod_id:string;
+    product_id:string;
     prod_rate_per_unit:number;
     prod_quan:number;
     prod_tax:number;

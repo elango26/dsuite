@@ -7,9 +7,12 @@ export interface priceObj {
 }
 
 export interface Rate {
-    effective_date: string;
-    id: string;
+    createdBy: string;
+    effective_date: Date;
     is_active: string;
+    localdate: string;
     price: number;
+    prod_id: string;
     tax: number;
+    type: string;
 }

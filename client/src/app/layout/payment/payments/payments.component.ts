@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
-//import { MatDialog, MatDialogRef, } from '@angular/material';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 //import {MatGridListModule} from '@angular/material/grid-list';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from '../../../../environments/environment';
@@ -11,23 +11,42 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 
+export interface outstandingDetails {
+  amount: number;
+  classname: string;
+}
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss']
 })
+
 export class PaymentsComponent implements OnInit {
-  displayedColumns = ['type','customer','amount'];
+  displayedColumns = ['type','amount'];
   dataSource: MatTableDataSource<Payment>;
   payment_type: any[];
   payments: Payment[];
   customerList: Customer[];
   customerFilteredOptions: Observable<Customer[]>;
   form:FormGroup;
+  outstandingDet: outstandingDetails = {
+    amount:0,
+    classname: 'negative-amt'
+  };
+  currentCustomer:Customer;
+  dedicatedCustomer:boolean=false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public commonService: CommonService, public snackBar:MatSnackBar) { }
+  constructor(public commonService: CommonService, public snackBar:MatSnackBar,
+    public dialogRef:MatDialogRef<PaymentsComponent>,
+    @Inject(MAT_DIALOG_DATA) public form_value: any) { 
+    console.log(form_value);
+    if(form_value.customer){
+      this.currentCustomer = form_value.customer;
+      this.dedicatedCustomer = true;
+    }      
+  }
 
   ngOnInit() {
     this.payment_type = PAYMENT_TYPE.map(val=>{
@@ -41,8 +60,16 @@ export class PaymentsComponent implements OnInit {
       'customerName': new FormControl('',Validators.required),
       'amount': new FormControl('',Validators.required)
     });
-    this.loadPayments();
-    this.loadCustomers();
+    this.loadPayments(); 
+    if(this.dedicatedCustomer){
+      this.displayedColumns.unshift('date');
+      this.form.controls['customerName'].setValue(this.currentCustomer);
+      this.outstandingApi(this.currentCustomer._id);
+    }else{
+      this.displayedColumns.unshift('customer');
+      this.loadCustomers();
+      this.loadOutstandingAmount();
+    }
   }
 
   loadCustomers(){
@@ -69,8 +96,31 @@ export class PaymentsComponent implements OnInit {
     return cust ? cust.customerName : undefined;
   }
 
+  
+  private loadOutstandingAmount(){
+    this.form.get('customerName').valueChanges.subscribe(val => {
+      if(val && val._id){
+        this.outstandingApi(val._id);
+      }      
+    });    
+  }
+
+  private outstandingApi(cust_id:string){
+    this.commonService.getMethod(environment.urls.getOutstanding+'?cust_id='+cust_id).subscribe((data:any)=>{
+      let outstanding = data.total_sales - data.total_payment;
+      this.outstandingDet = {
+        amount: outstanding,
+        classname: (outstanding <= 0)?'negative-amt':'positive-amt'
+      }
+    });
+  }
+
   loadPayments(){
-    this.commonService.getMethod(environment.urls.getPayment).subscribe((data:Payment[]) => {
+    var url = environment.urls.getPayment;
+    if(this.dedicatedCustomer){
+      url+="?cust_id="+this.currentCustomer._id;
+    }
+    this.commonService.getMethod(url).subscribe((data:Payment[]) => {
       this.payments = data;
       this.dataSource = new MatTableDataSource(this.payments);
       this.dataSource.paginator = this.paginator;
@@ -87,6 +137,10 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
+  closeModal(){
+    this.dialogRef.close();
+  }
+
   submit_form(){
     console.log(this.form);
     if(this.form.status && this.form.status=="VALID"){
@@ -99,8 +153,16 @@ export class PaymentsComponent implements OnInit {
         this.snackBar.open("Saved successfully!!", "Success", {
           duration: 500,
         });
-        this.loadPayments();
-        this.form.reset();
+        if(this.dedicatedCustomer){
+          this.closeModal();
+        }else{
+          this.loadPayments();
+          this.outstandingDet = {
+            amount:0,
+            classname: 'negative-amt'
+          };
+          this.form.reset();
+        }        
       },error =>{
         this.snackBar.open(error, "Error", {
           duration: 500,

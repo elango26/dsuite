@@ -3,6 +3,7 @@ import { Customer } from "./customer";
 export interface Leads {
     totalAmount: any;
     customerName: string;
+    customer_id: string;
     alias: string;
     firstName: string;
     lastName: string;
@@ -12,6 +13,7 @@ export interface Leads {
     city: string;
     pincode: number;
     route: string;
+    index:number;
     is_active?: string;
     is_delete?: string;
     createdAt?: string;

@@ -39,6 +39,10 @@ const routes: Routes = [
             {
                 path: 'orders',
                 loadChildren: './orders/orders.module#OrdersModule'
+            },
+            {
+                path: 'personalize',
+                loadChildren: './personalize/personalize.module#PersonalizeModule'
             }
         ]
     }

@@ -4,6 +4,7 @@ const {ObjectId} = require('mongodb');
 const async = require('async');
 const purchase = require('../models/purchase');
 const transactionDetails = require('../models/transactiondetails');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
 
@@ -92,27 +93,33 @@ router.get('/transaction',(req,res,next)=>{
 });
     
 router.post('/create',(req,res,next)=>{
-        
-    let newPurchase = new purchase(req.body);
+    purchase.countDocuments(function(err, count) {
+        if(!err){         
+            req.body['purchase_id'] = common.padding(count+1,7,'PUR');   
+            let newPurchase = new purchase(req.body);
 
-    newPurchase.save((err,purchase)=>{
-        if(err){
-            res.json(err);
-        }else{
-            if(!req.body.details || !req.body.details.length) res.json({msg:'purchase updated successfully'});
-            let count = 0;
-            for (let i = 0, len = req.body.details.length; i < len; i++) {
-                req.body.details[i].parent_id = purchase._id;
-                req.body.details[i].type = "PURCHASE";
-                let newtransaction = new transactionDetails(req.body.details[i]);
-                newtransaction.save((errs,transaction)=>{
-                    if(errs){
-                        res.json(errs); 
+            newPurchase.save((err,purchase)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    if(!req.body.details || !req.body.details.length) res.json({msg:'purchase updated successfully'});
+                    let count = 0;
+                    for (let i = 0, len = req.body.details.length; i < len; i++) {
+                        req.body.details[i].parent_id = purchase._id;
+                        req.body.details[i].type = "PURCHASE";
+                        let newtransaction = new transactionDetails(req.body.details[i]);
+                        newtransaction.save((errs,transaction)=>{
+                            if(errs){
+                                res.json(errs); 
+                            }
+                            count++
+                            if(count === len) res.json({msg:'purchase added successfully'});
+                        });
                     }
-                    count++
-                    if(count === len) res.json({msg:'purchase added successfully'});
-                });
-            }
+                }
+            });
+        }else{
+            res.json({msg:'Error in count:: Purchase'});
         }
     });
 });

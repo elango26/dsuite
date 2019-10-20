@@ -26,7 +26,7 @@ const rateSchema = mongoose.Schema({
         default: null
     },
     effective_date : {
-        type: String, 
+        type: Date, 
         require : true
     },
     is_active : {

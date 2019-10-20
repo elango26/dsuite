@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const purchaseSchema = mongoose.Schema({
+    purchase_id:{
+        type : String,
+        require : true,
+        unique: true
+    },
     vendor_id: {
         type: Schema.ObjectId,
         ref: 'Vendor'

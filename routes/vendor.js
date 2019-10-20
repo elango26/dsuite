@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const vendor = require('../models/vendor');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
     
@@ -30,15 +31,21 @@ router.get('/list',(req,res,next)=>{
 });
 
 router.post('/create',(req,res,next)=>{
-
-    let newVendor = new vendor(req.body);
-
-    newVendor.save((err,vendor)=>{
-        if(err){
-            res.json(err);
+    vendor.countDocuments(function(err, count) {
+        if(!err){
+            req.body['vendor_id'] = common.padding(count+1,7,'V');
+            let newVendor = new vendor(req.body);
+            newVendor.save((err,vendor)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json({msg:'vendor added successfully'});
+                }
+            });
         }else{
-            res.json({msg:'vendor added successfully'});
+            res.json({msg:'Error in count:: Vendor'});
         }
+        
     });
 });
 

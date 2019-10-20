@@ -4,6 +4,7 @@ const {ObjectId} = require('mongodb');
 const orders = require('../models/order');
 const transactionDetails = require('../models/transactiondetails');
 const customer = require('../models/customer');
+const product = require('../models/product');
 
 router.get('/list',(req,res,next)=>{
     customer.aggregate([
@@ -22,7 +23,8 @@ router.get('/list',(req,res,next)=>{
                     $expr: {
                         $and: [
                         { $eq: ['$customer_id', '$$cust_id'] },
-                        { $eq: ['$local_date',req.query.order_date]}
+                        { $eq: ['$local_date',req.query.order_date]},
+                        { $eq: ['$is_delivered', 'NO']}
                         ]
                     }
                     }
@@ -103,6 +105,12 @@ router.get('/list',(req,res,next)=>{
 
 router.get('/consolidatelist',(req,res,next)=>{
   orders.aggregate([
+    {"$addFields":{
+      'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
+    }},
+    {"$match":{
+      local_date:req.query.order_date
+    }},
     {"$lookup":{
       from: 'transactiondetails',
       localField: '_id',
@@ -128,6 +136,72 @@ router.get('/consolidatelist',(req,res,next)=>{
     }},
     {"$unwind":{
       path: '$products',
+      //includeArrayIndex: '<<string>>',
+      preserveNullAndEmptyArrays: true
+    }}
+  ]).exec((err,list) => {
+    if(err){
+      res.json(err);
+  }else{
+      res.json(list);
+  }
+  });
+});
+
+router.get('/newconsolidatelist',(req,res,next)=>{
+  product.aggregate([
+    {"$lookup":{
+      from: 'transactiondetails',
+      localField: '_id',
+      foreignField: 'prod_id',
+      as: 'details'
+    }},
+    {"$unwind":{
+      path: '$details',
+     // includeArrayIndex: '<<string>>',
+      preserveNullAndEmptyArrays: true
+    }},
+    {"$lookup":{
+      from: 'orders',
+          // localField: 'details.parent_id',
+          // foreignField: '_id',
+          as: 'details.orders',
+          let: { order_id: '$details.parent_id' },
+          pipeline: [
+            {
+              $addFields:{
+                  'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
+              }
+            },
+            {$match:{
+              $expr:{
+                $and:[
+                  { $eq: ['$_id', '$$order_id'] },
+                  { $eq: ['$local_date','2019-09-02']}
+                  ]
+              }
+            }}
+          ]
+    }},
+    {"$unwind":{
+      path: '$details.orders',
+      //includeArrayIndex: '<<string>>',
+      preserveNullAndEmptyArrays: true
+    }},
+    {"$group":{
+      _id: {product:'$_id'},
+      count: {
+        $sum: '$details.prod_quan'
+      }
+    }},
+    {"$lookup":{
+      from: 'products',
+      localField: '_id.product',
+      foreignField: '_id',
+      as: '_id.product'
+    }},
+    {"$unwind":{
+      path: '$_id.product',
       //includeArrayIndex: '<<string>>',
       preserveNullAndEmptyArrays: true
     }}

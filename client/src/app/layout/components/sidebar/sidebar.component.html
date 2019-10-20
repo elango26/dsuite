@@ -85,6 +85,19 @@
                 </li>
             </ul>
         </div>
+        <div class="nested-menu">
+            <a mat-list-item (click)="addExpandClass('personalize')">
+                <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Personalize' | translate }}
+            </a>
+            <ul class="nested submenu" [class.expand]="showMenu === 'personalize'">
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/personalize/customers']"><span>{{ 'Customer' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/personalize/products']"><span>{{ 'Products' | translate }}</span></a>
+                </li>                
+            </ul>
+        </div>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
             <mat-icon class="sidenav-icon">today</mat-icon> {{ 'Remainders' | translate }}
         </a>   

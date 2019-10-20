@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const customer = require('../models/customer');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
 
@@ -38,16 +39,23 @@ router.get('/list',(req,res,next)=>{
 });
 
 router.post('/create',(req,res,next)=>{
+    customer.countDocuments(function(err,count){
+        if(!err){
+            req.body['customer_id'] = common.padding(count+1,7,'CUS');
+            req.body['index'] = count;
+            let newCustomer = new customer(req.body);
 
-    let newCustomer = new customer(req.body);
-
-    newCustomer.save((err,customer)=>{
-        if(err){
-            res.json(err);
+            newCustomer.save((err,customer)=>{
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json({msg:'customer added successfully'});
+                }
+            });
         }else{
-            res.json({msg:'customer added successfully'});
+            res.json({msg:'Error in count:: Customer'});
         }
-    });
+    });    
 });
 
 router.put('/update/:id',(req,res,next)=>{

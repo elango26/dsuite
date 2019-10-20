@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const vendorSchema = mongoose.Schema({
+    vendor_id:{
+        type : String,
+        require : true,
+        unique: true
+    },
     vendorName : {
         type : String,
         require : true
