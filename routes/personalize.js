@@ -6,13 +6,23 @@ const customer = require('../models/customer');
 const product = require('../models/product');
 
 router.get('/customer',(req,res,next)=>{
+    var match = [{"$match":{
+        is_active: "YES",
+        is_delete: "NO"
+      }},
+      {"$sort":{
+        route: 1,
+        index: 1
+      }}]
+    //route_id
+    console.log(req.query.route_id);
+    if(req.query.route_id){
+        match.push({"$match":{
+            route: ObjectId(req.query.route_id)
+          }})
+    }
 
-    customer.aggregate([
-        {"$match":{
-            is_active: "YES",
-            is_delete: "NO"
-          }}
-    ]).exec((err,list)=>{
+    customer.aggregate(match).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
@@ -22,13 +32,24 @@ router.get('/customer',(req,res,next)=>{
 });
 
 router.get('/product',(req,res,next)=>{
+
+    var match = [{"$match":{
+        is_active: "YES",
+        is_delete: "NO"
+      }},
+      {"$sort":{
+        category: 1,
+        index: 1
+      }}]
+    //category
+    console.log(req.query.category);
+    if(req.query.category){
+        match.push({"$match":{
+            category: req.query.category
+        }})
+    }
     
-    product.aggregate([
-        {"$match":{
-            is_active: "YES",
-            is_delete: "NO"
-          }}
-    ]).exec((err,list)=>{
+    product.aggregate(match).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{

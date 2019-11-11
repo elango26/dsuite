@@ -1,12 +1,12 @@
 <div id="sidebar">
     <mat-nav-list>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/dashboard']">
             <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' | translate }}
         </a>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/payment/payments']">
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/payment/payments']">
             <mat-icon class="sidenav-icon">euro_symbol</mat-icon> {{ 'Payments' | translate }}
         </a> 
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/orders/deliveries']">
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/orders/deliveries']">
             <mat-icon class="sidenav-icon">local_shipping</mat-icon> {{ 'Deliveries' | translate }}
         </a> 
         <div class="nested-menu">
@@ -15,13 +15,13 @@
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'reports'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/reports/recentsales']"><span>{{ 'Recent Sales' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/reports/recentsales']"><span>{{ 'Recent Sales' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/reports/recentpurchase']"><span>{{ 'Recent Purchase' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/reports/recentpurchase']"><span>{{ 'Recent Purchase' | translate }}</span></a>
                 </li> 
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/reports/recentdamages']"><span>{{ 'Recent Damages' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/reports/recentdamages']"><span>{{ 'Recent Damages' | translate }}</span></a>
                 </li>                
             </ul>
         </div>        
@@ -31,10 +31,10 @@
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'leads'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/leads/customers']"><span>{{ 'Leads' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/leads/customers']"><span>{{ 'Leads' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/leads/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/leads/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
                 </li>                
             </ul>
         </div>
@@ -44,25 +44,25 @@
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'masters'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/masters/customers']"><span>{{ 'Customers' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/customers']"><span>{{ 'Customers' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/masters/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/masters/users']"><span>{{ 'Users' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/users']"><span>{{ 'Users' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/masters/routes']"><span>{{ 'Routes' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/routes']"><span>{{ 'Routes' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/masters/rates']"><span>{{ 'Rates' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/rates']"><span>{{ 'Rates' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/masters/products']"><span>{{ 'Products' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/products']"><span>{{ 'Products' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/masters/mapping']"><span>{{ 'Customer Mapping' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/mapping']"><span>{{ 'Customer Mapping' | translate }}</span></a>
                 </li>
             </ul>
         </div>
@@ -72,16 +72,16 @@
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'transactions'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/transactions/sales']"><span>{{ 'Sales' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/transactions/sales']"><span>{{ 'Sales' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/transactions/purchase']"><span>{{ 'Purchase' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/transactions/purchase']"><span>{{ 'Purchase' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/transactions/expenses']"><span>{{ 'Expenses' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/transactions/expenses']"><span>{{ 'Expenses' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/transactions/damages']"><span>{{ 'Return / Spoil' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/transactions/damages']"><span>{{ 'Return / Spoil' | translate }}</span></a>
                 </li>
             </ul>
         </div>
@@ -91,17 +91,17 @@
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'personalize'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/personalize/customers']"><span>{{ 'Customer' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/personalize/customers']"><span>{{ 'Customer' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/personalize/products']"><span>{{ 'Products' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/layout/personalize/products']"><span>{{ 'Products' | translate }}</span></a>
                 </li>                
             </ul>
         </div>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/charts']">
             <mat-icon class="sidenav-icon">today</mat-icon> {{ 'Remainders' | translate }}
         </a>   
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/charts']">
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/charts']">
             <mat-icon class="sidenav-icon">message</mat-icon> {{ 'SMS Alert' | translate }}
         </a>   
     </mat-nav-list>

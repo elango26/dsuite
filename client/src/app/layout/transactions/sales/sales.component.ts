@@ -11,6 +11,8 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
 //import { CATEGORY, SUBCATEGORY, BRANDS } from '../../../constants/contants';
+import { Router, ActivatedRoute } from '@angular/router';
+import { PrinterService } from 'src/app/services/printer.service';
 
 
 @Component({
@@ -33,7 +35,7 @@ export class SalesComponent implements OnInit {
   sale_type_arr: any[];
 
   @ViewChild("productName") prodField: ElementRef;
-  constructor(private commonService: CommonService, public snackBar: MatSnackBar) { 
+  constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router, private route: ActivatedRoute, public printerService: PrinterService) { 
     this.form = new FormGroup({
       'productName': new FormControl('',Validators.required),
       'quantity': new FormControl('',Validators.required)
@@ -146,7 +148,7 @@ export class SalesComponent implements OnInit {
     return this.transaction_desc.map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.map(t => t.prod_tax).reduce((acc, value) => acc + value, 0);
   }
 
-  _saveOrder(type:string):void{
+  _saveOrder(type:string):void{      
     let data: Sales = {
       customer_id: this.custForm.value.customerName._id,
       sale_date: this.custForm.value.curDate,
@@ -166,6 +168,15 @@ export class SalesComponent implements OnInit {
         duration: 600,
       });
     });
+    if(type == 'print'){
+      console.log(this.route);
+      this.printerService.printData = {
+        redirectUrl: '/layout/transactions/sales',
+        format: 'invoice',
+        saleid: ['POS0000008','POS0000009']
+      }
+      this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
+    }  
   }
 
 }

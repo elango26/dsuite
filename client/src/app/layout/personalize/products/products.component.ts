@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { MatSnackBar } from '@angular/material';
 import { Product } from 'src/app/interfaces/product';
+import { CATEGORY } from 'src/app/constants/contants';
 
 /**
  * @title Drag&Drop custom placeholer
@@ -17,13 +18,20 @@ import { Product } from 'src/app/interfaces/product';
 export class ProductsComponent {
 
   productList:Product[];
+  category: any[];
 
   constructor(private commonService: CommonService, public snackBar:MatSnackBar){
     
   }
 
   ngOnInit() {
-    this.loadProduct();
+    this.loadProduct(environment.urls.productSort);
+    this.category = CATEGORY;
+  }
+
+  onCatChange(e:any){
+    let url = environment.urls.productSort + '?category='+ e; 
+    this.loadProduct(url);
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -31,10 +39,10 @@ export class ProductsComponent {
     moveItemInArray(this.productList, event.previousIndex, event.currentIndex);
   }
 
-  loadProduct(){
-    this.commonService.getMethod(environment.urls.productSort).subscribe((data:Product[]) => {
+  loadProduct(url:string){
+    this.commonService.getMethod(url).subscribe((data:Product[]) => {
       this.productList = data;
-      this.productList.sort((a, b) => a.index - b.index)
+      //this.productList.sort((a, b) => a.index - b.index)
     });
   }
 

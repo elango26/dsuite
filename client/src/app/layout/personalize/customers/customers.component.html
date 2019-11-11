@@ -7,12 +7,13 @@
             </mat-select>
         </mat-form-field>
     </mat-card-content>
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div cdkDropList class="example-list" *ngIf="customerList && customerList.length > 0" (cdkDropListDropped)="drop($event)">
     <div class="example-box" *ngFor="let cus of customerList" cdkDrag>
       <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
       {{cus.customerName}}
-    </div>  
+    </div>      
   </div>
+  <span *ngIf="customerList && customerList.length == 0">No results found</span>
   <br>
-  <button mat-raised-button color="primary"  (click)="onSubmit()">Submit</button>
+  <button mat-raised-button color="primary" [disabled]="customerList && customerList.length == 0" (click)="onSubmit()">Submit</button>
 </mat-card>

@@ -12,7 +12,7 @@ const salesSchema = mongoose.Schema({
         ref: 'Customer'
     },
     sale_date : {
-        type: String, 
+        type: Date, 
         require : true
     },
     total_amount : {

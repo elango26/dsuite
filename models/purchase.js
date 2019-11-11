@@ -12,7 +12,7 @@ const purchaseSchema = mongoose.Schema({
         ref: 'Vendor'
     },
     purchase_date : {
-        type: String, 
+        type: Date, 
         require : true
     },
     total_amount : {

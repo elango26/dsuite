@@ -13,21 +13,21 @@ export interface TransactionDesc {
 
 export interface Sales {
     customer_id:string,
-    sale_date:string,
+    sale_date:Date,
     total_amount:number,
     details: ProdDescription[]
 }
 
 export interface Purchase {
     vendor_id:string,
-    purchase_date:string,
+    purchase_date:Date,
     total_amount:number,
     details: ProdDescription[]
 }
 
 export interface Damage {
     customer_id:string,
-    damage_date:string,
+    damage_date:Date,
     total_amount:number,
     details: ProdDescription[]
 }

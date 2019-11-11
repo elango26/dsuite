@@ -7,7 +7,7 @@ const customer = require('../models/customer');
 const product = require('../models/product');
 
 router.get('/list',(req,res,next)=>{
-    customer.aggregate([
+    customer.aggregate([       
         {"$lookup":{
             from: 'orders',
             as: 'orders',
@@ -93,6 +93,10 @@ router.get('/list',(req,res,next)=>{
             path: '$_id.orders',
             //includeArrayIndex: '<<string>>',
             preserveNullAndEmptyArrays: true
+          }},
+          {"$sort":{
+              "_id.customer.route": 1,
+              "_id.customer.index": 1
           }}
     ]).exec((err,list)=>{
         if(err){

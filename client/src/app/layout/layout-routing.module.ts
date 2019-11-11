@@ -4,8 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 
 const routes: Routes = [
+    {path:'',redirectTo:'layout'},
     {
-        path: '',
+        path: 'layout',
         component: LayoutComponent,
         children: [
             {
@@ -43,9 +44,29 @@ const routes: Routes = [
             {
                 path: 'personalize',
                 loadChildren: './personalize/personalize.module#PersonalizeModule'
+            },
+            {
+                path: 'printview', 
+                outlet: 'printpage',                  
+                loadChildren: './print-layout/print-layout.module#PrintLayoutModule'
             }
         ]
-    }
+    },
+    // {
+    //     path: 'print',
+    //     component: LayoutComponent,        
+    //     children: [
+    //         {
+    //             path: '',
+    //             redirectTo: 'printview'
+    //         },
+    //         {
+    //             path: 'printview',           
+    //             outlet: 'print-router',     
+    //             loadChildren: './print-layout/print-layout.module#PrintLayoutModule'
+    //         }
+    //     ]
+    // }
 ];
 
 @NgModule({

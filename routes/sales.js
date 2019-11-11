@@ -93,13 +93,25 @@ router.post('/create',(req,res,next)=>{
                                 res.json(errs); 
                             }
                             count++
-                            if(count === len) res.json({msg:'sales added successfully'});
+                            if(count === len) {
+                                let resp = {
+                                    code : 200,
+                                    message : "sales added successfully",
+                                    data: sales
+                                }
+                                res.json(resp);
+                            };
                         });
                     }
                 }
             });
         }else{
-            res.json({msg:'Error in count:: Sales'});
+            let resp = {
+                code : 201,
+                message : "Error in count:: Sales",
+                data: {}
+            }
+            res.json(resp);
         }
     });
 });

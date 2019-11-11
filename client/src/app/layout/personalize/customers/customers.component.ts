@@ -38,8 +38,7 @@ export class CustomersComponent {
 
   onRouteChange(e:any){
     console.log('working'+e);
-    console.log(this.selectedRoute);
-    //this.loadCustomer(environment.urls.customerSort+'?route_id='+key);
+    this.loadCustomer(environment.urls.customerSort+'?route_id='+e);
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -50,7 +49,7 @@ export class CustomersComponent {
   loadCustomer(url:string){
     this.commonService.getMethod(url).subscribe((data:Customer[]) => {
       this.customerList = data;
-      this.customerList.sort((a, b) => a.index - b.index)
+      //this.customerList.sort((a, b) => a.index - b.index)
     });
   }
 

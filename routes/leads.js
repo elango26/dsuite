@@ -7,7 +7,7 @@ const customer = require('../models/customer');
 const payments = require('../models/payments');
 
 router.get('/list',(req,res,next)=>{
-    customer.aggregate([
+    customer.aggregate([        
         {    
         "$lookup": {
             "from": "users",
@@ -81,6 +81,10 @@ router.get('/list',(req,res,next)=>{
             $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$customer", 0 ] }, "$$ROOT" ] } }
         },
         { $project: { customer: 0, payments: 0 } },
+        {"$sort":{
+            "route": 1,
+            "index": 1
+        }}
     ]).exec((err,leads)=>{
         if(err){
             res.json(err);

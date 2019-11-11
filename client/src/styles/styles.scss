@@ -8,3 +8,11 @@
         position: relative !important;
     }
 }
+
+@media print {
+    app-layout {
+        app-topnav, app-sidebar, .main-container {
+                display: none !important;
+        }
+    }
+}

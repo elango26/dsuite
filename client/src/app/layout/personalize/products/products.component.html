@@ -2,10 +2,8 @@
     <mat-card-title>Products</mat-card-title>
     <mat-card-content>
         <mat-form-field class="example-margin">
-            <mat-select placeholder="Route" >
-                <mat-option value="1">Option 1</mat-option>
-                <mat-option value="2">Option 2</mat-option>
-                <mat-option value="3">Option 3</mat-option>
+            <mat-select matInput name="routename" [ngModel]="selectedCategory" (ngModelChange)="onCatChange($event)">
+                <mat-option *ngFor="let opt of category" [value]="opt">{{opt}}</mat-option>
             </mat-select>
         </mat-form-field>
     </mat-card-content>

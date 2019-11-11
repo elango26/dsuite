@@ -12,7 +12,7 @@ const damageSchema = mongoose.Schema({
         ref: 'Customer'
     },
     damage_date : {
-        type: String, 
+        type: Date, 
         require : true
     },
     total_amount : {
