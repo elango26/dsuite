@@ -104,7 +104,7 @@
   </mat-card>
   <br>
   <div class="pull-right">
-    <button mat-raised-button color="primary"  (click)="_saveOrder('print')">Print</button>
+    <button mat-raised-button color="primary" [disabled]="!dataSource || dataSource._data._value.length === 0" (click)="_saveOrder('print')">Print</button>
     <button mat-raised-button color="primary" [disabled]="!dataSource || dataSource._data._value.length === 0" (click)="_saveOrder('save')">Save</button>
   </div>
 </mat-card>

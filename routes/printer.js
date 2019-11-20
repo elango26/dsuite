@@ -9,7 +9,7 @@ router.post('/invoices',(req,res,next)=>{
             localDate: {$dateToString:{format:"%Y-%m-%d",date:'$sale_date',timezone:'+05:30'}}
         }},
         {"$match":{
-            sale_id:{$in:['POS0000001','POS0000002','POS0000003']}
+            sale_id:{$in:req.body.invoices}
         }},
         {"$lookup":{
             from: 'transactiondetails',
@@ -21,7 +21,7 @@ router.post('/invoices',(req,res,next)=>{
                   $expr: {
                     $and: [
                       { $eq: ['$parent_id', '$$parent_id'] },
-                      { $eq: ['$type','SALES']}
+                      { $eq: ['$type',req.body.type]}
                     ]
                   }
                 }

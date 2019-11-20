@@ -13,6 +13,7 @@ import { formControlBinding } from '@angular/forms/src/directives/reactive_direc
 //import { CATEGORY, SUBCATEGORY, BRANDS } from '../../../constants/contants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PrinterService } from 'src/app/services/printer.service';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 
 @Component({
@@ -149,34 +150,43 @@ export class SalesComponent implements OnInit {
   }
 
   _saveOrder(type:string):void{      
-    // let data: Sales = {
-    //   customer_id: this.custForm.value.customerName._id,
-    //   sale_date: this.custForm.value.curDate,
-    //   total_amount: this.getTotalCost(),
-    //   details: this.transaction_desc
-    // }
-    // this.transaction_desc = [];
-    // this.dataSource = new MatTableDataSource(this.transaction_desc);
-    // this.form.reset();
-    // this.custForm.reset();
-    // this.commonService.postMethod(environment.urls.postSales,data).subscribe(data =>{      
-    //   this.snackBar.open("Saved successfully!!", "Success", {
-    //     duration: 500,
-    //   });
-    // },error =>{
-    //   this.snackBar.open(error, "Error", {
-    //     duration: 600,
-    //   });
-    // });
-    if(type == 'print'){
-      console.log(this.route);
-      this.printerService.printData = {
-        redirectUrl: '/layout/transactions/sales',
-        format: 'invoice',
-        saleid: ['POS0000008','POS0000009']
+    let data: Sales = {
+      customer_id: this.custForm.value.customerName._id,
+      sale_date: this.custForm.value.curDate,
+      total_amount: this.getTotalCost(),
+      details: this.transaction_desc
+    }
+    this.transaction_desc = [];
+    this.dataSource = new MatTableDataSource(this.transaction_desc);
+    this.form.reset();
+    this.custForm.reset();
+    this.commonService.postMethod(environment.urls.postSales,data).subscribe((data:GenericResp) =>{  
+      if(data.code == 200){
+        this.snackBar.open("Saved successfully!!", "Success", {
+          duration: 500,
+        });
+
+        //print
+        if(type == 'print'){
+          this.printerService.printData = {
+            redirectUrl: '/transactions',
+            format: 'invoice',
+            saleid: [data.data.sale_id],
+            type: 'SALES'
+          }
+          this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
+        }  
+      }else{
+        this.snackBar.open("Error!!", "Error", {
+          duration: 600,
+        });
       }
-      this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
-    }  
+      
+    },error =>{
+      this.snackBar.open(error, "Error", {
+        duration: 600,
+      });
+    });    
   }
 
 }

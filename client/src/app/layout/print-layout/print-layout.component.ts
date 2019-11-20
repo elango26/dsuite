@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class PrintLayoutComponent implements OnInit {
 
   formatType:string;
-  invoiceIds:any[];
+  printdata:any;
 
   constructor(public printerService: PrinterService, public router: Router) { }
 
@@ -21,8 +21,7 @@ export class PrintLayoutComponent implements OnInit {
       switch(this.printerService.printData.format){
         case 'invoice':
               this.formatType = 'invoice';
-              this.invoiceIds = this.printerService.printData.saleid;
-              console.log(this.invoiceIds);
+              this.printdata = this.printerService.printData;
               break;
         default:
               console.log("default executed");
