@@ -70,6 +70,9 @@ export const environment = {
     modifyIndex:apiUrl+'/personalize/modifyIndex',
     //remainders
     //alerts
+
+    //printer
+    printInvoices:apiUrl+'/printer/invoices',
     
   }
 };

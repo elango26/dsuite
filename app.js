@@ -27,6 +27,7 @@ const payment = require('./routes/payments');
 const order = require('./routes/order');
 const deliveries = require('./routes/deliveries');
 const personalize = require('./routes/personalize');
+const printer = require('./routes/printer');
 
 // connect to mongodb
 mongoose.connect('mongodb://localhost:27017/dsuite');
@@ -76,6 +77,7 @@ app.use('/api/payment',payment);
 app.use('/api/order',order);
 app.use('/api/deliveries',deliveries);
 app.use('/api/personalize',personalize);
+app.use('/api/printer',printer);
 
 // test server for home page
 app.get('/',(req,res)=>{

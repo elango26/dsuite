@@ -149,25 +149,25 @@ export class SalesComponent implements OnInit {
   }
 
   _saveOrder(type:string):void{      
-    let data: Sales = {
-      customer_id: this.custForm.value.customerName._id,
-      sale_date: this.custForm.value.curDate,
-      total_amount: this.getTotalCost(),
-      details: this.transaction_desc
-    }
-    this.transaction_desc = [];
-    this.dataSource = new MatTableDataSource(this.transaction_desc);
-    this.form.reset();
-    this.custForm.reset();
-    this.commonService.postMethod(environment.urls.postSales,data).subscribe(data =>{      
-      this.snackBar.open("Saved successfully!!", "Success", {
-        duration: 500,
-      });
-    },error =>{
-      this.snackBar.open(error, "Error", {
-        duration: 600,
-      });
-    });
+    // let data: Sales = {
+    //   customer_id: this.custForm.value.customerName._id,
+    //   sale_date: this.custForm.value.curDate,
+    //   total_amount: this.getTotalCost(),
+    //   details: this.transaction_desc
+    // }
+    // this.transaction_desc = [];
+    // this.dataSource = new MatTableDataSource(this.transaction_desc);
+    // this.form.reset();
+    // this.custForm.reset();
+    // this.commonService.postMethod(environment.urls.postSales,data).subscribe(data =>{      
+    //   this.snackBar.open("Saved successfully!!", "Success", {
+    //     duration: 500,
+    //   });
+    // },error =>{
+    //   this.snackBar.open(error, "Error", {
+    //     duration: 600,
+    //   });
+    // });
     if(type == 'print'){
       console.log(this.route);
       this.printerService.printData = {

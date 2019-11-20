@@ -4,19 +4,10 @@ import { InvoiceComponent } from './invoice/invoice.component';
 import { PrintLayoutComponent } from './print-layout.component';
 
 const routes: Routes = [
+  //{path:'',redirectTo:'printer'},
   {
     path: '',
-    component: PrintLayoutComponent,
-    children:[
-      {
-        path: '',
-        redirectTo: 'invoice'
-      },
-      {
-        path: 'invoice',
-        component: InvoiceComponent
-      }
-    ]
+    component: PrintLayoutComponent
   }
 ];
 

@@ -4,12 +4,13 @@
       <p>M K DEEPAN MILK CENTER <br>
       #5/455, Pari Street, <br>
       Mugappair East, Ch - 600037. <br>
-      Contact - 9941153153</p>
+      Contact - 9941153153 <br>
+      <b>GST NO.</b> 33DFWEFDSALFH23</p>
     </div>
   </td></tr></thead>
   <tbody><tr><td>
     <div class="content">
-      <router-outlet></router-outlet>
+      <app-invoice *ngIf="formatType=='invoice'" [invoiceIds]="invoiceIds"></app-invoice>
     </div>
   </td></tr></tbody>
   <tfoot><tr><td>
