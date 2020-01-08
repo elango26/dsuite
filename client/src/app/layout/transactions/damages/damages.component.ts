@@ -31,6 +31,7 @@ export class DamagesComponent implements OnInit {
   customerFilteredOptions: Observable<Customer[]>;
   sale_type: string = "Retail";
   sale_type_arr: any[];
+  custFormMaxDate = new Date();
 
   @ViewChild("productName") prodField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar) { 
@@ -155,7 +156,11 @@ export class DamagesComponent implements OnInit {
     this.transaction_desc = [];
     this.dataSource = new MatTableDataSource(this.transaction_desc);
     this.form.reset();
-    this.custForm.reset();
+    //reset form
+    this.custForm = new FormGroup({
+      'customerName': new FormControl('',Validators.required),
+      'curDate': new FormControl(new Date(),Validators.required)
+    });
     this.commonService.postMethod(environment.urls.postDamage,data).subscribe(data =>{      
       this.snackBar.open("Saved successfully!!", "Success", {
         duration: 500,

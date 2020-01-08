@@ -14,7 +14,7 @@
                   </mat-autocomplete>
               </mat-form-field>
               <mat-form-field class="example-margin date-col">
-                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="curDate">
+                <input matInput [max]="custFormMaxDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="curDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
@@ -103,6 +103,9 @@
   </div>
   </mat-card>
   <br>
+  <div *ngIf="lastSales">
+    <a (click)="openSalesModal(lastSales.saleid)">Last Sales: {{lastSales.saleamount | currency:'INR'}}</a>
+  </div>
   <div class="pull-right">
     <button mat-raised-button color="primary" [disabled]="!dataSource || dataSource._data._value.length === 0" (click)="_saveOrder('print')">Print</button>
     <button mat-raised-button color="primary" [disabled]="!dataSource || dataSource._data._value.length === 0" (click)="_saveOrder('save')">Save</button>

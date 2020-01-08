@@ -194,6 +194,7 @@ export class ProdtableComponent implements OnInit {
           duration: 1000,
         });
       }
+      this.dialogRef.close();
     }  
   } 
 

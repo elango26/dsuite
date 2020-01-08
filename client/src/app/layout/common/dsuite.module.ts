@@ -8,11 +8,12 @@ import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatButtonModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule
+  MatSliderModule, MatSlideToggleModule, MatIconModule
 } from '@angular/material';
+import { SalesReportPopComponent } from './sales-report-pop/sales-report-pop.component';
 
 @NgModule({
-  declarations: [ProdtableComponent],
+  declarations: [ProdtableComponent, SalesReportPopComponent],
   imports: [
     CommonModule,
     MatAutocompleteModule,
@@ -30,10 +31,11 @@ import {
     MatSliderModule,
     MatTabsModule,
     MatButtonModule,
+    MatIconModule,
     FlexLayoutModule.withConfig({addFlexToParent: false}) 
   ],
   exports: [ProdtableComponent],
-  entryComponents: [ProdtableComponent],
+  entryComponents: [ProdtableComponent,SalesReportPopComponent],
   providers: [DatePipe]
 })
 export class DsuiteModule { }

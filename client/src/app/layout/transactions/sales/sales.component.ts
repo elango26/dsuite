@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } 
     from '@angular/forms';
-import { MatTableDataSource,MatSnackBar } from '@angular/material';
+import { MatTableDataSource,MatSnackBar, MatDialog } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { Product } from 'src/app/interfaces/product';
@@ -14,6 +14,7 @@ import { formControlBinding } from '@angular/forms/src/directives/reactive_direc
 import { Router, ActivatedRoute } from '@angular/router';
 import { PrinterService } from 'src/app/services/printer.service';
 import { GenericResp } from 'src/app/interfaces/genericResp';
+import { SalesReportPopComponent } from '../../common/sales-report-pop/sales-report-pop.component';
 
 
 @Component({
@@ -34,9 +35,12 @@ export class SalesComponent implements OnInit {
   customerFilteredOptions: Observable<Customer[]>;
   sale_type: string = "Retail";
   sale_type_arr: any[];
+  lastSales:any;
+  custFormMaxDate = new Date();
 
   @ViewChild("productName") prodField: ElementRef;
-  constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router, private route: ActivatedRoute, public printerService: PrinterService) { 
+  constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router, private route: ActivatedRoute, 
+    public printerService: PrinterService, public dialog: MatDialog) { 
     this.form = new FormGroup({
       'productName': new FormControl('',Validators.required),
       'quantity': new FormControl('',Validators.required)
@@ -159,19 +163,29 @@ export class SalesComponent implements OnInit {
     this.transaction_desc = [];
     this.dataSource = new MatTableDataSource(this.transaction_desc);
     this.form.reset();
-    this.custForm.reset();
+    //reset form
+    this.custForm = new FormGroup({
+      'customerName': new FormControl('',Validators.required),
+      'curDate': new FormControl(new Date(),Validators.required)
+    });
     this.commonService.postMethod(environment.urls.postSales,data).subscribe((data:GenericResp) =>{  
       if(data.code == 200){
         this.snackBar.open("Saved successfully!!", "Success", {
           duration: 500,
         });
 
+        //last sales show
+        this.lastSales = {
+          saleid: data.data.sale_id,
+          saleamount: data.data.total_amount
+        }
+
         //print
         if(type == 'print'){
           this.printerService.printData = {
             redirectUrl: '/transactions',
             format: 'invoice',
-            saleid: [data.data.sale_id],
+            data: [data.data.sale_id],
             type: 'SALES'
           }
           this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
@@ -187,6 +201,18 @@ export class SalesComponent implements OnInit {
         duration: 600,
       });
     });    
+  }
+
+  //sales report page
+  openSalesModal(saleid:string){
+    const dialogRef = this.dialog.open(SalesReportPopComponent, {
+      width: '500px',
+      data: {saleid:saleid}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //reload
+    });
   }
 
 }

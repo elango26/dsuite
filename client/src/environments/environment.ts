@@ -5,7 +5,11 @@ let apiUrl = 'http://localhost:3000/api';
 export const environment = {
   production: false,
   urls:{
+
+    //auth
+    authenticate:apiUrl+'/auth/authenticate',
     //dashboard
+    getDashboardGrids:apiUrl+'/dashboard/grids',
     //payments
     getPayment:apiUrl+'/payment/list',
     postPayment:apiUrl+'/payment/create',
@@ -23,6 +27,7 @@ export const environment = {
     postOrder:apiUrl+'/order/create',
     searchOrder:apiUrl+'/order/searchOrders',
     postOrderSales:apiUrl+'/order/placeOrders',
+    loadTransactions:apiUrl+'/leads/getTransactions',
 
     //masters
     getRoute:apiUrl+'/route/list',
@@ -63,6 +68,8 @@ export const environment = {
     postExpense:apiUrl+'/expense/create',
     getDamage:apiUrl+'/damage/list',
     postDamage:apiUrl+'/damage/create',
+    postOb:apiUrl+'/ob/create',
+    getOb:apiUrl+'/ob/list',
 
     //personalize
     customerSort:apiUrl+'/personalize/customer',

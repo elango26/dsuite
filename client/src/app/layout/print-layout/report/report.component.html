@@ -1,19 +1,19 @@
 <table>
   <caption>Daily sales</caption>
-  <tr><td>Route: PPN</td><td>Date: 20-12-2019</td></tr>
-  </table>
-  <table>
+  <tr>
+    <td>Route: PPN</td>
+    <td>Date: 20-12-2019</td>
+  </tr>
+</table>
+<table>
   <thead>
-  <th>Names</th>
-  <th>sm500</th>
-  <th>sm200</th>
-  <th>curd160</th>
-  <th>curd200</th>
+    <th>Names</th>
+    <th *ngFor="let prod of products">{{prod.alias}}</th>
   </thead>
   <tbody>
-  <td>Deepan</td>
-  <td>5</td>
-  <td></td>
-  <td>5</td>
+    <tr *ngFor="let cust of report">
+      <td>{{cust.customername}}</td>
+      <td *ngFor="let prod of products">{{cust[prod._id]}}</td>
+    </tr>
   </tbody>
-  </table>
+</table>

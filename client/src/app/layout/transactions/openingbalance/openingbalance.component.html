@@ -1,0 +1,48 @@
+<mat-card>
+  <mat-card-header>
+      <mat-card-title>Opening Balances</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+      <section class="example-section">
+          <mat-form-field class="example-margin">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+          </mat-form-field>
+      </section>
+  </mat-card-content>
+
+  <div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="customerName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+          <td mat-cell *matCellDef="let row" > {{row.customer.customerName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="route">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Route </th>
+        <td mat-cell *matCellDef="let row" > {{row.customer.route.areaName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+        <td mat-cell *matCellDef="let row" > {{row.amount|currency:'INR'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+        <td mat-cell *matCellDef="let row" > 
+          <a (click)="openOrderModal(row)"><mat-icon class="sidenav-icon">edit</mat-icon></a> 
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+  <div class="clearpix"> 
+    <button mat-raised-button color ="primary" (click)="openDialog()">Add New</button>
+  </div>
+</mat-card>

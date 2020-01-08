@@ -7,7 +7,29 @@ const customer = require('../models/customer');
 const product = require('../models/product');
 
 router.get('/list',(req,res,next)=>{
-    customer.aggregate([       
+    var customerMatchArr = [{"is_active":"YES"}];
+    var orderMatchArr = [
+      { $eq: ['$customer_id', '$$cust_id'] },
+      { $eq: ['$local_date',req.query.order_date]},
+      { $eq: ['$is_delivered', 'NO']},
+    ];
+    
+    if(req.query.route != 'all'){    
+      let routes = req.query.route;
+      let matArr = [];
+      routes.split(',').forEach(element => {
+        matArr.push({"route":ObjectId(element)});
+      });
+      customerMatchArr.push({"$or": matArr}); 
+    }
+
+    if(req.query.search_key != ""){
+      customerMatchArr.push({"customerName":RegExp(req.query.search_key, 'i')});      
+    }
+    customer.aggregate([   
+        {"$match":{
+          "$and": customerMatchArr
+        }},    
         {"$lookup":{
             from: 'orders',
             as: 'orders',
@@ -21,11 +43,7 @@ router.get('/list',(req,res,next)=>{
                 {
                     $match: {
                     $expr: {
-                        $and: [
-                        { $eq: ['$customer_id', '$$cust_id'] },
-                        { $eq: ['$local_date',req.query.order_date]},
-                        { $eq: ['$is_delivered', 'NO']}
-                        ]
+                        $and: orderMatchArr
                     }
                     }
                 }

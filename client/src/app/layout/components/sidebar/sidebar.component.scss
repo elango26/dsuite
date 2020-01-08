@@ -41,6 +41,17 @@
         }
     }
 }
+mat-nav-list a:active {
+    background-color:rgb(125, 236, 231) !important;
+}
+mat-nav-list {
+    .mat-list-item.active {
+        background-color: lightseagreen;
+    }
+    .nested-menu ul li a.active {
+        background-color: lightseagreen;
+    }
+}
 @media screen and (max-width: 992px) {
     #sidebar {
         left: -250px;

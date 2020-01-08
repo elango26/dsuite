@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule, MatCardModule, MatIconModule, MatTableModule } from '@angular/material';
@@ -21,6 +21,7 @@ import { DashboardComponent } from './dashboard.component';
         MatIconModule,
         FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
+    providers: [DatePipe],
     declarations: [DashboardComponent]
 })
 export class DashboardModule {}

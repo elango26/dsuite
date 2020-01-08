@@ -40,8 +40,7 @@ export class PaymentsComponent implements OnInit {
 
   constructor(public commonService: CommonService, public snackBar:MatSnackBar,
     public dialogRef:MatDialogRef<PaymentsComponent>,
-    @Inject(MAT_DIALOG_DATA) public form_value: any) { 
-    console.log(form_value);
+    @Inject(MAT_DIALOG_DATA) public form_value: any) {
     if(form_value.customer){
       this.currentCustomer = form_value.customer;
       this.dedicatedCustomer = true;
@@ -49,6 +48,8 @@ export class PaymentsComponent implements OnInit {
   }
 
   ngOnInit() {
+//    this.dataSource.filterPredicate = (data, filter: string) => data.customer[0].customerName.toLowerCase().includes(filter) || data.payment_type.toString() === filter;
+    
     this.payment_type = PAYMENT_TYPE.map(val=>{
       return {
         key: val,
@@ -69,7 +70,7 @@ export class PaymentsComponent implements OnInit {
       this.displayedColumns.unshift('customer');
       this.loadCustomers();
       this.loadOutstandingAmount();
-    }
+    }    
   }
 
   loadCustomers(){
@@ -124,7 +125,10 @@ export class PaymentsComponent implements OnInit {
       this.payments = data;
       this.dataSource = new MatTableDataSource(this.payments);
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.dataSource.sort = this.sort;      
+      // this.dataSource.filterPredicate = (data, filter: string) => {
+      //   return data.payment_type == filter;
+      // };
     });
   }
 

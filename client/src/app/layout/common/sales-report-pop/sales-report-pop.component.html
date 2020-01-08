@@ -1,0 +1,50 @@
+<mat-card>
+  <mat-card-content>
+  <mat-icon (click)="callPrintModal()" class="print pull-right">print</mat-icon>
+  <div *ngFor="let inv of saleData">
+      <table>
+          <tr>
+              <td><b>Bill No:</b> {{inv.sales.sale_id}}</td>
+              <td><b>Date:</b> {{inv.sales.sale_date | date:'medium':'IST'}}</td>
+          </tr>
+          <tr>
+              <td><b>To:</b> {{inv.sales.customer.customerName}}</td>
+          </tr>
+          <tr>
+              <td><b>Payment Type:</b> CASH</td>
+          </tr>
+      </table>
+      <table>
+          <thead>
+              <tr>
+                  <th>Sno</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th>Tax</th>
+            <th scope="col">Amount</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let desc of inv.details; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{desc.product.prod_name}}</td>
+            <td>{{desc.prod_quan | number : '1.2-2'}}</td>
+            <td>{{desc.prod_rate_per_unit|currency:'INR'}}</td>
+            <td>{{desc.prod_tax|currency:'INR'}}</td>
+            <td>{{desc.sub_amount|currency:'INR'}}</td>
+              </tr>
+          </tbody>
+          <tfoot>
+              <tr>
+                  <th colspan="5">Totals</th>
+                  <td>{{inv.sales.total_amount|currency:'INR'}}</td>
+              </tr>
+          </tfoot>
+      </table>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="onNoClick()">Close</button>      
+    </mat-card-actions>
+  </mat-card>

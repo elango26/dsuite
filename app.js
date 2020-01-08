@@ -28,6 +28,9 @@ const order = require('./routes/order');
 const deliveries = require('./routes/deliveries');
 const personalize = require('./routes/personalize');
 const printer = require('./routes/printer');
+const dashboard = require('./routes/dashboard');
+const ob = require('./routes/openingbalance');
+const auth = require('./routes/auth');
 
 // connect to mongodb
 mongoose.connect('mongodb://localhost:27017/dsuite');
@@ -78,6 +81,9 @@ app.use('/api/order',order);
 app.use('/api/deliveries',deliveries);
 app.use('/api/personalize',personalize);
 app.use('/api/printer',printer);
+app.use('/api/dashboard',dashboard);
+app.use('/api/ob',ob);
+app.use('/api/auth',auth);
 
 // test server for home page
 app.get('/',(req,res)=>{

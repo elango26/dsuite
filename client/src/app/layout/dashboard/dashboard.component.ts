@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
+import { DatePipe } from '@angular/common';
+import { CommonService } from 'src/app/services/common.service';
+import { environment } from 'src/environments/environment';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 export interface PeriodicElement {
     name: string;
@@ -27,6 +31,7 @@ export class DashboardComponent implements OnInit {
     displayedColumns = ['position', 'name', 'weight', 'symbol'];
     dataSource = new MatTableDataSource(ELEMENT_DATA);
     places: Array<any> = [];
+    matGrids:any[];
 
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace
@@ -34,7 +39,33 @@ export class DashboardComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
 
-    constructor() {
+    constructor(public datePipe:DatePipe, public commonService: CommonService) {
+        this.matGrids = [
+            {
+                'class':'danger',
+                'icon':'local_shipping',
+                'count':0,
+                'label':'Sales'
+            },
+            {
+                'class':'warn',
+                'icon':'shopping_cart',
+                'count':0,
+                'label':'Purchases'
+            },
+            {
+                'class':'success',
+                'icon':'functions',
+                'count':0,
+                'label':'Expenses'
+            },
+            {
+                'class':'info',
+                'icon':'remove_shopping_cart',
+                'count':0,
+                'label':'Damages'
+            }
+        ]; 
         this.places = [
             {
                 imgSrc: 'assets/images/card-1.jpg',
@@ -66,5 +97,20 @@ export class DashboardComponent implements OnInit {
         ];
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.loadDashboard();
+    }
+
+    loadDashboard(){
+        let q = '?date='+this.datePipe.transform(new Date,"yyyy-MM-dd");
+        this.commonService.getMethod(environment.urls.getDashboardGrids+q).subscribe((data:GenericResp) =>{
+            if(data.code == 200){
+                var details = data.data;
+                this.matGrids.forEach((element)=>{
+                    if(details[element.label.toLowerCase()].length > 0)
+                        element.count = details[element.label.toLowerCase()][0].value;
+                });
+            }
+        });
+    }
 }

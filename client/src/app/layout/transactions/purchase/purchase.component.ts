@@ -31,6 +31,7 @@ export class PurchaseComponent implements OnInit {
   filteredOptions: Observable<Product[]>;
   vendorFilteredOptions: Observable<Vendor[]>;
   purchase_type: string = "Purchase";
+  custFormMaxDate = new Date();
 
   @ViewChild("productName") prodField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar) { 
@@ -143,7 +144,11 @@ export class PurchaseComponent implements OnInit {
     this.transaction_desc = [];
     this.dataSource = new MatTableDataSource(this.transaction_desc);
     this.form.reset();
-    this.vendorForm.reset();
+    //reset form
+    this.vendorForm = new FormGroup({
+      'vendorName': new FormControl('',Validators.required),
+      'curDate': new FormControl(new Date(),Validators.required)
+    });
     this.commonService.postMethod(environment.urls.postPurchase,data).subscribe(data =>{      
       this.snackBar.open("Saved successfully!!", "Success", {
         duration: 500,

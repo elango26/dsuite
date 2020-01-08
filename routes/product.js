@@ -7,7 +7,11 @@ const common = require('./common');
 router.get('/list',(req,res,next)=>{
     
     product.aggregate([
-        {    
+        {  
+        "$sort":{
+            "index":1
+        }},
+        {
         "$lookup": {
             "from": "users",
             "localField": "createdBy",

@@ -1,13 +1,6 @@
-import { LayoutModule } from '@angular/cdk/layout';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NgModule } from '@angular/core';
-import {
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatSidenavModule,
-    MatToolbarModule
-} from '@angular/material';
+import { NgModule, Injectable, APP_INITIALIZER } from '@angular/core';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -16,6 +9,12 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BootstrapService } from './services/bootstrap.service';
+
+export function configServiceFactory(config: BootstrapService) {
+    return () => config.load();
+}
+
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
     /* for development
@@ -45,7 +44,15 @@ export const createTranslateLoader = (http: HttpClient) => {
         //TransactionsModule,
         //OrdersModule
     ],
-    providers: [],
+    providers: [
+        BootstrapService,
+        {
+        provide: APP_INITIALIZER,
+        useFactory: configServiceFactory,
+        deps: [BootstrapService],
+        multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

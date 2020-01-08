@@ -3,6 +3,8 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
+import { PrinterService } from 'src/app/services/printer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recentsales',
@@ -19,7 +21,7 @@ export class RecentsalesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private commonService: CommonService, private dialog: MatDialog) {
+  constructor(private commonService: CommonService, private dialog: MatDialog, public printerService:PrinterService, public router: Router) {
   }
 
   ngOnInit() {
@@ -49,6 +51,16 @@ export class RecentsalesComponent implements OnInit {
     // dialogRef.afterClosed().subscribe(result => {
     //   //reload
     // });
+  }
+
+  print(saleid:string){
+    this.printerService.printData = {
+      redirectUrl: '/reports',
+      format: 'invoice',
+      data: [saleid],
+      type: 'SALES'
+    }
+    this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
   }
 
 }

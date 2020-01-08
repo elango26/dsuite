@@ -1,8 +1,8 @@
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
-    <div fxFlex>
-        <app-stat [bgClass]="'danger'" [icon]="'local_shipping'" [count]="10000" [label]="'Sales'"></app-stat>
+    <div fxFlex *ngFor="let grid of matGrids">
+        <app-stat [bgClass]="grid.class" [icon]="grid.icon" [count]="grid.count | currency:'INR'" [label]="grid.label"></app-stat>
     </div>
-    <div fxFlex>
+    <!-- <div fxFlex>
         <app-stat [bgClass]="'warn'" [icon]="'shopping_cart'" [count]="10000" [label]="'Purchase'"></app-stat>
     </div>
     <div fxFlex>
@@ -10,7 +10,7 @@
     </div>
     <div fxFlex>
         <app-stat [bgClass]="'info'" [icon]="'remove_shopping_cart'" [count]="100" [label]="'Spoilage'"></app-stat>
-    </div>
+    </div> -->
 </div>
 
 <div class="mb-20" flFlex flexLayout="row" flexLayout.lt-md="column">

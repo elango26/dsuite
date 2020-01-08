@@ -19,6 +19,8 @@ export class CustomersComponent implements OnInit {
   dataSource: MatTableDataSource<Customer>;
 
   public customerList: Customer[];
+  showLeadsPage:boolean = true;
+  rowData:any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -75,6 +77,16 @@ export class CustomersComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadLeads();
     });
+  }
+
+  viewCustomerPage(row){
+    this.showLeadsPage = false;
+    this.rowData = row;
+  }
+
+  resetLeadsPage(e){
+    console.log(e);
+    this.showLeadsPage = true;
   }
 }
 

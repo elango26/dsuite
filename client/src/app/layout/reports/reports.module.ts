@@ -8,7 +8,7 @@ import { MatTableModule } from '@angular/material';
 import {
   MatPaginatorModule, MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule
+  MatSliderModule, MatSlideToggleModule, MatIconModule
 } from '@angular/material';
 import { RecentPurchaseComponent } from './recent-purchase/recent-purchase.component';
 import { RecentdamagesComponent } from './recentdamages/recentdamages.component';
@@ -30,7 +30,8 @@ import { RecentdamagesComponent } from './recentdamages/recentdamages.component'
     MatSelectModule,
     MatSliderModule,
     MatAutocompleteModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatIconModule
   ]
 })
 export class ReportsModule { }

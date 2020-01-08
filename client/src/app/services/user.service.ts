@@ -9,11 +9,10 @@ import { CommonService } from './common.service';
 export class UserService {
   user:any;
   url = environment.urls.getUser;
-  constructor(private http: HttpClient) { 
-
-      // this.getMethod().subscribe((data) => {
-      //   this.user = data[0] ?  data[0] : {};
-      // });
+  constructor(private http: HttpClient) {
+    console.log('user called');
+    let session_user = localStorage.getItem('userdetails');
+    this.user = JSON.parse(session_user);
   }
 
 

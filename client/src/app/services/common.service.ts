@@ -12,7 +12,6 @@ import { RateMapping } from '../interfaces/rateMapping';
   providedIn: 'root'
 })
 export class CommonService {
-  user:any;
   products:Product[];
   product_rate:Rate[];
   rate_type:RateMapping[];
@@ -45,7 +44,7 @@ export class CommonService {
   }
 
   postMethod( url:string, data:any){
-    data['createdBy'] = '5cb1765cd833d31d8c81157d';//this.user.user._id;
+    data['createdBy'] = this.userservice.user._id;
     return this.http.post(url,data).pipe(
       catchError(this.handleError)
     );

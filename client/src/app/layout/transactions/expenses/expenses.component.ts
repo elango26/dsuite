@@ -20,6 +20,7 @@ export class ExpensesComponent implements OnInit {
   expenses: Expense[];
   form:FormGroup;
   expense_types:any[];
+  //custFormMaxDate = new Date();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

@@ -9,19 +9,19 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/orders/deliveries']">
             <mat-icon class="sidenav-icon">local_shipping</mat-icon> {{ 'Deliveries' | translate }}
         </a> 
-        <div class="nested-menu">
+        <div class="nested-menu" *ngIf="userDetail.role=='ADMIN'">
             <a mat-list-item (click)="addExpandClass('reports')" >
                 <mat-icon class="sidenav-icon">bar_chart</mat-icon> {{ 'Reports' | translate }}
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'reports'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/reports/recentsales']"><span>{{ 'Recent Sales' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentsales']"><span>{{ 'Recent Sales' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/reports/recentpurchase']"><span>{{ 'Recent Purchase' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentpurchase']"><span>{{ 'Recent Purchase' | translate }}</span></a>
                 </li> 
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/reports/recentdamages']"><span>{{ 'Recent Damages' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentdamages']"><span>{{ 'Recent Damages' | translate }}</span></a>
                 </li>                
             </ul>
         </div>        
@@ -31,38 +31,38 @@
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'leads'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/leads/customers']"><span>{{ 'Leads' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/leads/customers']"><span>{{ 'Leads' | translate }}</span></a>
                 </li>
-                <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/leads/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
+                <li *ngIf="userDetail.role=='ADMIN'">
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/leads/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
                 </li>                
             </ul>
         </div>
-        <div class="nested-menu">
+        <div class="nested-menu" *ngIf="userDetail.role=='ADMIN'">
             <a mat-list-item (click)="addExpandClass('masters')" >
                 <mat-icon class="sidenav-icon">add</mat-icon> {{ 'Masters' | translate }}
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'masters'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/customers']"><span>{{ 'Customers' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/masters/customers']"><span>{{ 'Customers' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/masters/vendors']"><span>{{ 'Vendors' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/users']"><span>{{ 'Users' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/masters/users']"><span>{{ 'Users' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/routes']"><span>{{ 'Routes' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/masters/routes']"><span>{{ 'Routes' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/rates']"><span>{{ 'Rates' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/masters/rates']"><span>{{ 'Rates' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/products']"><span>{{ 'Products' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/masters/products']"><span>{{ 'Products' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/masters/mapping']"><span>{{ 'Customer Mapping' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/masters/mapping']"><span>{{ 'Customer Mapping' | translate }}</span></a>
                 </li>
             </ul>
         </div>
@@ -72,16 +72,19 @@
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'transactions'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/transactions/sales']"><span>{{ 'Sales' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/sales']"><span>{{ 'Sales' | translate }}</span></a>
+                </li>
+                <li *ngIf="userDetail.role=='ADMIN'">
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/purchase']"><span>{{ 'Purchase' | translate }}</span></a>
+                </li>
+                <li *ngIf="userDetail.role=='ADMIN'">
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/expenses']"><span>{{ 'Expenses' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/transactions/purchase']"><span>{{ 'Purchase' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/damages']"><span>{{ 'Return / Spoil' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/transactions/expenses']"><span>{{ 'Expenses' | translate }}</span></a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/transactions/damages']"><span>{{ 'Return / Spoil' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/openingbalance']"><span>{{ 'Opening Balance' | translate }}</span></a>
                 </li>
             </ul>
         </div>
@@ -91,17 +94,17 @@
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'personalize'">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/personalize/customers']"><span>{{ 'Customer' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/personalize/customers']"><span>{{ 'Customer' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/layout/personalize/products']"><span>{{ 'Products' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/personalize/products']"><span>{{ 'Products' | translate }}</span></a>
                 </li>                
             </ul>
         </div>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/charts']">
+        <a *ngIf="userDetail.role=='ADMIN'" mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/charts']">
             <mat-icon class="sidenav-icon">today</mat-icon> {{ 'Remainders' | translate }}
         </a>   
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/charts']">
+        <a *ngIf="userDetail.role=='ADMIN'" mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/charts']">
             <mat-icon class="sidenav-icon">message</mat-icon> {{ 'SMS Alert' | translate }}
         </a>   
     </mat-nav-list>

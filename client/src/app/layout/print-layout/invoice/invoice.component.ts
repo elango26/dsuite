@@ -14,7 +14,7 @@ export class InvoiceComponent implements OnInit {
   invoiceData:any[];
   @Input() data:any;
 
-  constructor(public commonService: CommonService, public route: Router) {}
+  constructor(public commonService: CommonService, public router: Router) {}
 
   ngOnInit() {
     this.loadInvoices();
@@ -22,7 +22,7 @@ export class InvoiceComponent implements OnInit {
 
   loadInvoices(){
     let data = {
-      invoices: this.data.saleid,
+      invoices: this.data.data,
       type: this.data.type
     };
     this.commonService.postMethod(environment.urls.printInvoices,data).subscribe((data:GenericResp)=>{
@@ -32,7 +32,7 @@ export class InvoiceComponent implements OnInit {
 
       setTimeout(()=>{
         window.print();
-        this.route.navigate([this.data.redirectUrl,{ outlets: { printpage: null }}],{ skipLocationChange: true });
+        this.router.navigate([this.data.redirectUrl,{ outlets: { printpage: null }}],{ skipLocationChange: true });
       },1000);      
     });
   }

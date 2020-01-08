@@ -15,12 +15,14 @@ export class PrintLayoutComponent implements OnInit {
   constructor(public printerService: PrinterService, public router: Router) { }
 
   ngOnInit() {
-    console.log('print layout loaded');
-    console.log(this.printerService.printData);
     if(this.printerService.printData){
       switch(this.printerService.printData.format){
         case 'invoice':
               this.formatType = 'invoice';
+              this.printdata = this.printerService.printData;
+              break;
+        case 'report':
+              this.formatType = 'report';
               this.printdata = this.printerService.printData;
               break;
         default:

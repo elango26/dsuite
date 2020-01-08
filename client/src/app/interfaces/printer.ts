@@ -1,6 +1,8 @@
 export interface Printer {
     redirectUrl: string;
     format: string;
-    saleid: any[];
+    data: any[];
     type: string;
 }
+
+

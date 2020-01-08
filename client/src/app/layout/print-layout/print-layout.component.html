@@ -11,6 +11,7 @@
   <tbody><tr><td>
     <div class="content">
       <app-invoice *ngIf="formatType=='invoice'" [data]="printdata"></app-invoice>
+      <app-report *ngIf="formatType=='report'" [data]="printdata"></app-report>
     </div>
   </td></tr></tbody>
   <tfoot><tr><td>

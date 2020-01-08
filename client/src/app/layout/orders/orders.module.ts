@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
 import { OrdersRoutingModule } from './orders-routing.module';
-import { DeliveriesComponent } from './deliveries/deliveries.component';
+import { DeliveriesComponent, DeliveriesPrintComponent } from './deliveries/deliveries.component';
+
+DeliveriesPrintComponent
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +20,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { DsuiteModule } from '../common/dsuite.module';
 
 @NgModule({
-  declarations: [DeliveriesComponent],
+  declarations: [DeliveriesComponent,DeliveriesPrintComponent],
   imports: [
     CommonModule,
     OrdersRoutingModule,
@@ -47,6 +49,7 @@ import { DsuiteModule } from '../common/dsuite.module';
     MatIconModule,
     DsuiteModule
   ],
-  providers: [DatePipe]
+  providers: [DatePipe],
+  entryComponents: [DeliveriesPrintComponent]
 })
 export class OrdersModule { }
