@@ -10,7 +10,14 @@ import { PAYMENT_TYPE } from '../../../constants/contants';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { AbstractControl } from '@angular/forms';
 
+export function ValidateUrl(control: AbstractControl) {
+  if (control.value && !control.value.customerName) {
+    return { validUrl: true };
+  }
+  return null;
+}
 export interface outstandingDetails {
   amount: number;
   classname: string;
@@ -58,7 +65,7 @@ export class PaymentsComponent implements OnInit {
     });
     this.form = new FormGroup({
       'payment_type': new FormControl('',Validators.required),
-      'customerName': new FormControl('',Validators.required),
+      'customerName': new FormControl('',[Validators.required,ValidateUrl]),
       'amount': new FormControl('',Validators.required)
     });
     this.loadPayments(); 
@@ -142,7 +149,11 @@ export class PaymentsComponent implements OnInit {
   }
 
   closeModal(){
-    this.dialogRef.close();
+    if(!this.dedicatedCustomer){
+      this.form.reset();
+    }else{
+      this.dialogRef.close();
+    }    
   }
 
   submit_form(){
@@ -153,6 +164,7 @@ export class PaymentsComponent implements OnInit {
         amount:this.form.value.amount,
         payment_type:this.form.value.payment_type
       }
+      
       this.commonService.postMethod(environment.urls.postPayment,data).subscribe(data =>{        
         this.snackBar.open("Saved successfully!!", "Success", {
           duration: 500,

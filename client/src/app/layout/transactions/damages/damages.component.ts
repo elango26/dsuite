@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } 
+import { FormGroup, FormControl, Validators, FormBuilder, ValidatorFn, AbstractControl } 
     from '@angular/forms';
 import { MatTableDataSource,MatSnackBar } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
@@ -12,6 +12,14 @@ import { startWith, map } from 'rxjs/operators';
 import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
 //import { CATEGORY, SUBCATEGORY, BRANDS } from '../../../constants/contants';
 
+export function objValidator(obj:any): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value && !control.value[obj]) {
+          return { 'valid': true };
+      }
+      return null;
+  };
+}
 
 @Component({
   selector: 'app-damages',
@@ -36,11 +44,11 @@ export class DamagesComponent implements OnInit {
   @ViewChild("productName") prodField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar) { 
     this.form = new FormGroup({
-      'productName': new FormControl('',Validators.required),
-      'quantity': new FormControl('',Validators.required)
+      'productName': new FormControl('',[Validators.required,objValidator('prod_name')]),
+      'quantity': new FormControl('',[Validators.required])
     });
     this.custForm = new FormGroup({
-      'customerName': new FormControl('',Validators.required),
+      'customerName': new FormControl('',[Validators.required,objValidator('customerName')]),
       'curDate': new FormControl(new Date(),Validators.required)
     });
   }
@@ -161,6 +169,9 @@ export class DamagesComponent implements OnInit {
       'customerName': new FormControl('',Validators.required),
       'curDate': new FormControl(new Date(),Validators.required)
     });
+    //call filter after form reset
+    this._callCustomerFilter();  
+    this._callFilter();  
     this.commonService.postMethod(environment.urls.postDamage,data).subscribe(data =>{      
       this.snackBar.open("Saved successfully!!", "Success", {
         duration: 500,

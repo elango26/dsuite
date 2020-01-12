@@ -5,7 +5,7 @@
         <td><b>Date:</b> {{inv.sales.sale_date | date:'medium':'IST'}}</td>
     </tr>
     <tr>
-        <td><b>To:</b> {{inv.sales.customer.customerName}}</td>
+        <td><b>To:</b> {{inv.sales.customer?inv.sales.customer.customerName:'Counter'}}</td>
     </tr>
     <tr>
         <td><b>Payment Type:</b> CASH</td>

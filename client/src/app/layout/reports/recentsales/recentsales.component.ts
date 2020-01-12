@@ -58,7 +58,8 @@ export class RecentsalesComponent implements OnInit {
       redirectUrl: '/reports',
       format: 'invoice',
       data: [saleid],
-      type: 'SALES'
+      type: 'SALES',
+      date: new Date() // dummy date
     }
     this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
   }

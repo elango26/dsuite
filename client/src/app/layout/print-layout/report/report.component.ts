@@ -13,10 +13,12 @@ export class ReportComponent implements OnInit {
   @Input() data:any;
   products: Product[];
   report: any[];
+  reportDate: Date;
   constructor(public commonService:CommonService, public router: Router) { }
 
   ngOnInit() { 
     this.products = this.commonService.getProductList();
+    this.reportDate = this.data.date;
     this.loadReport();
   }
 

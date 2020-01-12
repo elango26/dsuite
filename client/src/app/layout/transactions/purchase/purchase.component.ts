@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } 
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidatorFn } 
     from '@angular/forms';
 import { MatTableDataSource,MatSnackBar } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
@@ -12,6 +12,14 @@ import { formControlBinding } from '@angular/forms/src/directives/reactive_direc
 import { Vendor } from 'src/app/interfaces/vendor';
 //import { CATEGORY, SUBCATEGORY, BRANDS } from '../../../constants/contants';
 
+export function objValidator(obj:any): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value && !control.value[obj]) {
+          return { 'valid': true };
+      }
+      return null;
+  };
+}
 
 @Component({
   selector: 'app-purchase',
@@ -36,11 +44,11 @@ export class PurchaseComponent implements OnInit {
   @ViewChild("productName") prodField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar) { 
     this.form = new FormGroup({
-      'productName': new FormControl('',Validators.required),
+      'productName': new FormControl('',[Validators.required,objValidator('prod_name')]),
       'quantity': new FormControl('',Validators.required)
     });
     this.vendorForm = new FormGroup({
-      'vendorName': new FormControl('',Validators.required),
+      'vendorName': new FormControl('',[Validators.required,objValidator('vendorName')]),
       'curDate': new FormControl(new Date(),Validators.required)
     });
   }
@@ -149,6 +157,9 @@ export class PurchaseComponent implements OnInit {
       'vendorName': new FormControl('',Validators.required),
       'curDate': new FormControl(new Date(),Validators.required)
     });
+    // filter options after reset
+    this._callVendorFilter();  
+    this._callFilter();  
     this.commonService.postMethod(environment.urls.postPurchase,data).subscribe(data =>{      
       this.snackBar.open("Saved successfully!!", "Success", {
         duration: 500,

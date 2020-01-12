@@ -47,9 +47,11 @@ mat-nav-list a:active {
 mat-nav-list {
     .mat-list-item.active {
         background-color: lightseagreen;
+        color:#fff;
     }
     .nested-menu ul li a.active {
         background-color: lightseagreen;
+        color:#fff;
     }
 }
 @media screen and (max-width: 992px) {

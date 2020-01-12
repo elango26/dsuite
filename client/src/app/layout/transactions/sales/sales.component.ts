@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } 
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidatorFn } 
     from '@angular/forms';
 import { MatTableDataSource,MatSnackBar, MatDialog } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
@@ -16,6 +16,14 @@ import { PrinterService } from 'src/app/services/printer.service';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { SalesReportPopComponent } from '../../common/sales-report-pop/sales-report-pop.component';
 
+export function objValidator(obj:any): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value && !control.value[obj]) {
+          return { 'valid': true };
+      }
+      return null;
+  };
+}
 
 @Component({
   selector: 'app-sales',
@@ -42,11 +50,11 @@ export class SalesComponent implements OnInit {
   constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router, private route: ActivatedRoute, 
     public printerService: PrinterService, public dialog: MatDialog) { 
     this.form = new FormGroup({
-      'productName': new FormControl('',Validators.required),
+      'productName': new FormControl('',[Validators.required,objValidator('prod_name')]),
       'quantity': new FormControl('',Validators.required)
     });
     this.custForm = new FormGroup({
-      'customerName': new FormControl('',Validators.required),
+      'customerName': new FormControl('',[Validators.required,objValidator('customerName')]),
       'curDate': new FormControl(new Date(),Validators.required)
     });
   }
@@ -162,12 +170,7 @@ export class SalesComponent implements OnInit {
     }
     this.transaction_desc = [];
     this.dataSource = new MatTableDataSource(this.transaction_desc);
-    this.form.reset();
-    //reset form
-    this.custForm = new FormGroup({
-      'customerName': new FormControl('',Validators.required),
-      'curDate': new FormControl(new Date(),Validators.required)
-    });
+     
     this.commonService.postMethod(environment.urls.postSales,data).subscribe((data:GenericResp) =>{  
       if(data.code == 200){
         this.snackBar.open("Saved successfully!!", "Success", {
@@ -186,7 +189,8 @@ export class SalesComponent implements OnInit {
             redirectUrl: '/transactions',
             format: 'invoice',
             data: [data.data.sale_id],
-            type: 'SALES'
+            type: 'SALES',
+            date: new Date() // dummy date
           }
           this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
         }  
@@ -200,7 +204,16 @@ export class SalesComponent implements OnInit {
       this.snackBar.open(error, "Error", {
         duration: 600,
       });
-    });    
+    });   
+    this.form.reset();
+    //reset form
+    this.custForm = new FormGroup({
+      'customerName': new FormControl('',Validators.required),
+      'curDate': new FormControl(new Date(),Validators.required)
+    });
+    //after reset call filters
+    this._callCustomerFilter();  
+    this._callFilter();  
   }
 
   //sales report page

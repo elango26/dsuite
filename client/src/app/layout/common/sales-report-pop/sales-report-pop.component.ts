@@ -45,7 +45,8 @@ export class SalesReportPopComponent implements OnInit {
       redirectUrl: '/transactions',
       format: 'invoice',
       data: [this.dialog_data.saleid],
-      type: 'SALES'
+      type: 'SALES',
+      date: new Date() // dummy date
     }
     this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
   }

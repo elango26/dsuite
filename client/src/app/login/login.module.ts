@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
+//import {MatProgressSpinnerModule} from '@angular/material';
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import { LoginComponent } from './login.component';
         FormsModule,
         ReactiveFormsModule,
         MatSnackBarModule,
+        //MatProgressSpinnerModule,
         FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
     declarations: [LoginComponent]

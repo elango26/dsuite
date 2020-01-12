@@ -3,6 +3,7 @@ export interface Printer {
     format: string;
     data: any[];
     type: string;
+    date: Date;
 }
 
 

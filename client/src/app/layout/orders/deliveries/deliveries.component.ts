@@ -24,7 +24,7 @@ export class DeliveriesComponent implements OnInit {
   routes:any;
 
   setStep(index: number) {
-    console.log(index);
+    //console.log(index);
     this.step = index;
   }
 
@@ -75,7 +75,7 @@ export class DeliveriesComponent implements OnInit {
   }
 
   private generateCosolidatedList(consList:any[]){
-    console.log("Product list");
+    //console.log("Product list");
     let list = this.commonService.getProductList();
     for(let key in list){
       let count = consList.find(cons => cons._id == list[key]._id);
@@ -85,7 +85,7 @@ export class DeliveriesComponent implements OnInit {
         list[key]['count'] = 0;
       }
     }
-    console.log(list);
+    //console.log(list);
     this.consolidatedList = list;
   }  
 
@@ -137,7 +137,8 @@ export class DeliveriesComponent implements OnInit {
           redirectUrl: '/orders',
           format: 'report',
           data: data,
-          type: 'SALES'
+          type: 'SALES',
+          date: this.delDate
         }
         this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
       });      
