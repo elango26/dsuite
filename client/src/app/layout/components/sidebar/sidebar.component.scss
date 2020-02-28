@@ -48,10 +48,14 @@ mat-nav-list {
     .mat-list-item.active {
         background-color: lightseagreen;
         color:#fff;
+        border-radius: 3px;
+        margin: 1px;
     }
     .nested-menu ul li a.active {
         background-color: lightseagreen;
         color:#fff;
+        border-radius: 3px;
+        margin: 1px;
     }
 }
 @media screen and (max-width: 992px) {

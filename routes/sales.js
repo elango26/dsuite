@@ -40,7 +40,7 @@ router.get('/list',(req,res,next)=>{
 
                     transactionDetails.aggregate([
                         {
-                            "$match": { parent_id: ObjectId(list[i]._id) }
+                            "$match": { parent_id: ObjectId(list[i]._id),is_active: 'YES', is_delete: 'NO' }
                         },
                         {    
                         "$lookup": {
@@ -117,18 +117,20 @@ router.post('/create',(req,res,next)=>{
 });
 
 router.put('/update/:id',(req,res,next)=>{
-
+    console.log("update id::"+req.params.id);
     sales.findByIdAndUpdate(req.params.id, {$set: req.body},(err,sales)=>{
         if(err){
             res.json(err);
         }else{
-            transactionDetails.deleteMany({ parent_id : sales._id });
+            //transactionDetails.deleteMany({ parent_id : sales._id, type: 'SALES' });
             if(!req.body.details || !req.body.details.length) res.json({msg:'sales updated successfully'});
             let count = 0;
-            for (let i = 0, len = req.body.details.length; i < len; i++) {
+            for (let i = 0, len = req.body.details.length; i < len; i++) {                
                 req.body.details[i].parent_id = sales._id;
                 req.body.details[i].type = "SALES";
                 let newtransaction = new transactionDetails(req.body.details[i]);
+                if(req.body.details[i]._id)
+                    newtransaction.isNew = false;
                 newtransaction.save((errs,transaction)=>{
                     if(errs){
                         res.json(errs);

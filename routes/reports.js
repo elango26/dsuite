@@ -47,7 +47,9 @@ router.get('/sales',(req,res,next)=>{
                             "$match": { 
                                 "$and": [ 
                                         {parent_id: ObjectId(list[i]._id) },
-                                        {type: 'SALES' }
+                                        {type: 'SALES' },
+                                        {is_active: 'YES'},
+                                        {is_delete: 'NO'}
                                     ]
                             }
                         },
@@ -121,7 +123,9 @@ router.get('/purchase',(req,res,next)=>{
                             "$match": { 
                                 "$and": [ 
                                         {parent_id: ObjectId(list[i]._id) },
-                                        {type: 'PURCHASE' }
+                                        {type: 'PURCHASE' },
+                                        {is_active: 'YES'},
+                                        {is_delete: 'NO'}
                                     ]
                             }                           
                         },

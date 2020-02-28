@@ -18,9 +18,21 @@ router.get('/searchOrders',(req,res,next)=>{
         {
             $lookup:{
                 from: 'transactiondetails',
-                localField: '_id',
-                foreignField: 'parent_id',
-                as: 'details'
+                as: 'details',
+                let: { parent_id: '$_id' },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $and: [
+                          { $eq: ['$parent_id', '$$parent_id'] },
+                          { $eq: ['$is_active','YES']},
+                          { $eq: ['$is_delete','NO']}
+                        ]
+                      }
+                    }
+                  }
+                ]
             }
         },
         {
@@ -89,9 +101,21 @@ router.post('/placeOrders',(req,res,next)=>{
         }},
         {"$lookup":{
             from: 'transactiondetails',
-            localField: '_id',
-            foreignField: 'parent_id',
-            as: 'details'
+            as: 'details',
+            let: { parent_id: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$parent_id', '$$parent_id'] },
+                      { $eq: ['$is_active','YES']},
+                      { $eq: ['$is_delete','NO']}
+                    ]
+                  }
+                }
+              }
+            ]
         }}
     ]).exec((err,list)=>{
         //fetch all rate details
@@ -229,7 +253,7 @@ router.get('/list',(req,res,next)=>{
 
                     transactionDetails.aggregate([
                         {
-                            "$match": { parent_id: ObjectId(list[i]._id) }
+                            "$match": { parent_id: ObjectId(list[i]._id), is_delete:'NO', is_active:'YES' }
                         },
                         {    
                         "$lookup": {

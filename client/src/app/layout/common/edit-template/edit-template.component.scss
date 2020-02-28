@@ -23,27 +23,18 @@ th {
     margin: 10px;
 }
 
-.icon-div {
-    display: flex;
-    a {
-        padding-right: 0.5em;
-        cursor: pointer;
-    }
-}
-
-.debit {
-    color: red;
-}
-
-.credit {
-    color: limegreen;
-}
-
-.anchor-tag{
+.print{
     cursor: pointer;
 }
 
-.print-right{
-    float : right;
-    cursor : pointer;
+.display-inline{
+    display: inline-flex;
+}
+
+.pull-right{
+    display:block;
+    text-align: right;
+    button{
+        margin-left: 0.23em;
+    }
 }

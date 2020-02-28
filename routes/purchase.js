@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const {ObjectId} = require('mongodb');
-const async = require('async');
 const purchase = require('../models/purchase');
 const transactionDetails = require('../models/transactiondetails');
 const common = require('./common');
@@ -35,7 +34,7 @@ router.get('/list',(req,res,next)=>{
 
                     transactionDetails.aggregate([
                         {
-                            "$match": { parent_id: ObjectId(list[i]._id) }
+                            "$match": { parent_id: ObjectId(list[i]._id),is_active:'YES',is_delete:'NO'}
                         },
                         {    
                         "$lookup": {
@@ -69,6 +68,10 @@ router.get('/list',(req,res,next)=>{
 router.get('/transaction',(req,res,next)=>{
 
     transactionDetails.aggregate([  
+        {"$match":{
+            "is_active":"YES",
+            "is_delete":"NO"
+        }},
         {    
         "$lookup": {
             "from": "products",

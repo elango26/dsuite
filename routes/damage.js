@@ -44,7 +44,7 @@ router.get('/list',(req,res,next)=>{
 
                     transactionDetails.aggregate([
                         {
-                            "$match": { parent_id: ObjectId(list[i]._id) }
+                            "$match": { parent_id: ObjectId(list[i]._id), is_delete:'NO', is_active:'YES' }
                         },
                         {    
                         "$lookup": {

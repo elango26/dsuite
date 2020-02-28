@@ -9,11 +9,20 @@
   <thead>
     <th class="dotted">Names</th>
     <th class="dotted" *ngFor="let prod of products">{{prod.alias}}</th>
+    <ng-container *ngIf="data.type=='LEADS'">
+      <th class="dotted" *ngFor="let th of extraTH">{{th}}</th>
+    </ng-container>
+    
   </thead>
   <tbody>
     <tr *ngFor="let cust of report">
       <td class="dotted">{{cust.customername}}</td>
       <td class="dotted" *ngFor="let prod of products">{{(cust[prod._id] != 0)?cust[prod._id]:''}}</td>
+      <td class="dotted">{{cust.old | number:'0.2-2'}}</td>
+      <td class="dotted">{{cust.week | number:'0.2-2'}}</td>
+      <td class="dotted">{{cust.today | number:'0.2-2'}}</td>      
+      <td class="dotted">{{cust.old+cust.week+cust.today | number:'0.2-2'}}</td>
+      <td class="dotted"></td>
     </tr>
   </tbody>
 </table>

@@ -31,6 +31,10 @@ const transactionDetailsSchema = mongoose.Schema({
         type : Number,
         require : true
     },
+    tax : {
+        type : Number,
+        require : true
+    },
     prod_tax : {
         type : Number,
         require : true
@@ -48,6 +52,18 @@ const transactionDetailsSchema = mongoose.Schema({
         require: true,
         enum: [true,false],
         default: true
+    },
+    is_active : {
+        type : String,
+        require : true,
+        enum: ['YES','NO'],
+        default: 'YES'
+    },
+    is_delete : {
+        type : String,
+        require : true,
+        enum: ['YES','NO'],
+        default: 'NO'
     }
 });
 

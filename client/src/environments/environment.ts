@@ -28,6 +28,9 @@ export const environment = {
     searchOrder:apiUrl+'/order/searchOrders',
     postOrderSales:apiUrl+'/order/placeOrders',
     loadTransactions:apiUrl+'/leads/getTransactions',
+    //print sheet module
+    leadReport:apiUrl+'/leads/lead_report',
+    salesReport:apiUrl+'/leads/sales_report',
 
     //masters
     getRoute:apiUrl+'/route/list',
@@ -62,6 +65,7 @@ export const environment = {
     //transactions
     getSales:apiUrl+'/sales/list',
     postSales:apiUrl+'/sales/create',
+    updateSales:apiUrl+'/sales/update',
     getPurchase:apiUrl+'/purchase/list',
     postPurchase:apiUrl+'/purchase/create',
     getExpense:apiUrl+'/expense/list',

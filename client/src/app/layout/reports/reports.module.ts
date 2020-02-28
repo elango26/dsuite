@@ -8,13 +8,16 @@ import { MatTableModule } from '@angular/material';
 import {
   MatPaginatorModule, MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule, MatIconModule
+  MatSliderModule, MatSlideToggleModule, MatIconModule, MatButtonModule
 } from '@angular/material';
 import { RecentPurchaseComponent } from './recent-purchase/recent-purchase.component';
 import { RecentdamagesComponent } from './recentdamages/recentdamages.component';
+import { EditTemplateComponent } from '../common/edit-template/edit-template.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
-  declarations: [RecentsalesComponent, RecentPurchaseComponent, RecentdamagesComponent],
+  declarations: [RecentsalesComponent, RecentPurchaseComponent, RecentdamagesComponent, EditTemplateComponent],
   imports: [
     CommonModule,
     ReportsRoutingModule,
@@ -31,7 +34,11 @@ import { RecentdamagesComponent } from './recentdamages/recentdamages.component'
     MatSliderModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
-    MatIconModule
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatButtonModule
   ]
 })
 export class ReportsModule { }

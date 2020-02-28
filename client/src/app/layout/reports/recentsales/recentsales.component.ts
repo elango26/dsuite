@@ -15,6 +15,8 @@ export class RecentsalesComponent implements OnInit {
 
   displayedColumns = [ 'sno','date', 'customerName', 'amount','actions'];
   dataSource: MatTableDataSource<any>;
+  editView:boolean = false;
+  editData: any;
 
   public salesList: any;
 
@@ -42,15 +44,15 @@ export class RecentsalesComponent implements OnInit {
       }
   }
 
-  openOrderModal(){
-    // const dialogRef = this.dialog.open(ProdtableComponent, {
-    //   width: '800px',
-    //   data: {}
-    // });
+  editSales(row:any){
+    this.editView = true;
+    //console.log(row);
+    this.editData = row;
+  }
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   //reload
-    // });
+  backToReport(e){
+    console.log(e);
+    this.editView = false;
   }
 
   print(saleid:string){

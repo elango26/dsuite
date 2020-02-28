@@ -9,6 +9,8 @@ export interface TransactionDesc {
     sub_amount:number;
     prod_name:string;
     is_delivered?:boolean;
+    is_delete?:string;
+    is_active?:string;
 }
 
 export interface Sales {

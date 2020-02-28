@@ -11,6 +11,7 @@ import {
   MatSliderModule, MatSlideToggleModule, MatIconModule
 } from '@angular/material';
 import { SalesReportPopComponent } from './sales-report-pop/sales-report-pop.component';
+//import { EditTemplateComponent } from './edit-template/edit-template.component';
 
 @NgModule({
   declarations: [ProdtableComponent, SalesReportPopComponent],

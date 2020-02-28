@@ -1,7 +1,7 @@
 export interface Printer {
     redirectUrl: string;
     format: string;
-    data: any[];
+    data: any;
     type: string;
     date: Date;
 }

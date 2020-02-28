@@ -4,21 +4,23 @@ import { DsuiteModule } from '../common/dsuite.module';
 import { PaymentModule } from '../payment/payment.module';
 
 import { LeadsRoutingModule } from './leads-routing.module';
-import { CustomersComponent } from './customers/customers.component';
+import { CustomersComponent, SheetPrintComponent } from './customers/customers.component';
 import { CustomersViewComponent } from './customers/customers-view.component';
 
 
-import { MatTableModule } from '@angular/material';
+import { MatTableModule, MatButtonModule } from '@angular/material';
 import {
   MatPaginatorModule, MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSliderModule, MatSlideToggleModule, MatIconModule
 } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [CustomersComponent, CustomersViewComponent],
+  declarations: [CustomersComponent, CustomersViewComponent, SheetPrintComponent],
   imports: [
     CommonModule,
+    FormsModule,
     MatTableModule,
     MatFormFieldModule,
     MatPaginatorModule,
@@ -35,7 +37,9 @@ import {
     MatSlideToggleModule,
     MatIconModule,
     DsuiteModule,
-    PaymentModule
-  ]
+    PaymentModule,
+    MatButtonModule
+  ],
+  entryComponents: [SheetPrintComponent]
 })
 export class LeadsModule { }

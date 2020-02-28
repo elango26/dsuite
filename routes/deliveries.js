@@ -62,9 +62,21 @@ router.get('/list',(req,res,next)=>{
         // }},
         {"$lookup":{
             from: 'transactiondetails',
-            localField: 'orders._id',
-            foreignField: 'parent_id',
-            as: 'orders.details'
+            as: 'orders.details',
+            let: { parent_id: '$orders._id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$parent_id', '$$parent_id'] },
+                      { $eq: ['$is_active','YES']},
+                      { $eq: ['$is_delete','NO']}
+                    ]
+                  }
+                }
+              }
+            ]
           }},
         {"$unwind":{
             path: '$orders.details',
@@ -135,9 +147,21 @@ router.get('/consolidatelist',(req,res,next)=>{
     }},
     {"$lookup":{
       from: 'transactiondetails',
-      localField: '_id',
-      foreignField: 'parent_id',
-      as: 'details'
+      as: 'details',
+      let: { parent_id: '$_id' },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                { $eq: ['$parent_id', '$$parent_id'] },
+                { $eq: ['$is_active','YES']},
+                { $eq: ['$is_delete','NO']}
+              ]
+            }
+          }
+        }
+      ]
     }},
     {"$unwind":{
       path: '$details',
@@ -174,9 +198,21 @@ router.get('/newconsolidatelist',(req,res,next)=>{
   product.aggregate([
     {"$lookup":{
       from: 'transactiondetails',
-      localField: '_id',
-      foreignField: 'prod_id',
-      as: 'details'
+      as: 'details',
+      let: { parent_id: '$_id' },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                { $eq: ['$prod_id', '$$parent_id'] },
+                { $eq: ['$is_active','YES']},
+                { $eq: ['$is_delete','NO']}
+              ]
+            }
+          }
+        }
+      ]
     }},
     {"$unwind":{
       path: '$details',

@@ -21,7 +21,9 @@ router.post('/invoices',(req,res,next)=>{
                   $expr: {
                     $and: [
                       { $eq: ['$parent_id', '$$parent_id'] },
-                      { $eq: ['$type',req.body.type]}
+                      { $eq: ['$type',req.body.type]},
+                      { $eq: ['$is_active', 'YES']},
+                      { $eq: ['$is_delete', 'NO']}
                     ]
                   }
                 }
