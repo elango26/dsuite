@@ -31,6 +31,7 @@ export class ProdtableComponent implements OnInit {
   order_details:any;
   isEdit:boolean = false;
   sale_type_arr: any[];
+  selectedCategory:string;
   constructor(private datePipe: DatePipe, private commonService: CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<ProdtableComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
@@ -84,7 +85,7 @@ export class ProdtableComponent implements OnInit {
     });
   }
 
-  private repeatOrder(){
+  public repeatOrder(){
     console.log('repeat order');
     let query = '?id='+this.customer._id+'&searchDate='+this.datePipe.transform(new Date(),"yyyy-MM-dd")+"&delivered=YES";
     this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{

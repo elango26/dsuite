@@ -147,6 +147,7 @@ export class SalesComponent implements OnInit {
 
       this.form.reset();      
       this.dataSource = new MatTableDataSource(this.transaction_desc);      
+      //console.log(this.transaction_desc.length);
       this._callFilter();
       this.prodField.nativeElement.focus();
     }    

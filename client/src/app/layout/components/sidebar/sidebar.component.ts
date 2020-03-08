@@ -8,7 +8,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SidebarComponent implements OnInit {
     public showMenu: string;
-    userDetail:string;
+    userDetail:any;
     constructor(public userService:UserService) {}
 
     ngOnInit() {

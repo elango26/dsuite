@@ -97,14 +97,14 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
   </table>
-  <ng-container *ngIf="!dataSource || dataSource._data._value.length === 0">
+  <ng-container *ngIf="!dataSource || transaction_desc.length === 0">
       <mat-card class="norecords">Please add products !!</mat-card>
   </ng-container>
   </div>
   </mat-card>
   <br>
   <div class="pull-right">
-    <button mat-raised-button color="primary" [disabled]="!dataSource || dataSource._data._value.length === 0" (click)="_saveOrder('print')">Print</button>
-    <button mat-raised-button color="primary" [disabled]="!dataSource || dataSource._data._value.length === 0" (click)="_saveOrder('save')">Save</button>
+    <button mat-raised-button color="primary" [disabled]="!dataSource || transaction_desc.length === 0" (click)="_saveOrder('print')">Print</button>
+    <button mat-raised-button color="primary" [disabled]="!dataSource || transaction_desc.length === 0" (click)="_saveOrder('save')">Save</button>
   </div>
 </mat-card>

@@ -19,6 +19,7 @@ export class ProductsComponent {
 
   productList:Product[];
   category: any[];
+  selectedCategory: string;
 
   constructor(private commonService: CommonService, public snackBar:MatSnackBar){
     
