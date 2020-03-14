@@ -13,7 +13,7 @@ import { RATE_TYPE } from 'src/app/constants/contants';
 export class RateMappingComponent implements OnInit {
 
   productList: RateMapping[];
-  displayedColumns = ['product_name', 'rate_type'];
+  displayedColumns = ['product_name', 'rate_type','action'];
   dataSource: MatTableDataSource<RateMapping>;
   rateType: any;
   edit_value: any;
@@ -59,16 +59,32 @@ export class RateMappingComponent implements OnInit {
     }
   }
 
-  assignValues(i:number,e:string){
-    if(this.productList[i].rates.length > 0){
-      this.productList[i].rates[0].type = e;
+  assignValues(row:any,e:string){
+    if(row.rates.length > 0){
+      row.rates[0].type = e;
     }else{
       let rate = {
         customer_id: this.edit_value.customer_id,
-        prod_id: this.productList[i]._id,
+        prod_id: row._id,
         type: e
       }
-      this.productList[i].rates[0] = rate;
+      row.rates[0] = rate;
+    }
+  }
+
+  applyAll(row:any){
+    let selectedType = row.rates[0].type;
+    for(let i=0;i<this.productList.length;i++){
+      if(this.productList[i].rates.length > 0){
+        this.productList[i].rates[0].type = selectedType;
+      }else{
+        let rate = {
+          customer_id: this.edit_value.customer_id,
+          prod_id: this.productList[i]._id,
+          type: selectedType
+        }
+        this.productList[i].rates[0] = rate;
+      }
     }
   }
 
