@@ -131,8 +131,12 @@ export class DeliveriesComponent implements OnInit {
       var q = result.data.map(function(obj){
         return obj.key;
       }).join(",");
+      var route_name = result.data.map(function(obj){
+        return obj.value;
+      }).join(",");
       let query = '?order_date='+this.datePipe.transform(this.delDate,"yyyy-MM-dd")+"&route="+q;
       this.commonService.getMethod(environment.urls.getDeliveries+query).subscribe((data:any[])=>{
+        data['route'] = route_name;
         this.printerService.printData = {
           redirectUrl: '/orders',
           format: 'report',

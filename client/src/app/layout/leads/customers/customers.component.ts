@@ -106,12 +106,16 @@ export class CustomersComponent implements OnInit {
       var q = result.data.map(function(obj){
         return obj.key;
       }).join(",");
+      var route_name = result.data.map(function(obj){
+        return obj.value;
+      }).join(",");
       let cur_date = new Date();
       let query = '?sale_date='+this.datePipe.transform(cur_date,"yyyy-MM-dd")+"&route="+q;
       let sales_report = this.commonService.getMethod(environment.urls.salesReport+query);  //order details
       let lead_report = this.commonService.getMethod(environment.urls.leadReport); //account details with tdy,week,old
       forkJoin([sales_report, lead_report]).subscribe(results => {        
         data = {
+          'route': route_name,
           'sales':results[0],
           'account':results[1]
         }

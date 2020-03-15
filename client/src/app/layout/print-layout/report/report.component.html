@@ -1,16 +1,15 @@
 <table>
-  <caption>Daily sales</caption>
   <tr>
-    <td>Route: PPN</td>
+    <td>Route: {{route}}</td>
     <td>Date: {{reportDate | date:'mediumDate'}}</td>
   </tr>
 </table>
 <table class="dotted">
   <thead>
-    <th class="dotted">Names</th>
-    <th class="dotted" *ngFor="let prod of products">{{prod.alias}}</th>
+    <th class="dotted wid-name">Names</th>
+    <th class="dotted wid-product" *ngFor="let prod of products">{{prod.alias}}</th>
     <ng-container *ngIf="data.type=='LEADS'">
-      <th class="dotted" *ngFor="let th of extraTH">{{th}}</th>
+      <th class="dotted wid-currency" *ngFor="let th of extraTH">{{th}}</th>
     </ng-container>
     
   </thead>

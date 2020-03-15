@@ -14,7 +14,7 @@ export class ReportComponent implements OnInit {
   products: Product[];
   report: any[];
   reportDate: Date;
-
+  route: string;
   //report page
   extraTH = ['OLD','WEEK','TODAY','TOTAL','PAID'];
   extraTD: any;
@@ -23,6 +23,7 @@ export class ReportComponent implements OnInit {
   ngOnInit() { 
     this.products = this.commonService.getProductList();
     this.reportDate = this.data.date;
+    this.route = this.data.data.route;
     this.loadReport();
   }
 
