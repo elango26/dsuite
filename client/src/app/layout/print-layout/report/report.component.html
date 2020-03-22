@@ -4,19 +4,33 @@
     <td>Date: {{reportDate | date:'mediumDate'}}</td>
   </tr>
 </table>
-<table class="dotted">
+<table class="dotted">  
   <thead>
-    <th class="dotted wid-name">Names</th>
-    <th class="dotted wid-product" *ngFor="let prod of products">{{prod.alias}}</th>
-    <ng-container *ngIf="data.type=='LEADS'">
-      <th class="dotted wid-currency" *ngFor="let th of extraTH">{{th}}</th>
-    </ng-container>
-    
-  </thead>
+    <tr>
+      <th [attr.rowspan]=1 class="dotted wid-name">Names</th>
+      <ng-container *ngFor="let cat of reportProductList">
+        <th class="dotted wid-product" [attr.colspan]="cat.count">{{cat._id.category}} - {{cat._id.brand}}</th>
+      </ng-container>
+      <ng-container *ngIf="data.type=='LEADS'">
+        <th class="dotted wid-currency" [attr.colspan]="extraTH.length">Payments</th>
+      </ng-container>  
+    </tr>
+    <tr>
+      <th [attr.rowspan]=1></th>
+      <ng-container *ngFor="let cat of reportProductList">
+        <th class="dotted wid-product" *ngFor="let prod of cat.products">{{prod.alias}}</th>
+      </ng-container>
+      <ng-container *ngIf="data.type=='LEADS'">
+        <th class="dotted wid-currency" *ngFor="let th of extraTH">{{th}}</th>
+      </ng-container>  
+    </tr>  
+  </thead>  
   <tbody>
     <tr *ngFor="let cust of report">
       <td class="dotted">{{cust.customername}}</td>
-      <td class="dotted" *ngFor="let prod of products">{{(cust[prod._id] != 0)?cust[prod._id]:''}}</td>
+      <ng-container *ngFor="let cat of reportProductList">
+        <td class="dotted" *ngFor="let prod of cat.products">{{(cust[prod._id] != 0)?cust[prod._id]:''}}</td>
+      </ng-container>      
       <td class="dotted">{{cust.old | number:'0.2-2'}}</td>
       <td class="dotted">{{cust.week | number:'0.2-2'}}</td>
       <td class="dotted">{{cust.today | number:'0.2-2'}}</td>      

@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
 import { Product } from 'src/app/interfaces/product';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 @Component({
   selector: 'app-report',
@@ -15,13 +17,15 @@ export class ReportComponent implements OnInit {
   report: any[];
   reportDate: Date;
   route: string;
+
   //report page
+  reportProductList: any[];
   extraTH = ['OLD','WEEK','TODAY','TOTAL','PAID'];
   extraTD: any;
   constructor(public commonService:CommonService, public router: Router) { }
 
   ngOnInit() { 
-    this.products = this.commonService.getProductList();
+    this.products = this.commonService.getProductList();    
     this.reportDate = this.data.date;
     this.route = this.data.data.route;
     this.loadReport();
@@ -46,6 +50,15 @@ export class ReportComponent implements OnInit {
         break;
       case 'LEADS':
         console.log(this.data);
+        console.log(this.products);
+        this.commonService.getMethod(environment.urls.getReportProductList).subscribe((res:GenericResp)=>{
+          if(res.code == 200)
+          {
+            console.log(res.data);
+            this.reportProductList = res.data;
+          }
+        });
+
         if(this.data.data.sales.length > 0){      
           for(let i=0;i<this.data.data.sales.length;i++){
             let det = [];

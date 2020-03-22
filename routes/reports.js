@@ -3,6 +3,7 @@ const router = express.Router();
 const {ObjectId} = require('mongodb');
 const sales = require('../models/sales');
 const purchase = require('../models/purchase');
+const product = require('../models/product');
 const transactionDetails = require('../models/transactiondetails');
 
 router.get('/sales',(req,res,next)=>{
@@ -158,5 +159,34 @@ router.get('/purchase',(req,res,next)=>{
         }
     });
 });
+
+router.get('/reportProductList',(req,res,next)=>{
+    let _resp = {
+        code : 201,
+        message : "Something went wrong!",
+        data: {}
+    }
+    product.aggregate([
+        {"$group":{
+            _id:{category:'$category',brand: '$brand_name'},
+            products: {
+              $push: '$$ROOT'
+            },
+            count:{
+              $sum: 1
+            }
+        }}
+    ]).exec((err,list)=>{
+        if(!err){
+            _resp.code = 200;
+            _resp.message = "success";
+            _resp.data = list;
+            res.json(_resp);
+        }else{
+            _resp.message = err;
+            res.json(_resp);
+        }
+    })
+})
 
 module.exports = router;
