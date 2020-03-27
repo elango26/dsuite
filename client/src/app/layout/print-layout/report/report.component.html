@@ -27,7 +27,7 @@
   </thead>  
   <tbody>
     <tr *ngFor="let cust of report">
-      <td class="dotted">{{cust.customername}}</td>
+      <td nowrap class="dotted">{{cust.customername}}</td>
       <ng-container *ngFor="let cat of reportProductList">
         <td class="dotted" *ngFor="let prod of cat.products">{{(cust[prod._id] != 0)?cust[prod._id]:''}}</td>
       </ng-container>      

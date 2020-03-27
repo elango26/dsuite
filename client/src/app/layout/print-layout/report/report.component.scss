@@ -7,7 +7,10 @@ table{
 }
 
 .wid-name{
-    width: 150px;
+    width: 200px !important;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
 }
 
 .wid-product{
