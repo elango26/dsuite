@@ -6,30 +6,48 @@
 </table>
 <table class="dotted">  
   <thead>
+    <tr *ngFor="let row of thList;let i=index">
+      <th *ngIf="i==0" [attr.rowspan]="4" class="dotted wid-name">Names {{index}}</th>      
+      <th *ngFor="let r of row" class="dotted wid-product" [attr.colspan]="r.count">{{r.key}}</th>
+      <ng-container *ngIf="data.type=='LEADS' && i==0">
+        <th [attr.rowspan]="3" class="dotted wid-currency" [attr.colspan]="extraTH.length">Payments</th>
+      </ng-container>
+    </tr>
     <tr>
-      <th [attr.rowspan]=1 class="dotted wid-name">Names</th>
-      <ng-container *ngFor="let cat of reportProductList">
-        <th class="dotted wid-product" [attr.colspan]="cat.count">{{cat._id.category}} - {{cat._id.brand}}</th>
+      <th *ngFor="let prod of reportProductList" class="dotted wid-product">{{prod.alias}}</th>
+      <ng-container *ngIf="data.type=='LEADS'">
+        <th class="dotted wid-currency" *ngFor="let th of extraTH">{{th}}</th>
+      </ng-container>
+    </tr>
+    <!-- *ngFor="let cat of reportProductList | keyvalue; let i=index"
+       <tr>
+      <th [attr.rowspan]="3" class="dotted wid-name">Names</th>
+      <ng-container *ngFor="let cat of reportProductList[0]">
+        <th class="dotted wid-product" [attr.colspan]="cat.count">{{cat.category|slice:0:1}} - {{cat.brand|slice:0:1}}</th>
       </ng-container>
       <ng-container *ngIf="data.type=='LEADS'">
-        <th class="dotted wid-currency" [attr.colspan]="extraTH.length">Payments</th>
+        <th [attr.rowspan]="2" class="dotted wid-currency" [attr.colspan]="extraTH.length">Payments</th>
+      </ng-container>  
+    </tr> -->
+    <!-- <tr>
+      <ng-container *ngFor="let cat of reportProductList[1] | keyvalue">
+        <th class="dotted wid-product" [attr.colspan]="cat.value.count" >{{cat.key}}</th>
       </ng-container>  
     </tr>
     <tr>
-      <th [attr.rowspan]=1></th>
-      <ng-container *ngFor="let cat of reportProductList">
-        <th class="dotted wid-product" *ngFor="let prod of cat.products">{{prod.alias}}</th>
+      <ng-container *ngFor="let cat of reportProductList[2]">
+        <th class="dotted wid-product" >{{cat.alias}}</th>
       </ng-container>
       <ng-container *ngIf="data.type=='LEADS'">
         <th class="dotted wid-currency" *ngFor="let th of extraTH">{{th}}</th>
       </ng-container>  
-    </tr>  
+    </tr>   -->
   </thead>  
   <tbody>
     <tr *ngFor="let cust of report">
       <td nowrap class="dotted">{{cust.customername}}</td>
       <ng-container *ngFor="let cat of reportProductList">
-        <td class="dotted" *ngFor="let prod of cat.products">{{(cust[prod._id] != 0)?cust[prod._id]:''}}</td>
+        <td class="dotted" >{{(cust[cat._id] != 0)?cust[cat._id]:''}}</td>
       </ng-container>      
       <td class="dotted">{{cust.old | number:'0.2-2'}}</td>
       <td class="dotted">{{cust.week | number:'0.2-2'}}</td>

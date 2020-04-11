@@ -4,6 +4,7 @@ import { Product } from 'src/app/interfaces/product';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { GenericResp } from 'src/app/interfaces/genericResp';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-report',
@@ -19,7 +20,8 @@ export class ReportComponent implements OnInit {
   route: string;
 
   //report page
-  reportProductList: any[];
+  reportProductList: any;
+  thList: any;
   extraTH = ['OLD','WEEK','TODAY','TOTAL','PAID'];
   extraTD: any;
   constructor(public commonService:CommonService, public router: Router) { }
@@ -49,15 +51,114 @@ export class ReportComponent implements OnInit {
         }
         break;
       case 'LEADS':
-        console.log(this.data);
-        console.log(this.products);
-        this.commonService.getMethod(environment.urls.getReportProductList).subscribe((res:GenericResp)=>{
-          if(res.code == 200)
-          {
-            console.log(res.data);
-            this.reportProductList = res.data;
+        var products = {};
+        this.products.forEach(function(obj){
+          if(!products[obj.category]){
+            products[obj.category] = {};
+            products[obj.category]['count'] = 0;
           }
+          products[obj.category]['count'] += 1;
+          if(!products[obj.category][obj.brand_name]){
+            products[obj.category][obj.brand_name] = {};
+            products[obj.category][obj.brand_name]['count'] = 0;
+          }
+          products[obj.category][obj.brand_name]['count'] += 1;
+          if(!products[obj.category][obj.brand_name][obj.sub_category]){
+            products[obj.category][obj.brand_name][obj.sub_category] = [];
+            //products[obj.category][obj.brand_name][obj.sub_category]['count'] = 0;
+          }
+          //products[obj.category][obj.brand_name][obj.sub_category]['count'] += 1;
+          products[obj.category][obj.brand_name][obj.sub_category].push(obj);
+
         });
+        console.log(products);        
+
+        let row1 = [],row2=[],row3=[],_products=[];
+        for(let cat in products){
+          row1.push({
+            'key': cat,
+            'count': products[cat].count
+          });
+          for(let b in products[cat]){
+            if(b == 'count')
+              continue;
+            row2.push({
+              'key': b,
+              'count': products[cat][b].count
+            });
+            for(let sub in products[cat][b]){
+              if(sub == 'count')
+                continue;
+              row3.push({
+                'key': sub,
+                'count': products[cat][b][sub].length
+              });
+              
+              _products = _products.concat(products[cat][b][sub]);
+            }
+          } 
+        }
+
+        this.thList = [row1,row2,row3];
+        this.reportProductList = _products;
+        console.log(this.thList);
+        // for(let cat of category){
+        //   row1.push({
+        //     'category':cat,
+        //     'count': products[cat].count
+        //   });
+        //   for(let b of brand){
+        //     console.log(products[cat][b]);
+        //     row2.push({
+        //       'brand': b,
+        //       'count': products[cat][b]['count']
+        //     });
+        //     for(let sub of sub_category){
+        //       console.log(cat);
+        //       console.log(sub);
+        //       console.log(products[cat][b][sub]);
+        //       row3.push({
+        //         'sub': sub,
+        //         'count': products[cat][b][sub]['count']
+        //       });
+        //       _products.push(products[cat][b][sub]);
+        //     }
+        //   }          
+        // }
+        
+        // console.log(this.data);
+        // console.log(this.products);
+        
+        // this.commonService.getMethod(environment.urls.getReportProductList).subscribe((res:GenericResp)=>{
+        //   if(res.code == 200)
+        //   {
+        //     console.log(res.data);
+        //     var _tr = [];
+        //     var row1 = [];
+        //     var row2 = [];
+        //     var products = [];
+        //     for(let row of res.data){
+        //       let temp_row1 = {
+        //         'category':row._id.category,
+        //         'brand':row._id.brand,
+        //         'count':row.count
+        //       }
+        //       row1.push(temp_row1);
+        //       for(let j in row.products){
+        //         if(!row2[row.products[j]['sub_category']])
+        //           row2[row.products[j]['sub_category']] = {'count':1};
+        //         else
+        //           row2[row.products[j]['sub_category']]['count']++;
+
+        //         products.push(row.products[j]);
+        //       }
+        //     }     
+        //     this.reportProductList.push(row1);   
+        //     this.reportProductList.push(row2);
+        //     this.reportProductList.push(products);
+        //     console.log(this.reportProductList);
+        //   }
+        // });
 
         if(this.data.data.sales.length > 0){      
           for(let i=0;i<this.data.data.sales.length;i++){

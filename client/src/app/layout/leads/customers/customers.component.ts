@@ -37,6 +37,12 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit() {
     this.loadLeads();
+    
+    // this.commonService.getMethod('http://localhost:3000/api/test/productList').subscribe((data:any)=>{
+    //   console.log(data);
+
+      
+    // });
   }
 
   private loadLeads(){

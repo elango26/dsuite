@@ -2,9 +2,30 @@ const express = require('express');
 const router = express.Router();
 const {ObjectId} = require('mongodb');
 const sales = require('../models/sales');
+const product = require('../models/product');
 const customer = require('../models/customer');
 const transactionDetails = require('../models/transactiondetails');
 const common = require('./common');
+
+router.get('/productList',(req,res,next)=>{
+  product.aggregate([
+    // {"$group":{
+    //   _id: {brand:'$brand_name',category:'$category',sub_category:'$sub_category'},
+    //   products: {
+    //     $push: '$$ROOT'
+    //   },
+    //   count:{
+    //     $sum: 1
+    //   }
+    // }}
+  ]).exec((err,list)=>{
+    if(!err){
+      res.json(list);
+    }else{
+      res.json(err);
+    }
+  });
+});
 
 router.get('/list',(req,res,next)=>{
     var arr = [];

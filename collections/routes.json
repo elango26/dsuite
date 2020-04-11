@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5e1a4ed5c30387319c4d34c6"},"is_active":"YES","is_delete":"NO","areaName":"PK","createdBy":{"$oid":"5d9b0f992ec2143ae490bbef"},"route_id":"R0000001","createdAt":{"$date":{"$numberLong":"1578782421679"}},"updatedAt":{"$date":{"$numberLong":"1578782421679"}},"__v":{"$numberInt":"0"}}
