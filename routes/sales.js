@@ -57,8 +57,8 @@ router.get('/list',(req,res,next)=>{
                             "as": "discount"
                         }}
                     ]).exec((err,detail)=>{                        
-                        if(!err) list[processedCount].details = detail;
-                        result.push(list[processedCount]);
+                        if(!err) list[i].details = detail;
+                        result.push(list[i]);
                         processedCount++;
                         if(processedCount === len){
                             res.json(result);

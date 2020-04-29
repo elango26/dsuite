@@ -10,7 +10,7 @@ import { TransactionDesc, Sales } from 'src/app/interfaces/transaction';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
-//import { CATEGORY, SUBCATEGORY, BRANDS } from '../../../constants/contants';
+import { DEFAULT_RATE_TYPE } from '../../../constants/contants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PrinterService } from 'src/app/services/printer.service';
 import { GenericResp } from 'src/app/interfaces/genericResp';
@@ -41,7 +41,7 @@ export class SalesComponent implements OnInit {
   transaction_desc: TransactionDesc[]=[];
   filteredOptions: Observable<Product[]>;
   customerFilteredOptions: Observable<Customer[]>;
-  sale_type: string = "Retail";
+  sale_type: string = DEFAULT_RATE_TYPE;
   sale_type_arr: any[];
   lastSales:any;
   custFormMaxDate = new Date();
@@ -127,11 +127,18 @@ export class SalesComponent implements OnInit {
       let product = this.form.value.productName;
       if(this.sale_type_arr){
         let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id)[0]; //find customer rate type
-        this.sale_type = customer_rate_type.type;
+        if(customer_rate_type)
+          this.sale_type = customer_rate_type.type;
       }
       let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
 
-      console.log("final rate"+rate);
+      if(rate == null){
+        this.snackBar.open("Rate not found for this product!!", "Notice", {
+          duration: 1000,
+        });
+        return false;
+      }
+
       let trans_desc:TransactionDesc = {
         rate_type: this.sale_type,
         prod_name:product.prod_name,

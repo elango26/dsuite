@@ -101,6 +101,22 @@
                 </li>                
             </ul>
         </div>
+        <div class="nested-menu">
+            <a mat-list-item (click)="addExpandClass('discounts')">
+                <mat-icon class="sidenav-icon">local_offer</mat-icon> {{ 'Discounts' | translate }}
+            </a>
+            <ul class="nested submenu" [class.expand]="showMenu === 'discounts'">
+                <li>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/discounts/category']"><span>{{ 'Category' | translate }}</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/discounts/mapping']"><span>{{ 'Mapping' | translate }}</span></a>
+                </li>     
+                <li>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/discounts/transactions']"><span>{{ 'Transactions' | translate }}</span></a>
+                </li>                
+            </ul>
+        </div>
         <a *ngIf="userDetail.role=='ADMIN'" mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/charts']">
             <mat-icon class="sidenav-icon">today</mat-icon> {{ 'Remainders' | translate }}
         </a>   

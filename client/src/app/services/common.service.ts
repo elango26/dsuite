@@ -36,7 +36,9 @@ export class CommonService {
   }
 
   getProductPrice(prod_id:string,type:string): Rate{
-    return this.product_rate.filter((key:any) => key.product._id == prod_id)[0]['product']['rate_active'][type];
+    let product = this.product_rate.filter((key:any) => key.product._id == prod_id);
+    //console.log(product);
+    return product.length > 0 ? product[0]['product']['rate_active'][type]:null;
   }
 
   getMethod( url:string){

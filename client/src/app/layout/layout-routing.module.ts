@@ -46,6 +46,10 @@ const routes: Routes = [
                 loadChildren: './personalize/personalize.module#PersonalizeModule'
             },
             {
+                path: 'discounts',
+                loadChildren: './discounts/discounts.module#DiscountsModule'
+            },
+            {
                 path: 'printview', 
                 outlet: 'printpage',                  
                 loadChildren: './print-layout/print-layout.module#PrintLayoutModule'

@@ -14,7 +14,7 @@ const discountSchema = mongoose.Schema({
         type : String,
         require : true
     },
-    discount_constraint: {
+    discount_name: {
         type: String,
         require: true
     },

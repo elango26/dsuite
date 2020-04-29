@@ -93,7 +93,7 @@ export class OpeningbalanceComponent implements OnInit {
   ];
 
     const dialogRef = this.dialog.open(CommonModalComponent, {
-      width: '300px',
+      width: '500px',
       data: {formData:this.balance_entry_detail.sort((a, b) => a.order - b.order),formTitle:"Opening Balance",url:environment.urls.postOb }
     });
 

@@ -48,12 +48,14 @@
       <td nowrap class="dotted">{{cust.customername}}</td>
       <ng-container *ngFor="let cat of reportProductList">
         <td class="dotted" >{{(cust[cat._id] != 0)?cust[cat._id]:''}}</td>
-      </ng-container>      
-      <td class="dotted">{{cust.old | number:'0.2-2'}}</td>
-      <td class="dotted">{{cust.week | number:'0.2-2'}}</td>
-      <td class="dotted">{{cust.today | number:'0.2-2'}}</td>      
-      <td class="dotted">{{cust.old+cust.week+cust.today | number:'0.2-2'}}</td>
-      <td class="dotted"></td>
+      </ng-container>   
+      <ng-container *ngIf="data.type=='LEADS'">
+        <td class="dotted">{{cust.old | number:'0.2-2'}}</td>
+        <td class="dotted">{{cust.week | number:'0.2-2'}}</td>
+        <td class="dotted">{{cust.today | number:'0.2-2'}}</td>      
+        <td class="dotted">{{cust.old+cust.week+cust.today | number:'0.2-2'}}</td>
+        <td class="dotted"></td>
+      </ng-container>   
     </tr>
   </tbody>
 </table>

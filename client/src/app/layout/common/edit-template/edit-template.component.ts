@@ -11,6 +11,7 @@ import { TransactionDesc, Sales } from 'src/app/interfaces/transaction';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { PrinterService } from 'src/app/services/printer.service';
 import { Router } from '@angular/router';
+import { DEFAULT_RATE_TYPE } from '../../../constants/contants';
 
 @Component({
   selector: 'app-edit-template',
@@ -24,7 +25,7 @@ export class EditTemplateComponent implements OnInit {
   productList: Product[];
   filteredOptions: Observable<Product[]>;
   transaction_desc: TransactionDesc[]=[];
-  sale_type: string = "Retail";
+  sale_type: string = DEFAULT_RATE_TYPE;
   sale_type_arr: any[];
   @Input() data : any;
   @Output() closeEditPage = new EventEmitter<boolean>();
@@ -108,8 +109,9 @@ export class EditTemplateComponent implements OnInit {
     if(this.form.status == "VALID"){
       let product = this.form.value.productName;
       if(this.sale_type_arr){
-        let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id)[0]; //find customer rate type
-        this.sale_type = customer_rate_type.type;
+        let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id); //find customer rate type
+        if(customer_rate_type.length > 0 )
+          this.sale_type = customer_rate_type[0].type;
       }
       let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
 
@@ -123,7 +125,8 @@ export class EditTemplateComponent implements OnInit {
         prod_rate_per_unit : rate.price,
         tax: rate.tax?rate.tax:0,
         prod_tax : rate.tax ? (rate.price * this.form.value.quantity)*rate.tax/100:0,
-        sub_amount : (rate.price * this.form.value.quantity)
+        sub_amount : (rate.price * this.form.value.quantity),
+        is_delete: 'NO'
       }
       this.transaction_desc.push(trans_desc);
 

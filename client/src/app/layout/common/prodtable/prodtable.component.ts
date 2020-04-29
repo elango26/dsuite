@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { Product } from 'src/app/interfaces/product';
-import { CATEGORY, SUBCATEGORY, BRANDS } from '../../../constants/contants';
+import { CATEGORY, SUBCATEGORY, BRANDS, DEFAULT_RATE_TYPE } from '../../../constants/contants';
 import { TransactionDesc } from 'src/app/interfaces/transaction';
 import { Customer } from 'src/app/interfaces/customer';
 
@@ -153,9 +153,10 @@ export class ProdtableComponent implements OnInit {
       for (let key in this.form.value) {
         let quan = this.form.value[key];
         if(quan > 0){
-          let product = this.productList[key];        
+          let product = this.productList[key];  
+          let rate_type = this.sale_type_arr.filter(key => key.prod_id == product.id);
           let trans_desc:TransactionDesc = {
-            rate_type: this.sale_type_arr.filter(key => key.prod_id == product.id)[0].type,
+            rate_type: (rate_type.length > 0)?rate_type[0].type:DEFAULT_RATE_TYPE,
             prod_name: product.name,
             prod_id : product.id,
             product_id: product.product_id,

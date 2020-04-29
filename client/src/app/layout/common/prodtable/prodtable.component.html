@@ -1,4 +1,4 @@
-<div class="mb-20 flex-display" fxFlex fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="2px">
+<div class="mb-20 flex-display" fxFlex fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="2px" >
   <!-- <div fxFlex="50" class="flex-display">  -->
     <div class="font-smaller">
       <label>Customer: <b><i>{{customer.customerName}}</i></b></label>
@@ -9,10 +9,10 @@
       </mat-form-field>
     </div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">           
-    <mat-tab-group class="reduce-margin">
+    <mat-tab-group class="reduce-margin" >
     <div *ngFor="let cat of strucProductList | keyvalue">        
           <mat-tab label="{{cat.key}}">
-            <div *ngFor="let sub of strucProductList[cat.key] | keyvalue">
+            <div *ngFor="let sub of strucProductList[cat.key] | keyvalue" >
             <mat-card class="mat-card" *ngFor="let brands of strucProductList[cat.key][sub.key] | keyvalue">
               <mat-card-header>
                   <mat-card-title>{{brands.key}} {{sub.key}}</mat-card-title>

@@ -27,6 +27,10 @@ export class RecentsalesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadRecentSales();
+  }
+
+  loadRecentSales(){
     this.commonService.getMethod(environment.urls.getRecentSales).subscribe((data) => {
       this.salesList = data;
       this.dataSource = new MatTableDataSource(this.salesList);
@@ -46,13 +50,12 @@ export class RecentsalesComponent implements OnInit {
 
   editSales(row:any){
     this.editView = true;
-    //console.log(row);
     this.editData = row;
   }
 
   backToReport(e){
-    console.log(e);
     this.editView = false;
+    this.loadRecentSales();
   }
 
   print(saleid:string){
