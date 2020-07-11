@@ -23,6 +23,18 @@ const productSchema = mongoose.Schema({
         type : String,
         require : true
     },
+    measure_unit: {
+        type : String,
+        require : true
+    },
+    volume_per_unit: {
+        type: Number,
+        require: true
+    },
+    quan_per_grade: {
+        type: Number,
+        require: true
+    },
     sub_category : {
         type : String,
         require : false

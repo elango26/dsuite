@@ -3,6 +3,7 @@ const router = express.Router();
 const {ObjectId} = require('mongodb');
 const sales = require('../models/sales');
 const transactionDetails = require('../models/transactiondetails');
+const discountTransaction = require('../models/discounttransaction');
 const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
@@ -28,6 +29,24 @@ router.get('/list',(req,res,next)=>{
             "localField": "customer_id",
             "foreignField": "_id",
             "as": "customerDetail"
+        }},
+        {"$lookup":{
+            from: 'discounttransactions',
+            let: {sale_id: '$sale_id'},
+            as: 'discount',
+            pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        { $eq: ['$sale_id', '$$sale_id'] },
+                        { $eq: ['$is_active', 'YES']},
+                        { $eq: ['$is_delete', 'NO']}
+                      ]
+                    }
+                  }
+                }
+            ]
         }}
     ]).exec((err,list)=>{
         if(err){
@@ -49,13 +68,13 @@ router.get('/list',(req,res,next)=>{
                             "foreignField": "_id",
                             "as": "product"
                         }},
-                        {    
-                        "$lookup": {
-                            "from": "discounts",
-                            "localField": "prod_discount_id",
-                            "foreignField": "_id",
-                            "as": "discount"
-                        }}
+                        // {    
+                        // "$lookup": {
+                        //     "from": "discounts",
+                        //     "localField": "prod_discount_id",
+                        //     "foreignField": "_id",
+                        //     "as": "discount"
+                        // }}
                     ]).exec((err,detail)=>{                        
                         if(!err) list[i].details = detail;
                         result.push(list[i]);
@@ -82,6 +101,13 @@ router.post('/create',(req,res,next)=>{
                 if(err){
                     res.json(err);
                 }else{
+                    if(req.body.discounts && req.body.discounts.length > 0){
+                        for(let key in req.body.discounts){
+                            req.body.discounts[key].sale_id = sales.sale_id;                            
+                        }   
+                        let insertDisc = discountTransaction.insertMany(req.body.discounts);
+                        console.log(insertDisc+'success');
+                    }
                     if(!req.body.details || !req.body.details.length) res.json({msg:'sales updated successfully'});
                     let count = 0;
                     for (let i = 0, len = req.body.details.length; i < len; i++) {
@@ -103,6 +129,7 @@ router.post('/create',(req,res,next)=>{
                             };
                         });
                     }
+                    //discount table
                 }
             });
         }else{
@@ -123,6 +150,18 @@ router.put('/update/:id',(req,res,next)=>{
             res.json(err);
         }else{
             //transactionDetails.deleteMany({ parent_id : sales._id, type: 'SALES' });
+            if(req.body.discounts.length > 0){
+                for(let key in req.body.discounts){
+                    req.body.discounts[key].sale_id = sales.sale_id;
+                    let newDist = new discountTransaction(req.body.discounts[key]);
+                    if(req.body.discounts[key]._id)
+                        newDist.isNew = false;
+                    newDist.save((errs,discount)=>{
+                        if(errs)
+                            console.log('error while saving discount trans'+errs);
+                    });
+                }
+            }
             if(!req.body.details || !req.body.details.length) res.json({msg:'sales updated successfully'});
             let count = 0;
             for (let i = 0, len = req.body.details.length; i < len; i++) {                

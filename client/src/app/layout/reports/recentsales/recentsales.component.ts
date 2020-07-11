@@ -35,7 +35,7 @@ export class RecentsalesComponent implements OnInit {
       this.salesList = data;
       this.dataSource = new MatTableDataSource(this.salesList);
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      //this.dataSource.sort = this.sort;
     });
   }
 

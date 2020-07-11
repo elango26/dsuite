@@ -87,7 +87,10 @@ router.post('/create',(req,res,next)=>{
             req.body['product_id'] = common.padding(count+1,7,'SKU');
             req.body['index'] = count;
     
-            let newProduct = new product(req.body);            
+            let newProduct = new product(req.body);    
+            if(req.body._id)
+                newProduct.isNew = false;
+            
             newProduct.save((err,product)=>{
                 if(err){
                     res.json(err);

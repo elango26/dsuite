@@ -9,7 +9,8 @@ import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatPaginatorModule, MAT_DIALOG_DATA, MatDialogRef
+  MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatPaginatorModule, 
+  MAT_DIALOG_DATA, MatDialogRef, MatIconModule
 } from '@angular/material';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatButtonModule} from '@angular/material/button';
@@ -37,6 +38,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatSnackBarModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatIconModule,
     FlexLayoutModule.withConfig({addFlexToParent: false}) 
   ],
   entryComponents: [PaymentsComponent],

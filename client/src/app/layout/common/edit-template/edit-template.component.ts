@@ -7,11 +7,12 @@ import { environment } from 'src/environments/environment';
 import { Product } from 'src/app/interfaces/product';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { TransactionDesc, Sales } from 'src/app/interfaces/transaction';
+import { TransactionDesc, Sales, DiscountTransaction } from 'src/app/interfaces/transaction';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { PrinterService } from 'src/app/services/printer.service';
 import { Router } from '@angular/router';
 import { DEFAULT_RATE_TYPE } from '../../../constants/contants';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit-template',
@@ -25,13 +26,16 @@ export class EditTemplateComponent implements OnInit {
   productList: Product[];
   filteredOptions: Observable<Product[]>;
   transaction_desc: TransactionDesc[]=[];
+  discount_desc: DiscountTransaction[]=[];
+  availableDiscounts: any[];
   sale_type: string = DEFAULT_RATE_TYPE;
   sale_type_arr: any[];
   @Input() data : any;
   @Output() closeEditPage = new EventEmitter<boolean>();
   @ViewChild("productName") prodField: ElementRef;
 
-  constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router,public printerService: PrinterService) {
+  constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router,
+    public printerService: PrinterService, private datePipe: DatePipe) {
     this.form = new FormGroup({
       'productName': new FormControl('',[Validators.required,objValidator('prod_name')]),
       'quantity': new FormControl('',Validators.required)
@@ -42,6 +46,7 @@ export class EditTemplateComponent implements OnInit {
     console.log(this.data);
     this.loadProduct();
     this.loadData();
+    this.loadDiscounts();
     if(this.data.customer_id) //for customers alone
       this.loadCustomerRateType(this.data.customer_id);
   }
@@ -54,8 +59,17 @@ export class EditTemplateComponent implements OnInit {
   }
 
   loadData(){
+    this.discount_desc = this.data.discount;
     this.transaction_desc = this.data.details;
     this.dataSource = new MatTableDataSource(this.data.details);    
+  }
+
+  loadDiscounts(){
+    let date = this.datePipe.transform(this.data.sale_date,"yyyy-MM-dd");
+    this.commonService.getSearchDiscountList(date).subscribe(data=>{
+      this.availableDiscounts = data;
+    });
+    //this.availableDiscounts = this.commonService.getDiscountList();
   }
 
   loadProduct(){
@@ -83,7 +97,8 @@ export class EditTemplateComponent implements OnInit {
   }
 
   getTotalCost():number {
-    return this.transaction_desc.filter((t)=> t.is_delete == 'NO').map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.filter((t)=> t.is_delete == 'NO').map(t => t.prod_tax).reduce((acc, value) => acc + value, 0);
+    let discounts = this.getTotalDiscount();
+    return this.transaction_desc.filter((t)=> t.is_delete == 'NO').map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.filter((t)=> t.is_delete == 'NO').map(t => t.prod_tax).reduce((acc, value) => acc + value, 0) - discounts;
   }
 
   loadReportPage(){
@@ -93,15 +108,23 @@ export class EditTemplateComponent implements OnInit {
   _remove(n:number):void{
     // this.transaction_desc.splice(n,1);
     // this.dataSource = new MatTableDataSource(this.transaction_desc);
-    console.log(n);
-    console.log(this.transaction_desc[n].is_delete);
-    this.transaction_desc[n].is_delete = "YES";
-    console.log(this.transaction_desc);
-    let transaction_desc = this.transaction_desc.filter(function(trans){
-      return trans.is_delete == "NO";
-    });
-    console.log(this.transaction_desc);
-    this.dataSource = new MatTableDataSource(transaction_desc); 
+    let row = this.transaction_desc[n];
+    row.is_delete = "YES";
+  
+    if(row.discount_id && row.discount_id != ''){
+      this.discount_desc.map(d=> {
+        if(d.discount_id == row.discount_id)
+          d.is_delete = "YES"
+      });
+
+      this.transaction_desc.map(t => {
+        if(t.discount_id == row.discount_id)
+          t.is_delete = "YES"
+      })
+    }
+    this.transaction_desc = this.transaction_desc.filter(trans => trans.is_delete == "NO");
+    this.discount_desc = this.discount_desc.filter(d => d.is_delete == "NO");
+    this.dataSource = new MatTableDataSource(this.transaction_desc); 
   }
 
   onSubmit(){
@@ -114,8 +137,25 @@ export class EditTemplateComponent implements OnInit {
           this.sale_type = customer_rate_type[0].type;
       }
       let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
+      if(rate == null){
+        this.snackBar.open("Rate not found for this product!!", "Notice", {
+          duration: 1000,
+        });
+        return false;
+      }
 
-      console.log("final rate"+rate);
+      //replace and sum the existing product added
+      this.form.value.quantity += this.transaction_desc.filter(d=>d.prod_id == product._id).reduce((acc,val)=> {return acc+val.prod_quan},0);
+      this.transaction_desc = this.transaction_desc.filter(d=> d.prod_id != product._id);
+      // discounts calculation
+      let var_for_dis = {
+        form: this.form,
+        customer_id: this.data.customer_id,
+        product: product,
+        sale_type: this.sale_type
+      }
+      let discount_id = this._calculateDiscounts(var_for_dis);
+      // discounts end
       let trans_desc:TransactionDesc = {
         rate_type: this.sale_type,
         prod_name:product.prod_name,
@@ -124,6 +164,7 @@ export class EditTemplateComponent implements OnInit {
         prod_quan : this.form.value.quantity,
         prod_rate_per_unit : rate.price,
         tax: rate.tax?rate.tax:0,
+        discount_id:discount_id,
         prod_tax : rate.tax ? (rate.price * this.form.value.quantity)*rate.tax/100:0,
         sub_amount : (rate.price * this.form.value.quantity),
         is_delete: 'NO'
@@ -137,6 +178,86 @@ export class EditTemplateComponent implements OnInit {
     }    
   }
 
+  _calculateDiscounts(vars:any):string{
+    let discounts = [],_did = null;
+    // let sys_date = this.datePipe.transform(new Date(),'yyyy-MM-dd');
+    // let sale_date = this.datePipe.transform(this.custForm.value.curDate,'yyyy-MM-dd');
+  
+    // if( sys_date != sale_date || !this.availableDiscounts){         
+    //   this.commonService.getSearchDiscountList(sale_date).subscribe((data:any[]) => {
+    //     this.availableDiscounts = data;
+    //   }); 
+    // }
+
+    discounts = this.availableDiscounts;
+    let matching = [];
+    if(discounts && discounts.length > 0){
+      matching = discounts.filter(dis => {
+        return dis.buy_prod_id == vars.product._id && 
+                vars.form.value.quantity >= dis.buy_count &&
+                (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.customer_id))
+              })
+    }
+    console.log(matching);
+    if(matching.length > 0){
+      _did = matching[0]._id;
+      switch(matching[0].discount_type){
+        case 'P2P':
+          let free_count = 0;
+          let quotient = 0;
+          let purchased_quan = vars.form.value.quantity;
+          if(matching[0].applicable_type.indexOf(vars.sale_type) >=0){
+            quotient = Math.floor(purchased_quan / matching[0].buy_count);
+            free_count = quotient * matching[0].free_count;
+
+            let free_product = matching[0].free_product[0];
+            let rate = this.commonService.getProductPrice(free_product._id,vars.sale_type);
+            let trans_desc:TransactionDesc = {
+              rate_type: 'Discount',
+              prod_name:free_product.prod_name,
+              prod_id : free_product._id,
+              product_id: free_product.product_id,
+              prod_quan : free_count,
+              prod_rate_per_unit : rate.price,
+              discount_id: _did,
+              tax: 0,
+              prod_tax : 0,
+              sub_amount : rate.price * free_count
+            }
+            this.transaction_desc.push(trans_desc);
+
+            let exist = this.discount_desc.filter(d=> d.discount_id == _did);
+            if(this.discount_desc.length >0 && exist.length >0){
+              this.discount_desc.map(d=>{
+                if(d.discount_id == _did){
+                  d.prod_count = free_count;
+                  d.total_amount = rate.price * free_count
+                }
+              })
+            }else{
+              let discount_desc:DiscountTransaction = {
+                discount_id: matching[0]._id,
+                prod_id: free_product.product_id,
+                prod_count: free_count,
+                total_amount: rate.price * free_count
+              }
+
+              this.discount_desc.push(discount_desc);
+            }
+            console.log(this.discount_desc);
+          }
+          break;
+        case 'Price':
+          break;
+        case 'Percentage':
+          break;
+        default:
+          break;
+      }
+    }
+    return _did;
+  }
+
   _saveOrder(type:string):void{  
     console.log(this.transaction_desc);
     
@@ -144,7 +265,8 @@ export class EditTemplateComponent implements OnInit {
       customer_id: this.data.customer_id,
       sale_date: this.data.sale_date,
       total_amount: this.getTotalCost(),
-      details: this.transaction_desc
+      details: this.transaction_desc,
+      discounts: this.discount_desc
     }
     this.transaction_desc = [];
     this.dataSource = new MatTableDataSource(this.transaction_desc);
@@ -181,5 +303,8 @@ export class EditTemplateComponent implements OnInit {
     this._callFilter();  
     this.loadReportPage();
   } 
+  getTotalDiscount():number{
+    return this.discount_desc.map(d => d.total_amount).reduce((acc, value) => acc + value, 0);
+  }
 
 }

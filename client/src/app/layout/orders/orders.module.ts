@@ -13,14 +13,16 @@ import {
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatPaginatorModule, MatTooltipModule, MatIconModule
 } from '@angular/material';
+import {MatSortModule} from '@angular/material/sort';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatChipsModule} from '@angular/material/chips';
 import { DsuiteModule } from '../common/dsuite.module';
+import { ConsViewComponent, RoundPipe } from './deliveries/cons-view/cons-view.component';
 
 @NgModule({
-  declarations: [DeliveriesComponent,DeliveriesPrintComponent],
+  declarations: [DeliveriesComponent,DeliveriesPrintComponent, ConsViewComponent, RoundPipe],
   imports: [
     CommonModule,
     OrdersRoutingModule,
@@ -47,9 +49,10 @@ import { DsuiteModule } from '../common/dsuite.module';
     MatChipsModule,
     MatTooltipModule,
     MatIconModule,
+    MatSortModule,
     DsuiteModule
   ],
   providers: [DatePipe],
-  entryComponents: [DeliveriesPrintComponent]
+  entryComponents: [DeliveriesPrintComponent,ConsViewComponent]
 })
 export class OrdersModule { }

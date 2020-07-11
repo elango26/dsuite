@@ -20,6 +20,12 @@ export class InvoiceComponent implements OnInit {
     this.loadInvoices();
   }
 
+  getDiscountAmt(row:any):number{
+    return row.reduce((acc,r)=> {
+      return acc+r.total_amount;
+    },0);
+  }
+
   loadInvoices(){
     let data = {
       invoices: this.data.data,

@@ -55,6 +55,12 @@ export class CustomersViewComponent implements OnInit {
         });
     }
 
+    getDiscountAmt(row:any):number{
+        return row.reduce((acc,r)=> {
+          return acc+r.total_amount;
+        },0);
+    }
+
     backToLeadPage(){
         this.backToLead.emit(true);
     }

@@ -64,6 +64,24 @@ router.post('/invoices',(req,res,next)=>{
             preserveNullAndEmptyArrays: true
         }},
         {"$lookup":{
+            from: 'discounttransactions',
+            let: {sale_id: '$sales.sale_id'},
+            as: 'sales.discount',
+            pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        { $eq: ['$sale_id', '$$sale_id'] },
+                        { $eq: ['$is_active', 'YES']},
+                        { $eq: ['$is_delete', 'NO']}
+                      ]
+                    }
+                  }
+                }
+              ]
+        }},
+        {"$lookup":{
             from: 'customers',
             localField: 'sales.customer_id',
             foreignField: '_id',

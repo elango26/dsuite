@@ -32,6 +32,7 @@ export class ProdtableComponent implements OnInit {
   isEdit:boolean = false;
   sale_type_arr: any[];
   selectedCategory:string;
+  availableDiscounts: any[];
   constructor(private datePipe: DatePipe, private commonService: CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<ProdtableComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
@@ -60,10 +61,18 @@ export class ProdtableComponent implements OnInit {
     this.category = CATEGORY;
     this.subcategory = SUBCATEGORY;
     this.brand = BRANDS;
-    this.loadProduct();    
+    this.loadProduct();  
+    this.loadDiscounts();  
     let formC = {};
     formC["name"] = new FormControl("");
     this.form = new FormGroup(formC);
+  }
+
+  loadDiscounts(){
+    let date = this.datePipe.transform(this.delDate,"yyyy-MM-dd");
+    this.commonService.getSearchDiscountList(date).subscribe(data=>{
+      this.availableDiscounts = data;
+    });
   }
 
   public loadCustomerRateType(cust:Customer){
@@ -117,19 +126,20 @@ export class ProdtableComponent implements OnInit {
           val['class'] = '';
         if(this.isEdit){
           let quan = this.edit_details.filter((det:any) => det.prod_id == val._id);
+          //console.log(quan);
           if(quan.length > 0){
             val['class'] = "input-bg-color";
-            fieldsCtrls[val.alias] = new FormControl(quan[0]['prod_quan']);
+            fieldsCtrls[val.product_id] = new FormControl(quan[0]['prod_quan']);
           }else{
-            fieldsCtrls[val.alias] = new FormControl(0);
+            fieldsCtrls[val.product_id] = new FormControl(0);
           }
         }else{
-          fieldsCtrls[val.alias] = new FormControl(0);
+          fieldsCtrls[val.product_id] = new FormControl(0);
         }
 
         tempArr[val.category][val.sub_category][val.brand_name].push(val);
         
-        this.productList[val.alias] = {
+        this.productList[val.product_id] = {
           id:val._id,
           product_id:val.product_id,
           name:val.prod_name
@@ -152,11 +162,19 @@ export class ProdtableComponent implements OnInit {
     if(this.form.status == "VALID"){
       for (let key in this.form.value) {
         let quan = this.form.value[key];
-        if(quan > 0){
+        if(quan > 0){          
           let product = this.productList[key];  
           let rate_type = this.sale_type_arr.filter(key => key.prod_id == product.id);
+          let rate_type_iden = (rate_type.length > 0)?rate_type[0].type:DEFAULT_RATE_TYPE;
+          let vars = {
+            quantity: quan,
+            customer_id: this.customer._id,
+            product_id: product.id,
+            sale_type: rate_type_iden
+          };
+          let _did = this._calculateDiscounts(vars);
           let trans_desc:TransactionDesc = {
-            rate_type: (rate_type.length > 0)?rate_type[0].type:DEFAULT_RATE_TYPE,
+            rate_type: rate_type_iden,
             prod_name: product.name,
             prod_id : product.id,
             product_id: product.product_id,
@@ -165,6 +183,7 @@ export class ProdtableComponent implements OnInit {
             tax: 0,
             prod_tax : 0,
             sub_amount : 0,
+            discount_id : _did,
             is_delivered: false
           }
           this.transaction_desc.push(trans_desc);
@@ -199,5 +218,57 @@ export class ProdtableComponent implements OnInit {
       this.dialogRef.close();
     }  
   } 
+
+  _calculateDiscounts(vars:any):string{
+    let discounts = [],_did = null;
+    discounts = this.availableDiscounts;
+    let matching = [];
+    if(discounts && discounts.length > 0){
+      matching = discounts.filter(dis => {
+        return dis.buy_prod_id == vars.product_id && 
+                vars.quantity >= dis.buy_count &&
+                (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.customer_id))
+              })
+    }
+    console.log(matching);
+    if(matching.length > 0){
+      _did = matching[0]._id;
+      switch(matching[0].discount_type){
+        case 'P2P':
+          let free_count = 0;
+          let quotient = 0;
+          let purchased_quan = vars.quantity;
+          if(matching[0].applicable_type.indexOf(vars.sale_type) >=0){
+            quotient = Math.floor(purchased_quan / matching[0].buy_count);
+            free_count = quotient * matching[0].free_count;
+
+            let free_product = matching[0].free_product[0];
+            let rate = this.commonService.getProductPrice(free_product._id,vars.sale_type);
+            let trans_desc:TransactionDesc = {
+              rate_type: 'Discount',
+              prod_name: free_product.prod_name,
+              prod_id : free_product._id,
+              product_id: free_product.product_id,
+              prod_quan : free_count,
+              prod_rate_per_unit : 0,
+              tax: 0,
+              prod_tax : 0,
+              sub_amount : 0,
+              discount_id : _did,
+              is_delivered: false
+            }
+            this.transaction_desc.push(trans_desc);
+          }
+          break;
+        case 'Price':
+          break;
+        case 'Percentage':
+          break;
+        default:
+          break;
+      }
+    }
+    return _did;
+  }
 
 }

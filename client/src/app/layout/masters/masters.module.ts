@@ -8,7 +8,7 @@ import { CustomersComponent } from './customers/customers.component';
 import {
   MatPaginatorModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule,
+  MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule, MatIconModule,
 } from '@angular/material';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatChipsModule} from '@angular/material/chips';
@@ -48,7 +48,8 @@ import { RateMappingComponent } from './rate-mapping/rate-mapping.component';
     MatTooltipModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+    MatIconModule
   ],
   entryComponents: [CommonModalComponent,CustomModalComponent,RateMappingComponent]
 })

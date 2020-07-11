@@ -8,16 +8,18 @@ export interface TransactionDesc {
     prod_rate_per_unit:number;
     sub_amount:number;
     prod_name:string;
+    discount_id?:string;
     is_delivered?:boolean;
     is_delete?:string;
     is_active?:string;
 }
 
 export interface Sales {
-    customer_id:string,
-    sale_date:Date,
-    total_amount:number,
-    details: ProdDescription[]
+    customer_id:string;
+    sale_date:Date;
+    total_amount:number;
+    details: ProdDescription[];
+    discounts?: DiscountTransaction[];
 }
 
 export interface Purchase {
@@ -42,4 +44,14 @@ export interface ProdDescription {
     prod_tax:number;
     sub_amount:number;
     is_delivered?:boolean;
+}
+
+export interface DiscountTransaction {
+    //trans_id:string;
+    //sale_id:string;
+    discount_id:string;
+    prod_id:string;
+    prod_count:number;
+    total_amount:number;
+    is_delete?:string;
 }

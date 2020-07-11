@@ -26,7 +26,8 @@
     </table>
   </mat-card-content>
   <mat-card-actions>
-    <p><a class="anchor-tag" (click)="backToLeadPage()">Back to Lead Page</a></p>
+    <!-- <p><a class="anchor-tag" (click)="backToLeadPage()">Back to Lead Page</a></p> -->
+    <button type="button" mat-raised-button color="primary" (click)="backToLeadPage()">Back to Lead Page</button>
   </mat-card-actions>
 </mat-card>
 <mat-card *ngIf="invoiceView">
@@ -55,24 +56,29 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let desc of inv.details; let i = index">
+            <tr *ngFor="let desc of inv.details; let i = index" class="center-align">
           <td>{{i+1}}</td>
           <td>{{desc.product.prod_name}}</td>
           <td>{{desc.prod_quan | number : '1.2-2'}}</td>
           <td>{{desc.prod_rate_per_unit|currency:'INR'}}</td>
           <td>{{desc.prod_tax|currency:'INR'}}</td>
-          <td>{{desc.sub_amount|currency:'INR'}}</td>
+          <td class="right-align">{{desc.sub_amount|currency:'INR'}}</td>
             </tr>
+          <tr>
+              <td colspan="5" align="center"><span class="span-text">Discounts</span></td>
+              <td class="right-align"><span class="span-text">-{{getDiscountAmt(inv.sales.discount)|currency:'INR'}}</span></td>
+          </tr>
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="5">Totals</th>
-                <td>{{inv.sales.total_amount|currency:'INR'}}</td>
+                <td class='right-align'>{{inv.sales.total_amount|currency:'INR'}}</td>
             </tr>
         </tfoot>
     </table>
     </div>
     <mat-card-actions>
-      <p><a class="anchor-tag" (click)="backToTransaction()">Back to Transaction</a></p>
+      <!-- <p></p><a class="anchor-tag" (click)="backToTransaction()">Back to Transaction</a></p> -->
+      <button type="button" mat-raised-button color="primary" (click)="backToTransaction()">Back to Transaction</button>
     </mat-card-actions>
 </mat-card>

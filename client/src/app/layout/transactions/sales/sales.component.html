@@ -53,40 +53,41 @@
       <ng-container matColumnDef="productName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
           <td mat-cell *matCellDef="let row"> {{row.prod_name}} </td>
-          <td mat-footer-cell *matFooterCellDef>  </td>
+          <td mat-footer-cell *matFooterCellDef> <span class="span-text">Discounts</span> </td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="quantity">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity</th>
             <td mat-cell *matCellDef="let row"> {{row.prod_quan | number : '1.2-2'}} </td>
-            <td mat-footer-cell *matFooterCellDef>  </td>
+            <td mat-footer-cell *matFooterCellDef> <span class="span-text">-{{getTotalDiscount()|currency:'INR'}}</span></td>
         </ng-container>
 
         <!-- Name Column -->
       <ng-container matColumnDef="rate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate </th>
             <td mat-cell *matCellDef="let row"> {{row.prod_rate_per_unit|currency:'INR'}} </td>
-            <td mat-footer-cell *matFooterCellDef> Total </td>
+            <td mat-footer-cell *matFooterCellDef>  </td>
         </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="tax">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Tax </th>
           <td mat-cell *matCellDef="let row"> {{row.prod_tax|currency:'INR'}}@{{row.tax|number : '1.2-2'}}%</td>
-          <td mat-footer-cell *matFooterCellDef>  </td>
+          <td mat-footer-cell *matFooterCellDef> Total </td>
       </ng-container>
 
       <ng-container matColumnDef="amount">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
         <td mat-cell *matCellDef="let row"> {{row.sub_amount|currency:'INR'}}</td>
+        <!-- <td mat-footer-cell *matFooterCellDef> Discounts </td> -->
         <td mat-footer-cell *matFooterCellDef> {{getTotalCost()|currency:'INR'}} </td>
       </ng-container>   
       
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
         <td mat-cell *matCellDef="let row; let n = index">
-          <span (click)="_remove(n)"><i class="material-icons">
+          <span (click)="_remove(row,n)"><i class="material-icons anchor">
             delete_forever
             </i></span>
         </td>
@@ -104,7 +105,7 @@
   </mat-card>
   <br>
   <div *ngIf="lastSales">
-    <a (click)="openSalesModal(lastSales.saleid)">Last Sales: {{lastSales.saleamount | currency:'INR'}}</a>
+    <a class="anchor" (click)="openSalesModal(lastSales.saleid)">Last Sales: {{lastSales.saleamount | currency:'INR'}}</a>
   </div>
   <div class="pull-right">
     <button mat-raised-button color="primary" [disabled]="!dataSource || transaction_desc.length === 0" (click)="_saveOrder('print')">Print</button>

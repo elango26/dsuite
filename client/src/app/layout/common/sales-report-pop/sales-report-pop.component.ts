@@ -30,14 +30,18 @@ export class SalesReportPopComponent implements OnInit {
     };
     this.commonService.postMethod(environment.urls.printInvoices,data).subscribe((data:GenericResp)=>{
       if(data.code == 200)
-        this.saleData = data.data;
-
-           
+        this.saleData = data.data;    
     });
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  getDiscountAmt(row:any):number{
+    return row.reduce((acc,r)=> {
+      return acc+r.total_amount;
+    },0);
   }
 
   callPrintModal(){  

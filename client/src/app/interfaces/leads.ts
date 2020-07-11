@@ -1,4 +1,5 @@
 import { Customer } from "./customer";
+import { Route } from "@angular/compiler/src/core";
 
 export interface Leads {
     totalAmount: any;
@@ -13,6 +14,7 @@ export interface Leads {
     city: string;
     pincode: number;
     route: string;
+    routes: Route;
     index:number;
     is_active?: string;
     is_delete?: string;

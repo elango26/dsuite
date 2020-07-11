@@ -2,11 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const discountSchema = mongoose.Schema({
-    prod_id : {
+    buy_prod_id : {
         type: Schema.ObjectId,
         ref:'Product'
     },
-    to_purchase : {
+    buy_count : {
+        type : String,
+        require : true
+    },
+    free_prod_id : {
+        type: Schema.ObjectId,
+        ref:'Product'
+    },
+    free_count : {
         type : String,
         require : true
     },
@@ -17,11 +25,7 @@ const discountSchema = mongoose.Schema({
     discount_name: {
         type: String,
         require: true
-    },
-    to_off : {
-        type : String,
-        require : true
-    },
+    },    
     from_date : {
         type : Date,
         require : true
@@ -29,6 +33,16 @@ const discountSchema = mongoose.Schema({
     to_date : {
         type : Date,
         require : true
+    },
+    applicable_type : {
+        type : Array,
+        require : true,
+        default : []
+    },
+    applicable_customer : {
+        type : Array,
+        require : true,
+        default : []
     },
     is_active : {
         type : String,

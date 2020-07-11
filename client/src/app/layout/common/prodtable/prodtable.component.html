@@ -20,7 +20,7 @@
               <mat-card-content>
                 <section class="example-section">
                   <mat-form-field *ngFor="let prod of strucProductList[cat.key][sub.key][brands.key] | keyvalue" class="input-prod example-margin">
-                      <input matInput [ngClass]="prod.value.class" [formControlName]="prod.value.alias" [placeholder]="prod.value.alias" aria-label="prod.alias" type="number" size="10"/>                  
+                      <input matInput [ngClass]="prod.value.class" [formControlName]="prod.value.product_id" [placeholder]="prod.value.alias" aria-label="prod.alias" type="number" size="10"/>                  
                   </mat-form-field>              
                 </section>
               </mat-card-content>

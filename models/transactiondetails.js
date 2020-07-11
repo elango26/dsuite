@@ -43,9 +43,10 @@ const transactionDetailsSchema = mongoose.Schema({
         type : Number,
         require : true
     },
-    prod_discount_id : {
+    discount_id : {
         type: Schema.ObjectId,
-        ref:'Discount'
+        ref:'Discount',
+        require: false
     },
     is_delivered: {
         type: Boolean,

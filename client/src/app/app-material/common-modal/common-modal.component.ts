@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormBuilder }
     from '@angular/forms';
 
 import { CommonService } from 'src/app/services/common.service';
+import { DateValidator } from '../date-validator';
 
 @Component({
   selector: 'app-common-modal',
@@ -27,8 +28,11 @@ export class CommonModalComponent {
         let validation = [];
         if(f.validation.required)
           validation.push(Validators.required);
+
+        if(f.type == 'date')
+          validation.push(DateValidator.dateVaidator);
         //if (f.inputType != 'dropdown') {
-          fieldsCtrls[f.name] = new FormControl(f.value || '', validation);
+        fieldsCtrls[f.name] = new FormControl(f.value || '', validation);
         // } else {
         //   let opts = {};
         //   for (let opt of f.options) {
@@ -72,7 +76,7 @@ export class CommonModalComponent {
             });
           });
           break;
-
+        
         default:
           this.snackBar.open("No Method defined", "Error", {
             duration: 500,

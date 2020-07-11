@@ -30,6 +30,24 @@ router.get('/sales',(req,res,next)=>{
             "foreignField": "_id",
             "as": "customerDetail"
         }},
+        {"$lookup":{
+            from: 'discounttransactions',
+            let: {sale_id: '$sale_id'},
+            as: 'discount',
+            pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        { $eq: ['$sale_id', '$$sale_id'] },
+                        { $eq: ['$is_active', 'YES']},
+                        { $eq: ['$is_delete', 'NO']}
+                      ]
+                    }
+                  }
+                }
+              ]
+        }},
         {
         "$sort":{
             "sale_date":-1
@@ -61,13 +79,13 @@ router.get('/sales',(req,res,next)=>{
                             "foreignField": "_id",
                             "as": "product"
                         }},
-                        {    
-                        "$lookup": {
-                            "from": "discounts",
-                            "localField": "prod_discount_id",
-                            "foreignField": "_id",
-                            "as": "discount"
-                        }}
+                        // {    
+                        // "$lookup": {
+                        //     "from": "discounts",
+                        //     "localField": "prod_discount_id",
+                        //     "foreignField": "_id",
+                        //     "as": "discount"
+                        // }}
                     ]).exec((err,detail)=>{                        
                         if(!err) list[i].details = detail;
                         result.push(list[i]);

@@ -95,9 +95,11 @@ router.get('/list',(req,res,next)=>{
             preserveNullAndEmptyArrays: true
           }},
         {"$group":{
-            _id: {customer:'$_id',orders:'$orders._id'},
+            _id: {customer:'$_id',orders:'$orders._id',product:'$orders.details.product_id'},
             //orders: {$push:'$orders._id'},
-
+            count: {
+              $sum : '$orders.details.prod_quan'
+            },
             details: {
               $push:'$orders.details'
             }

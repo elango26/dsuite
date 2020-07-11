@@ -5,8 +5,9 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .custom-modalbox {
+    // overflow-y: auto;
     .mat-dialog-container {
-        position: relative !important;
+        position: relative !important;        
     }
 }
 
@@ -31,3 +32,7 @@
       background: url("../favicon.ico") center center no-repeat; 
     }
   }
+
+mat-icon {
+    cursor: pointer;
+}

@@ -9,6 +9,7 @@ import { BootstrapService } from 'src/app/services/bootstrap.service';
 import { Route } from 'src/app/interfaces/route';
 import { PrinterService } from 'src/app/services/printer.service';
 import { Router } from '@angular/router';
+import { ConsViewComponent } from './cons-view/cons-view.component';
 
 @Component({
   selector: 'app-deliveries',
@@ -69,35 +70,56 @@ export class DeliveriesComponent implements OnInit {
   }
 
   private loadConsolidatedOrders(query:string){
-    this.commonService.getMethod(environment.urls.getConsolidatedOrderList+query).subscribe((data:any[])=>{      
-      this.generateCosolidatedList(data);
+    this.commonService.getMethod(environment.urls.getConsolidatedOrderList+query).subscribe((data:any[])=>{  
+      this.consolidatedList = data;    
+      //this.generateCosolidatedList(data);
     });
   }
 
-  private generateCosolidatedList(consList:any[]){
-    //console.log("Product list");
-    let list = this.commonService.getProductList();
-    for(let key in list){
-      let count = consList.find(cons => cons._id == list[key]._id);
-      if(count){
-        list[key]['count'] = count.count;
-      }else{
-        list[key]['count'] = 0;
-      }
-    }
-    //console.log(list);
-    this.consolidatedList = list;
-  }  
+  // private generateCosolidatedList(consList:any[]){
+  //   //console.log("Product list");
+  //   let list = this.commonService.getProductList();
+  //   for(let key in list){
+  //     let count = consList.find(cons => cons._id == list[key]._id);
+  //     if(count){
+  //       list[key]['count'] = count.count;
+  //     }else{
+  //       list[key]['count'] = 0;
+  //     }
+  //   }
+  //   //console.log(list);
+  //   this.consolidatedList = list;
+  // }  
+
+  public showConsolidated(){
+    let route = this.routes.filter(r=>r.key == this.selRoute)[0].value;
+    const dialogRef = this.dialog.open(ConsViewComponent, {
+      width: '90%',
+      // height:'100%',
+      data: {cons_data:this.consolidatedList,route:route,date:this.delDate},
+      //panelClass: 'custom-modalbox'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //reload
+      this.addEvent();
+    });
+  }
+
+  clear(){
+    this.searKey = '';
+    this.addEvent();
+  }
 
   public editOrder(o:any){
-    console.log(o);
+    // console.log(o);
     let isEdit = false;
     if(o._id.orders){
       isEdit = true;
     }
     const dialogRef = this.dialog.open(ProdtableComponent, {
-      width: 'auto',
-      height:'auto',
+      width: '90%',
+      height:'80%',
       data: {order_date:this.delDate,order_details:o._id.orders,customer:o._id.customer,edit_details:o.details,url:environment.urls.postOrder,isEdit:isEdit,source:'delivery'},
       panelClass: 'custom-modalbox'
     });

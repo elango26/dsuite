@@ -8,7 +8,7 @@
               <td><b>Date:</b> {{inv.sales.sale_date | date:'medium':'IST'}}</td>
           </tr>
           <tr>
-              <td><b>To:</b> {{inv.sales.customer.customerName}}</td>
+              <td><b>To:</b> {{inv.sales.customer?inv.sales.customer.customerName:'Counter'}}</td>
           </tr>
           <tr>
               <td><b>Payment Type:</b> CASH</td>
@@ -27,12 +27,16 @@
           </thead>
           <tbody>
               <tr *ngFor="let desc of inv.details; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{desc.product.prod_name}}</td>
-            <td>{{desc.prod_quan | number : '1.2-2'}}</td>
-            <td>{{desc.prod_rate_per_unit|currency:'INR'}}</td>
-            <td>{{desc.prod_tax|currency:'INR'}}</td>
-            <td>{{desc.sub_amount|currency:'INR'}}</td>
+                <td>{{i+1}}</td>
+                <td>{{desc.product.prod_name}}</td>
+                <td>{{desc.prod_quan | number : '1.2-2'}}</td>
+                <td>{{desc.prod_rate_per_unit|currency:'INR'}}</td>
+                <td>{{desc.prod_tax|currency:'INR'}}</td>
+                <td>{{desc.sub_amount|currency:'INR'}}</td>
+              </tr>
+              <tr>
+                <td colspan="5"><span class="span-text">Discounts</span></td>
+                <td><span class="span-text">-{{getDiscountAmt(inv.sales.discount)|currency:'INR'}}</span></td>
               </tr>
           </tbody>
           <tfoot>

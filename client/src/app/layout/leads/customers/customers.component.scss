@@ -7,11 +7,6 @@ table {
     width: 100%;
 }
 
-td,
-th {
-    width: 25%;
-}
-
 .example-section {
     display: flex;
     align-content: center;
@@ -46,4 +41,18 @@ th {
 .print-right{
     float : right;
     cursor : pointer;
+}
+
+table {
+    tr.center-align {
+        text-align: center;
+    }
+    td.right-align {
+        text-align: right;
+    }
+}
+.span-text {
+    font-style: italic;
+    color: grey;
+    font-size: smaller;
 }

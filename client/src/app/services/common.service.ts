@@ -7,15 +7,19 @@ import { UserService } from './user.service';
 import { Product } from 'src/app/interfaces/product';
 import { Rate } from 'src/app/interfaces/rate';
 import { RateMapping } from '../interfaces/rateMapping';
+import { Customer } from '../interfaces/customer';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
   products:Product[];
+  customers: Customer[];
   product_rate:Rate[];
   rate_type:RateMapping[];
-  constructor(private http: HttpClient,private userservice: UserService) {
+  discounts: any[];
+  constructor(private http: HttpClient,private userservice: UserService,private datePipe:DatePipe) {
     console.log("service called");
     //this.user = this.getMethod(environment.urls.getUser);
     //fetch product details
@@ -29,10 +33,35 @@ export class CommonService {
     this.getMethod(environment.urls.getRateList).subscribe((data:any[]) => {
       this.product_rate = data;
     });
+
+    //fetch customers
+    this.getMethod(environment.urls.getCustomer).subscribe((data:Customer[]) => {
+      this.customers = data;
+    });
+
+    //fetch discounts available now
+    let cur_date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    let q = "?isactive=YES&cur_date="+cur_date;
+    this.getMethod(environment.urls.discountList+q).subscribe((data:any[]) => {
+      this.discounts = data;
+    });
    }
   
   getProductList(){
     return this.products;
+  }
+
+  getCustomerList(){
+    return this.customers;
+  }
+
+  getDiscountList(){
+    return this.discounts;
+  }
+
+  getSearchDiscountList(date:string):any{
+    let q = "?isactive=YES&cur_date="+date;
+    return this.getMethod(environment.urls.discountList+q);
   }
 
   getProductPrice(prod_id:string,type:string): Rate{

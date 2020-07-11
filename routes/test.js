@@ -7,6 +7,95 @@ const customer = require('../models/customer');
 const transactionDetails = require('../models/transactiondetails');
 const common = require('./common');
 
+router.get('/invoices',(req,res,next)=>{
+    sales.aggregate([
+        {"$addFields":{
+            localDate: {$dateToString:{format:"%Y-%m-%d",date:'$sale_date',timezone:'+05:30'}}
+        }},
+        {"$match":{
+            sale_id:'POS0000009'
+        }},
+        {"$lookup":{
+            from: 'transactiondetails',
+            as: 'details',
+            let: { parent_id: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$parent_id', '$$parent_id'] },
+                      { $eq: ['$type','SALES']},
+                      { $eq: ['$is_active', 'YES']},
+                      { $eq: ['$is_delete', 'NO']}
+                    ]
+                  }
+                }
+              }
+            ]
+        }},
+        {"$unwind":{
+            path: '$details',
+            //includeArrayIndex: '<<string>>',
+            preserveNullAndEmptyArrays: true
+        }},
+        {"$lookup":{
+            from: 'products',
+            localField: 'details.prod_id',
+            foreignField: '_id',
+            as: 'details.product'
+        }},
+        {"$unwind":{
+            path: '$details.product',
+            //includeArrayIndex: '<<string>>',
+            preserveNullAndEmptyArrays: true
+        }},
+        {"$group":{
+            _id: '$_id',
+            'details': {
+              $push : '$details'
+            }
+        }},
+        {"$lookup":{
+            from: 'sales',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'sales'
+        }},
+        {"$unwind":{
+            path: '$sales',
+            //includeArrayIndex: '<<string>>',
+            preserveNullAndEmptyArrays: true
+        }},
+        {"$lookup":{
+          from: 'discounttransactions',
+          localField: 'sales.sale_id',
+          foreignField: 'sale_id',
+          as: 'sales.discount'
+        }},
+        {"$lookup":{
+            from: 'customers',
+            localField: 'sales.customer_id',
+            foreignField: '_id',
+            as: 'sales.customer'
+        }},
+        {"$unwind":{
+            path: '$sales.customer',
+            //includeArrayIndex: '<<string>>',
+            preserveNullAndEmptyArrays: true
+        }}
+    ]).exec((err,list)=>{
+        if(!err){
+            let resp = {
+                code : 200,
+                message : "Invoice loaded!!",
+                data: list
+            }
+            res.json(resp);
+        }
+    });
+});
+
 router.get('/productList',(req,res,next)=>{
   product.aggregate([
     // {"$group":{

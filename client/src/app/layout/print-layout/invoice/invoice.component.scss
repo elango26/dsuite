@@ -1,2 +1,16 @@
 .invoice { page-break-after: always; }
 .invoice:last-child { page-break-after: avoid; }
+.span-text {
+    font-style: italic;
+    color: grey;
+    font-size: smaller;
+}
+
+table {
+    tr.center-align {
+        text-align: center;
+    }
+    td.right-align {
+        text-align: right;
+    }
+}

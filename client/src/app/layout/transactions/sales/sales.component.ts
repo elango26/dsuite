@@ -6,7 +6,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { Product } from 'src/app/interfaces/product';
 import { Customer } from 'src/app/interfaces/customer';
-import { TransactionDesc, Sales } from 'src/app/interfaces/transaction';
+import { TransactionDesc, Sales, DiscountTransaction } from 'src/app/interfaces/transaction';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
@@ -15,6 +15,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PrinterService } from 'src/app/services/printer.service';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { SalesReportPopComponent } from '../../common/sales-report-pop/sales-report-pop.component';
+import { keyValuesToMap } from '@angular/flex-layout/extended/typings/style/style-transforms';
+import { DatePipe } from '@angular/common';
+import { NG_DIRECTIVE_DEF } from '@angular/core/src/render3/fields';
 
 export function objValidator(obj:any): ValidatorFn {
   return (control: AbstractControl): { [key: string]: boolean } | null => {
@@ -39,16 +42,18 @@ export class SalesComponent implements OnInit {
   productList: Product[];
   customerList: Customer[];
   transaction_desc: TransactionDesc[]=[];
+  discount_desc: DiscountTransaction[]=[];
   filteredOptions: Observable<Product[]>;
   customerFilteredOptions: Observable<Customer[]>;
   sale_type: string = DEFAULT_RATE_TYPE;
   sale_type_arr: any[];
   lastSales:any;
   custFormMaxDate = new Date();
+  availableDiscounts: any[];
 
   @ViewChild("productName") prodField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router, private route: ActivatedRoute, 
-    public printerService: PrinterService, public dialog: MatDialog) { 
+    public printerService: PrinterService, public dialog: MatDialog, private datePipe: DatePipe) { 
     this.form = new FormGroup({
       'productName': new FormControl('',[Validators.required,objValidator('prod_name')]),
       'quantity': new FormControl('',Validators.required)
@@ -64,6 +69,17 @@ export class SalesComponent implements OnInit {
     // this._callFilter();  
     this.loadProduct();
     this.loadCustomers();
+    this.loadDiscounts();    
+    //"POS0000013"
+    // this.lastSales = {
+    //   saleid: "POS0000013",
+    //   saleamount: "768"
+    // }
+  }
+
+  loadDiscounts(){
+    //this.availableDiscounts = this.commonService.getSearchDiscountList(this.custForm.value.curDate);
+    this.availableDiscounts = this.commonService.getDiscountList();
   }
 
   loadCustomers(){
@@ -138,6 +154,28 @@ export class SalesComponent implements OnInit {
         });
         return false;
       }
+      //replace and sum the existing product added
+      // let descs = this.transaction_desc;
+      // let exist_quan = 0;
+      // for(let key in descs){
+      //   if(descs[key].prod_id == product._id){
+      //     exist_quan += descs[key].prod_quan;
+      //     this.transaction_desc.splice(parseInt(key),1);
+      //   }
+      // }
+      // this.form.value.quantity += exist_quan;
+      this.form.value.quantity += this.transaction_desc.filter(d=>d.prod_id == product._id).reduce((acc,val)=> {return acc+val.prod_quan},0);
+      this.transaction_desc = this.transaction_desc.filter(d=> d.prod_id != product._id);
+      
+      // discounts calculation
+      let var_for_dis = {
+        form: this.form,
+        cus_form: this.custForm,
+        product: product,
+        sale_type: this.sale_type
+      }
+      let discount_id = this._calculateDiscounts(var_for_dis);
+      // discounts end
 
       let trans_desc:TransactionDesc = {
         rate_type: this.sale_type,
@@ -147,6 +185,7 @@ export class SalesComponent implements OnInit {
         prod_quan : this.form.value.quantity,
         prod_rate_per_unit : rate.price,
         tax: rate.tax?rate.tax:0,
+        discount_id:discount_id,
         prod_tax : rate.tax ? (rate.price * this.form.value.quantity)*rate.tax/100:0,
         sub_amount : (rate.price * this.form.value.quantity)
       }
@@ -160,13 +199,102 @@ export class SalesComponent implements OnInit {
     }    
   }
 
-  _remove(n:number):void{
+  _calculateDiscounts(vars:any):string{
+    let discounts = [],_did = null;
+    let sys_date = this.datePipe.transform(new Date(),'yyyy-MM-dd');
+    let sale_date = this.datePipe.transform(this.custForm.value.curDate,'yyyy-MM-dd');
+  
+    if( sys_date != sale_date || !this.availableDiscounts){         
+      this.commonService.getSearchDiscountList(sale_date).subscribe((data:any[]) => {
+        this.availableDiscounts = data;
+      }); 
+    }
+
+    discounts = this.availableDiscounts;
+    let matching = [];
+    if(discounts && discounts.length > 0){
+      matching = discounts.filter(dis => {
+        return dis.buy_prod_id == vars.product._id && 
+                vars.form.value.quantity >= dis.buy_count &&
+                (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.cus_form.value.customerName._id))
+              })
+    }
+    console.log(matching);
+    if(matching.length > 0){
+      _did = matching[0]._id;
+      switch(matching[0].discount_type){
+        case 'P2P':
+          let free_count = 0;
+          let quotient = 0;
+          let purchased_quan = vars.form.value.quantity;
+          if(matching[0].applicable_type.indexOf(vars.sale_type) >=0){
+            quotient = Math.floor(purchased_quan / matching[0].buy_count);
+            free_count = quotient * matching[0].free_count;
+
+            let free_product = matching[0].free_product[0];
+            let rate = this.commonService.getProductPrice(free_product._id,vars.sale_type);
+            let trans_desc:TransactionDesc = {
+              rate_type: 'Discount',
+              prod_name:free_product.prod_name,
+              prod_id : free_product._id,
+              product_id: free_product.product_id,
+              prod_quan : free_count,
+              prod_rate_per_unit : rate.price,
+              discount_id: matching[0]._id,
+              tax: 0,
+              prod_tax : 0,
+              sub_amount : rate.price * free_count
+            }
+            this.transaction_desc.push(trans_desc);
+
+            let exist = this.discount_desc.filter(d=> d.discount_id == _did);
+            if(this.discount_desc.length >0 && exist.length >0){
+              this.discount_desc.map(d=>{
+                if(d.discount_id == _did){
+                  d.prod_count = free_count;
+                  d.total_amount = rate.price * free_count
+                }
+              })
+            }else{
+              let discount_desc:DiscountTransaction = {
+                discount_id: matching[0]._id,
+                prod_id: free_product.product_id,
+                prod_count: free_count,
+                total_amount: rate.price * free_count
+              }
+              this.discount_desc.push(discount_desc);
+            }
+            console.log(this.discount_desc);
+          }
+          break;
+        case 'Price':
+          break;
+        case 'Percentage':
+          break;
+        default:
+          break;
+      }
+    }
+    return _did;
+  }
+
+  _remove(row:any,n:number):void{
     this.transaction_desc.splice(n,1);
+    //console.log(row);
+    if(row.discount_id && row.discount_id != ''){
+      this.discount_desc = this.discount_desc.filter(dis=>dis.discount_id != row.discount_id);
+      this.transaction_desc = this.transaction_desc.filter(t=>t.discount_id != row.discount_id);
+    }
     this.dataSource = new MatTableDataSource(this.transaction_desc);
   }
 
+  getTotalDiscount():number{
+    return this.discount_desc.map(d => d.total_amount).reduce((acc, value) => acc + value, 0);
+  }
+
   getTotalCost():number {
-    return this.transaction_desc.map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.map(t => t.prod_tax).reduce((acc, value) => acc + value, 0);
+    let discounts = this.getTotalDiscount();
+    return (this.transaction_desc.map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.map(t => t.prod_tax).reduce((acc, value) => acc + value, 0)) - discounts;
   }
 
   _saveOrder(type:string):void{      
@@ -174,9 +302,11 @@ export class SalesComponent implements OnInit {
       customer_id: this.custForm.value.customerName._id,
       sale_date: this.custForm.value.curDate,
       total_amount: this.getTotalCost(),
-      details: this.transaction_desc
+      details: this.transaction_desc,
+      discounts: this.discount_desc
     }
     this.transaction_desc = [];
+    this.discount_desc = [];
     this.dataSource = new MatTableDataSource(this.transaction_desc);
      
     this.commonService.postMethod(environment.urls.postSales,data).subscribe((data:GenericResp) =>{  
@@ -186,6 +316,7 @@ export class SalesComponent implements OnInit {
         });
 
         //last sales show
+        //"POS0000013"
         this.lastSales = {
           saleid: data.data.sale_id,
           saleamount: data.data.total_amount

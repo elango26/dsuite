@@ -1,0 +1,36 @@
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+td,
+th {
+    width: auto;
+}
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.example-margin {
+    margin: 10px;
+}
+
+.print{
+    cursor: pointer;
+}
+
+.display-inline{
+    display: inline-flex;
+}
+
+.clearpix {
+    margin-top: 10px;
+}

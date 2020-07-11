@@ -1,0 +1,53 @@
+<!-- <div mat-dialog-title>
+  <h1>Consolidate View</h1>  
+  <h4>Route:</h4>
+  <h4>Date:</h4>
+</div> -->
+<h1 mat-dialog-title>Consolidate View  <span>Route: {{form_value.route}} | Date: {{form_value.date | date:'fullDate'}}</span></h1>
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Milk, SM">
+</mat-form-field>
+
+<div class="" mat-dialog-content>
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="sno">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Sno </th>
+      <td mat-cell *matCellDef="let row;let i=index"> {{i+1}} </td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+      <td mat-cell *matCellDef="let row"> {{row.products.category}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.products.prod_name}} </td>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container matColumnDef="grade">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Grade </th>
+      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.count/row.products.quan_per_grade|round}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="piece">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pieces </th>
+      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.count%row.products.quan_per_grade}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+</div>

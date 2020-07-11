@@ -5,8 +5,8 @@ const {ObjectId} = require('mongodb');
 const discount = require('../models/discount');
 
 router.get('/list',(req,res,next)=>{
-    
-    discount.aggregate([
+
+    let query = [
         {    
         "$lookup": {
             "from": "users",
@@ -24,11 +24,35 @@ router.get('/list',(req,res,next)=>{
         {    
         "$lookup": {
             "from": "products",
-            "localField": "prod_id",
+            "localField": "buy_prod_id",
             "foreignField": "_id",
-            "as": "product"
+            "as": "buy_product"
+        }},
+        {    
+        "$lookup": {
+            "from": "products",
+            "localField": "free_prod_id",
+            "foreignField": "_id",
+            "as": "free_product"
         }}
-    ]).exec((err,list)=>{
+    ];
+    
+    if(req.query && req.query.isactive){
+        query.push({"$match":{"is_active":req.query.isactive}});
+    }
+
+    if(req.query.cur_date){
+        query.push({"$addFields":{
+            'f_date': { "$dateToString": { format: "%Y-%m-%d", date: "$from_date", timezone: "+05:30" } },
+            't_date': { "$dateToString": { format: "%Y-%m-%d", date: "$to_date", timezone: "+05:30" } }
+        }});
+        query.push({"$match":{
+            f_date:{$lte:req.query.cur_date},
+            t_date:{$gte:req.query.cur_date}
+        }});
+    }
+
+    discount.aggregate(query).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{

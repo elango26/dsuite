@@ -1,17 +1,24 @@
 <form >
-<mat-card>
+<!-- <mat-card>
     <mat-card-content>
         <mat-chip-list aria-label="Orders">         
           <mat-chip color="accent" *ngFor="let list of consolidatedList">{{list.alias}}:{{list.count}}</mat-chip>
         </mat-chip-list>
     </mat-card-content>
-</mat-card>
+</mat-card> -->
 <mat-card>
-  <mat-card-title>Deliveries<mat-icon (click)="callPrintModal()" class="print-right">print</mat-icon></mat-card-title>
+  <mat-card-title>
+    Deliveries
+    <mat-icon title="Print" (click)="callPrintModal()" class="print-right">print</mat-icon>
+    <mat-icon title="Consolidated view" (click)="showConsolidated()" class="print-right">assessment</mat-icon>
+  </mat-card-title>
   <mat-card-content>
     <section class="example-section">
         <mat-form-field class="example-margin">
             <input matInput name="searKey" [(ngModel)]="searKey" (keyup)="addEvent()" placeholder="Filter">
+            <button mat-icon-button matSuffix (click)="clear()">
+              <mat-icon>{{searKey?'clear':''}}</mat-icon>
+              </button>
         </mat-form-field>
         <mat-form-field class="example-margin">
             <mat-select name="selRoute" [(ngModel)]="selRoute" (selectionChange)="addEvent()" placeholder="Route" >
