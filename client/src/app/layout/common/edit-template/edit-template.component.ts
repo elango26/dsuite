@@ -11,7 +11,7 @@ import { TransactionDesc, Sales, DiscountTransaction } from 'src/app/interfaces/
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { PrinterService } from 'src/app/services/printer.service';
 import { Router } from '@angular/router';
-import { DEFAULT_RATE_TYPE } from '../../../constants/contants';
+import { DEFAULT_RATE_TYPE, PAYMENT_TYPE } from '../../../constants/contants';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -30,6 +30,8 @@ export class EditTemplateComponent implements OnInit {
   availableDiscounts: any[];
   sale_type: string = DEFAULT_RATE_TYPE;
   sale_type_arr: any[];
+  default_payment_type:string;
+  payment_types: any[];
   @Input() data : any;
   @Output() closeEditPage = new EventEmitter<boolean>();
   @ViewChild("productName") prodField: ElementRef;
@@ -47,6 +49,13 @@ export class EditTemplateComponent implements OnInit {
     this.loadProduct();
     this.loadData();
     this.loadDiscounts();
+    this.payment_types = PAYMENT_TYPE.map(val => {
+      return {
+        key: val,
+        value: val
+      }
+    });
+    this.default_payment_type = this.data.payment_type;
     if(this.data.customer_id) //for customers alone
       this.loadCustomerRateType(this.data.customer_id);
   }
@@ -200,13 +209,14 @@ export class EditTemplateComponent implements OnInit {
     }
     console.log(matching);
     if(matching.length > 0){
-      _did = matching[0]._id;
+      //_did = matching[0]._id;
       switch(matching[0].discount_type){
         case 'P2P':
           let free_count = 0;
           let quotient = 0;
           let purchased_quan = vars.form.value.quantity;
           if(matching[0].applicable_type.indexOf(vars.sale_type) >=0){
+            _did = matching[0]._id;
             quotient = Math.floor(purchased_quan / matching[0].buy_count);
             free_count = quotient * matching[0].free_count;
 
@@ -266,6 +276,7 @@ export class EditTemplateComponent implements OnInit {
       sale_date: this.data.sale_date,
       total_amount: this.getTotalCost(),
       details: this.transaction_desc,
+      payment_type: this.default_payment_type,
       discounts: this.discount_desc
     }
     this.transaction_desc = [];
@@ -274,7 +285,7 @@ export class EditTemplateComponent implements OnInit {
     this.commonService.putMethod(environment.urls.updateSales+'/'+this.data._id,data).subscribe((data:GenericResp) =>{  
       if(data.code == 200){
         this.snackBar.open("Updated successfully!!", "Success", {
-          duration: 500,
+          duration: 1000,
         });
         //print
         if(type == 'print'){
@@ -288,14 +299,14 @@ export class EditTemplateComponent implements OnInit {
           this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
         }  
       }else{
-        this.snackBar.open("Error!!", "Error", {
-          duration: 600,
+        this.snackBar.open("Error!!", data.message, {
+          duration: 1000,
         });
       }
       
     },error =>{
       this.snackBar.open(error, "Error", {
-        duration: 600,
+        duration: 1000,
       });
     });   
     this.form.reset();

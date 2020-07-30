@@ -32,9 +32,20 @@ router.get('/list',(req,res,next)=>{
         {    
         "$lookup": {
             "from": "sales",
-            "localField": "_id",
-            "foreignField": "customer_id",
-            "as": "sales"
+            "let": {"cus_id":"$_id"},
+            "as": "sales",
+            "pipeline" : [{
+              $match:{
+                $expr: {
+                $and:[
+                  {$eq:['$customer_id','$$cus_id']},
+                  {$eq:['$is_active','YES']},
+                  {$eq:['$is_delete','NO']},
+                  {$eq:['$payment_type','CREDIT']}
+                  ]
+                }
+              }
+            }]
         }},
         { "$unwind": {
             path: '$sales',
@@ -58,9 +69,21 @@ router.get('/list',(req,res,next)=>{
         {    
         "$lookup": {
             "from": "payments",
-            "localField": "_id",
-            "foreignField": "customer_id",
-            "as": "payments"
+            "let": {"customer_id":"_id"},
+            "as": "payments",
+            "pipeline":[
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$customer_id', '$$customer_id'] },
+                      { $eq: ['$is_active', 'YES']},
+                      { $eq: ['$is_delete', 'NO']}
+                    ]
+                  }
+                }
+              }
+            ]
         }},
         { "$unwind": {
             path: '$payments',
@@ -143,7 +166,10 @@ router.get('/getTransactions',(req,res,next)=>{
 
     if(req.query.customer_id && req.query.customer_id !=""){
         salesAgg.unshift({"$match":{
-            customer_id:ObjectId(req.query.customer_id)
+            customer_id:ObjectId(req.query.customer_id),
+            is_active: 'YES',
+            is_delete: 'NO',
+            payment_type: 'CREDIT'
           }});
     }
     sales.aggregate(salesAgg).exec((err,debits)=>{

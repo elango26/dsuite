@@ -3,6 +3,7 @@ const router = express.Router();
 const {ObjectId} = require('mongodb');
 const orders = require('../models/order');
 const transactionDetails = require('../models/transactiondetails');
+const discountTransaction = require('../models/discounttransaction');
 const sales = require('../models/sales');
 const common = require('./common');
 
@@ -53,50 +54,76 @@ router.get('/searchOrders',(req,res,next)=>{
 });
 
 function calculateTransactionDetails(rate_type_arr,list){
-    var total_amount = 0, transObjArr = [];
-    if(list.details && list.details.length > 0){        
-        for(let tkey in list.details){
-
-            let details = rate_type_arr.filter(function(rate_type){return rate_type.product.product_id == list.details[tkey].product_id})    
-            
-            if(details.length > 0){
-                let product = details[0].product;
-                
-                let quantity = list.details[tkey].prod_quan;
-                let unit_rate = product['rate_active'][list.details[tkey].rate_type].price;
-                let unit_tax = product['rate_active'][list.details[tkey].rate_type].tax;
-                let transObj = {
-                    prod_id: list.details[tkey].prod_id,
-                    product_id: list.details[tkey].product_id,
-                    rate_type: list.details[tkey].rate_type,
-                    type: 'SALES',
-                    prod_quan: list.details[tkey].prod_quan,
-                    prod_rate_per_unit: unit_rate,                                            
-                    prod_tax: unit_tax ? (unit_rate * quantity)*unit_tax/100:0,
-                    sub_amount: unit_rate * quantity
-                }
-                total_amount += (transObj.prod_tax + transObj.sub_amount);
-                transObjArr.push(transObj);
-            }else{
-                transObjArr.push(list.details[tkey]);
+    var total_amount = 0, transObjArr = [],discountArr = [];
+    if(list.details && list.details.length > 0){
+      //check for discount and add it in discount transaction
+      
+      for(let tkey in list.details){
+        let details = rate_type_arr.filter(rate_type => rate_type.product.product_id == list.details[tkey].product_id);
+        
+        if(details.length > 0){
+            let product = details[0].product;
+            //set to 'Retail' if rate is not avail
+            let pt = product['rate_active'][list.details[tkey].rate_type]?product['rate_active'][list.details[tkey].rate_type]:product['rate_active']['Retail'];
+            let quantity = list.details[tkey].prod_quan;
+            let unit_rate = pt.price;
+            let unit_tax = pt.tax;
+            let transObj = {
+                prod_id: list.details[tkey].prod_id,
+                product_id: list.details[tkey].product_id,
+                rate_type: list.details[tkey].rate_type,
+                type: 'SALES',
+                prod_quan: list.details[tkey].prod_quan,
+                discount_id: list.details[tkey].discount_id,
+                prod_rate_per_unit: unit_rate,      
+                tax: unit_tax,                                      
+                prod_tax: unit_tax ? (unit_rate * quantity)*unit_tax/100:0,
+                sub_amount: unit_rate * quantity
             }
-            
-        }
+            total_amount += (transObj.prod_tax + transObj.sub_amount);
+            list.details[tkey].is_delivered = true;
+            transObjArr.push(transObj);
+            //pushing existing discount values to dicount table
+            if(list.details[tkey].discount_id != '' && list.details[tkey].rate_type == 'Discount'){
+              discountArr.push({
+                discount_id: transObj.discount_id,
+                prod_id: transObj.product_id,
+                prod_count: transObj.prod_quan,
+                total_amount: transObj.sub_amount
+              });
+            }
+            //checking for new discount match
+            if(list.discounts.length > 0 && list.details[tkey].discount_id == null){
+              
+            }
+        }else{
+            //remove from details where rate is not avail
+            //so commented
+            //transObjArr.push(list.details[tkey]);
+        }          
+      }
     }
     return {
         totalAmount: total_amount,
-        details: transObjArr
+        newDetails: transObjArr,
+        discountArr: discountArr,
+        oldDetails: list.details
     }
-
+  
 }
 
 router.post('/placeOrders',(req,res,next)=>{
-    
+    let _resp = {
+        code : 201,
+        message : "Error Occurred",
+        data: []
+    };
     orders.aggregate([
         {"$addFields":{
             'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
         }},
         {"$match":{
+            is_delivered: 'NO',
             local_date: req.body.orderdate
         }},
         {"$lookup":{
@@ -116,107 +143,141 @@ router.post('/placeOrders',(req,res,next)=>{
                 }
               }
             ]
+        }},
+        {"$lookup":{
+            from: 'discounts',
+            as: 'discounts',
+            let : {'l_date': '$order_date'},
+            pipeline : [{
+              $match:{
+                $expr: {
+                $and:[
+                  {$lte:['$from_date','$$l_date']},
+                  {$gte:['$to_date','$$l_date']}
+                  ]
+                }
+              }
+            }]
         }}
     ]).exec((err,list)=>{
-        //fetch all rate details
-        //write a function to fetch rates and make it as async
-        let resp = common.getRateList();
-        resp.then(function(result) {
+      //fetch all rate details
+      //write a function to fetch rates and make it as async
+      if(!err){
+        if(list.length > 0){
+            //console.log(list); res.json(list);
+          let resp = common.getRateList();
+          resp.then(async function(result) {
             const rate_type_arr = result;
-            if(!err){
-                let updateOrderObj=[], updateTransObj=[];
-                var trans_loop = false, order_loop = false;
-                if(list.length > 0){
-                    var order_size = list.length;
-                    var i = 0;
-                    for(let key in list){
-    
-                        //write in main sales and its corresponding transaction table
-                        
-                        let transDetails = calculateTransactionDetails(rate_type_arr,list[key]);
-                        
-                        let saleData = {
-                            customer_id: list[key].customer_id,
-                            sale_date: list[key].order_date,
-                            total_amount: transDetails.totalAmount,
-                            created_by: list[key].createdBy
+            let updateOrderObj=[],updateTransObj=[],newTransObj=[],newDiscountObj=[];
+            var order_size = list.length;
+            for(let key=0;key<list.length;key++){
+              let transDetails = calculateTransactionDetails(rate_type_arr,list[key]);
+              console.log(list[key].order_id);
+              let saleData = {
+                sale_id: 'POS'+list[key].order_id,
+                customer_id: list[key].customer_id,
+                sale_date: list[key].order_date,
+                total_amount: transDetails.totalAmount,
+                payment_type: 'CREDIT',
+                created_by: list[key].createdBy
+              }
+              list[key]['newDetails'] = transDetails.newDetails;
+              list[key]['discounts'] = transDetails.discountArr;
+              let newSales = new sales(saleData);
+              await new Promise((resolve,reject) => {
+                //new save with promise
+                newSales.save((err,sales)=>{
+                  if(!err){
+                    resolve(sales);
+                  } else {
+                    reject(err);
+                  }
+                });
+              }).then((new_sales) => {
+                console.log(new_sales);
+                if(list[key] && list[key].details.length > 0){
+                  console.log('save loop'+key);
+                  //let transaction_size = list[key].details.length; 
+                  var j = 0;
+                  for(let tkey in list[key].details){                                  
+                    if(list[key].newDetails && list[key].newDetails[tkey]){
+                        list[key].newDetails[tkey]['parent_id'] = new_sales._id;
+                    }
+                    //update trasaction table
+                    console.log('takey'+tkey);
+                    if(list[key].details[tkey].is_delivered == true){
+                      updateTransObj.push({
+                        updateOne: {
+                          filter: { _id:ObjectId(list[key].details[tkey]._id),type:'ORDER' },
+                          update: { $set: { is_delivered: true }}
                         }
-                        list[key]['newDetails'] = transDetails.details;
-                        let newSales = new sales(saleData);
-                        newSales.save((err,sales)=>{
-                            if(err){
-                                res.json(err);
-                            }else{
-                                if(list[key] && list[key].details.length > 0){
-                                    let transaction_size = list[key].details.length; 
-                                    var j = 0;
-                                    for(let tkey in list[key].details){
-                                        
-                                        if(list[key].newDetails && list[key].newDetails[tkey]){
-                                            list[key].newDetails[tkey]['parent_id'] = sales._id;
-                                        }                             
-                                                                           
-                                        
-                                        //update trasaction table
-                                        updateTransObj.push({
-                                            updateOne: {
-                                                filter: { _id:ObjectId(list[key].details[tkey]._id),type:'ORDER' },
-                                                update: { $set: { is_delivered: true }}
-                                            }
-                                        });
-                                        j+=1;
-                                        if(j == transaction_size)
-                                            trans_loop = true;
-                                    }
-
-                                    
-            
-                                    try{
-                                        //new sale
-                                        transactionDetails.insertMany(list[key].newDetails);                                       
-                                        //update order
-                                        transactionDetails.bulkWrite(updateTransObj);     
-                                        if(order_loop && trans_loop)               
-                                            res.json("Order generated successfully");                         
-                                    }catch(e){
-                                        console.log("Order::err in place order 1st part"+e);
-                                    }
-                                }                             
-                            }
-                        });
-    
-                        //update order table
-                        updateOrderObj.push({
-                            updateOne: {
-                                filter: { _id:ObjectId(list[key]._id) },
-                                update: { $set: { is_delivered: "YES" }}
-                            }
-                        });    
-                        
-                        i+=1;
-
-                        if(i==order_size)
-                            order_loop = true;
-    
+                      });
                     }
-                    try{
-                        orders.bulkWrite(updateOrderObj);         
-                        if(order_loop && trans_loop)               
-                            res.json("Orders generated successfully");
-                    }catch(e){
-                        console.log("Order::err in place order 2nd part"+e);
-                    }
-                }else{
-                    res.json("No orders available");
+                    j++;
+                  }
+                  //new sale
+                  if(list[key].newDetails.length > 0){
+                    newTransObj = newTransObj.concat(list[key].newDetails);
+                  }                       
+                  
+                  //discounts
+                  if(list[key].discounts.length > 0)
+                    newDiscountObj.push(list[key].discounts);
                 }
+  
+                //update order table                              
+                updateOrderObj.push({
+                  updateOne: {
+                      filter: { _id:ObjectId(list[key]._id) },
+                      update: { $set: { is_delivered: "YES" }}
+                  }
+                });
+                if(key == order_size - 1){
+                  console.log(updateTransObj);
+                  console.log(newTransObj);
+                  console.log(updateOrderObj);
+                  console.log(newDiscountObj);
+                  if(newDiscountObj.length > 0)
+                    discountTransaction.insertMany(newDiscountObj);  
+                  try{
+                    if(newTransObj.length > 0){
+                        console.log('inside many');
+                        transactionDetails.insertMany(newTransObj); 
+                    }
+                  }catch(e){
+                      console.log('err'+e);
+                  }
+                  //update transaction orders
+                  if(updateTransObj.length > 0)
+                    transactionDetails.bulkWrite(updateTransObj);
+                  //update order
+                  if(updateOrderObj.length > 0)
+                    orders.bulkWrite(updateOrderObj); 
+                  _resp.code = 200;
+                  _resp.message = "success";
+                  res.json(_resp);
+                }
+              });
             }
-        }, function(err){
-            console.log("its error");
-            res.json("Error Occurred!!");
-        });       
-        //res.json("Updated successfully!!");
+          }, function(err){
+            console.log("its error"+err);
+            _resp.message = "Error in get rate list";
+            _resp.data = err;
+            res.json(_resp);
+          });
+        } else {
+          _resp.code = 200;
+          _resp.message = "No orders found!!";
+          res.json(_resp);
+        }
+      } else {
+        console.log("its error"+err);
+        _resp.message = "Error in aggregation";
+        _resp.data = err;
+        res.json(_resp);
+      }
     });
-});
+  });
 
 router.get('/list',(req,res,next)=>{
     

@@ -144,10 +144,15 @@ router.post('/create',(req,res,next)=>{
 });
 
 router.put('/update/:id',(req,res,next)=>{
-    console.log("update id::"+req.params.id);
+    let _resp = {
+        code : 201,
+        message : "Error Occurred",
+        data: []
+    };
     sales.findByIdAndUpdate(req.params.id, {$set: req.body},(err,sales)=>{
         if(err){
-            res.json(err);
+            _resp.message = err;
+            res.json(_resp);
         }else{
             //transactionDetails.deleteMany({ parent_id : sales._id, type: 'SALES' });
             if(req.body.discounts.length > 0){
@@ -162,7 +167,11 @@ router.put('/update/:id',(req,res,next)=>{
                     });
                 }
             }
-            if(!req.body.details || !req.body.details.length) res.json({msg:'sales updated successfully'});
+            if(!req.body.details || !req.body.details.length) {
+                _resp.code = 200;
+                _resp.message = "No transactions found";
+                res.json(_resp);
+            }
             let count = 0;
             for (let i = 0, len = req.body.details.length; i < len; i++) {                
                 req.body.details[i].parent_id = sales._id;
@@ -172,10 +181,16 @@ router.put('/update/:id',(req,res,next)=>{
                     newtransaction.isNew = false;
                 newtransaction.save((errs,transaction)=>{
                     if(errs){
-                        res.json(errs);
+                        _resp.code = 201;
+                        _resp.message = "Error in updating transaction";
+                        res.json(_resp);
                     }
                     count++
-                    if(count === len) res.json({msg:'sales updated successfully'});
+                    if(count === len) {
+                        _resp.code = 200;
+                        _resp.message = "Sales updated successfully";
+                        res.json(_resp);
+                    }
                 });
             }
         }

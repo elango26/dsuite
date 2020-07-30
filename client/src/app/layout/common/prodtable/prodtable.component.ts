@@ -125,11 +125,11 @@ export class ProdtableComponent implements OnInit {
 
           val['class'] = '';
         if(this.isEdit){
-          let quan = this.edit_details.filter((det:any) => det.prod_id == val._id);
-          //console.log(quan);
-          if(quan.length > 0){
+          let quan = this.edit_details.filter((det:any) => det.prod_id == val._id).reduce((acc,val) => acc + val.prod_quan ,0);
+          console.log(quan);
+          if(quan > 0){
             val['class'] = "input-bg-color";
-            fieldsCtrls[val.product_id] = new FormControl(quan[0]['prod_quan']);
+            fieldsCtrls[val.product_id] = new FormControl(quan);
           }else{
             fieldsCtrls[val.product_id] = new FormControl(0);
           }
@@ -232,13 +232,14 @@ export class ProdtableComponent implements OnInit {
     }
     console.log(matching);
     if(matching.length > 0){
-      _did = matching[0]._id;
+      //_did = matching[0]._id;
       switch(matching[0].discount_type){
         case 'P2P':
           let free_count = 0;
           let quotient = 0;
           let purchased_quan = vars.quantity;
           if(matching[0].applicable_type.indexOf(vars.sale_type) >=0){
+            _did = matching[0]._id;
             quotient = Math.floor(purchased_quan / matching[0].buy_count);
             free_count = quotient * matching[0].free_count;
 

@@ -1,4 +1,5 @@
 const rate = require('../models/rate');
+const sales = require('../models/sales');
 
 let common = {};
 common.firstmethod = function(){
@@ -8,6 +9,17 @@ common.padding = function(n,width,prefix){
     n = n + ''; 
     return n.length >= width ? prefix+n :  
     prefix+new Array(width - n.length + 1).join('0') + n;
+}
+common.getCount = () => {
+    return new Promise(function(resolve, reject) {
+        sales.countDocuments(function(err,count){
+            if(!err){
+                resolve(common.padding(count+1,7,'POS'));
+            }else{
+                reject(err);
+            }
+        });
+    });
 }
 common.getRateList = function(){    
     return new Promise(function(resolve, reject) {

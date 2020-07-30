@@ -10,6 +10,7 @@ export const environment = {
     authenticate:apiUrl+'/auth/authenticate',
     //dashboard
     getDashboardGrids:apiUrl+'/dashboard/grids',
+    getCreditList:apiUrl+'/dashboard/totalCredits',
     //payments
     getPayment:apiUrl+'/payment/list',
     postPayment:apiUrl+'/payment/create',

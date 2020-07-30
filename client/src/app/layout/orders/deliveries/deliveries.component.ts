@@ -10,6 +10,7 @@ import { Route } from 'src/app/interfaces/route';
 import { PrinterService } from 'src/app/services/printer.service';
 import { Router } from '@angular/router';
 import { ConsViewComponent } from './cons-view/cons-view.component';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 @Component({
   selector: 'app-deliveries',
@@ -135,11 +136,18 @@ export class DeliveriesComponent implements OnInit {
       "orderdate":this.datePipe.transform(this.delDate,"yyyy-MM-dd"),
       "customerid":"all"
     }
-    this.commonService.postMethod(environment.urls.postOrderSales,data).subscribe((data:any)=>{
-      console.log("post order");
-      this.snackBar.open(data, "Success", {
-        duration: 1000,
-      });
+    //environment.urls.postOrderSales
+    this.commonService.postMethod(environment.urls.postOrderSales,data).subscribe((data:GenericResp)=>{
+      if(data.code == 200){
+        this.snackBar.open(data.message, "Success", {
+          duration: 1000,
+        });
+        this.addEvent();
+      }else{
+        this.snackBar.open(data.message, "Error", {
+          duration: 1000,
+        });
+      }      
     });
   }
 

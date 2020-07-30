@@ -7,8 +7,20 @@ const product = require('../models/product');
 const transactionDetails = require('../models/transactiondetails');
 
 router.get('/sales',(req,res,next)=>{
-    
+    let _resp = {
+        code : 201,
+        message : "Something went wrong!",
+        data: {}
+    }
     sales.aggregate([
+        {"$addFields":{
+            'localdate':{ "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } } 
+        }},
+        {"$match":{
+            "is_active":"YES",
+            "is_delete":"NO",
+            "localdate":req.query.date
+        }},
         {    
         "$lookup": {
             "from": "users",
@@ -54,7 +66,8 @@ router.get('/sales',(req,res,next)=>{
         }}
     ]).exec((err,list)=>{
         if(err){
-            res.json(err);
+            _resp.message = err;
+            res.json(_resp);
         }else{
             let result = [];
             if(list && list.length){
@@ -91,10 +104,17 @@ router.get('/sales',(req,res,next)=>{
                         result.push(list[i]);
                         processedCount++;
                         if(processedCount === len){
-                            res.json(result);
+                            _resp.code = 200;
+                            _resp.message = "";
+                            _resp.data = result;
+                            res.json(_resp);
                         } 
                     }); 
                 }
+            }else{
+                _resp.code = 200;
+                _resp.message = "No records found";
+                res.json(_resp);
             }
         }
     });

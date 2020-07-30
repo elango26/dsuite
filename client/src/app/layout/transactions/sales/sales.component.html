@@ -104,8 +104,16 @@
   </div>
   </mat-card>
   <br>
-  <div *ngIf="lastSales">
-    <a class="anchor" (click)="openSalesModal(lastSales.saleid)">Last Sales: {{lastSales.saleamount | currency:'INR'}}</a>
+  <div>
+    <a *ngIf="lastSales" class="anchor" (click)="openSalesModal(lastSales.saleid)">Last Sales: {{lastSales.saleamount | currency:'INR'}}</a>
+    <!-- <a class="anchor">450.00</a> -->
+    <div class="margin-left">
+      <mat-form-field>
+      <mat-select matInput name="payment_type" [(ngModel)]="default_payment_type" placeholder="Payment Type">
+        <mat-option *ngFor="let opt of payment_types" [value]="opt.key">{{opt.value}}</mat-option>
+      </mat-select>
+      </mat-form-field>
+    </div>
   </div>
   <div class="pull-right">
     <button mat-raised-button color="primary" [disabled]="!dataSource || transaction_desc.length === 0" (click)="_saveOrder('print')">Print</button>

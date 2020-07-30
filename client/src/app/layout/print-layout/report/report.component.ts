@@ -44,8 +44,8 @@ export class ReportComponent implements OnInit {
             let rawdata = this.data.data;
             det['customername']=rawdata[i]._id.customer.customerName;        
             this.products.forEach(function(obj){
-              let productsDet = rawdata[i].details.filter((orders:any)=>orders.prod_id==obj._id);
-              det[obj._id] = productsDet.length > 0?productsDet[0]['prod_quan']:0;
+              let quantity = rawdata[i].details.filter((orders:any)=>orders.prod_id==obj._id).reduce((acc,val)=>acc+val.prod_quan,0);
+              det[obj._id] = quantity > 0?quantity:0;
             });            
             this.report.push(det);
           }     
@@ -58,8 +58,8 @@ export class ReportComponent implements OnInit {
             let rawdata = this.data.data.sales;
             det['customername']=rawdata[i]._id.customer.customerName;        
             this.products.forEach(function(obj){
-              let productsDet = rawdata[i].details.filter((orders:any)=>orders.prod_id==obj._id);
-              det[obj._id] = productsDet.length > 0?productsDet[0]['prod_quan']:0;
+              let quantity = rawdata[i].details.filter((orders:any)=>orders.prod_id==obj._id).reduce((acc,val)=>acc+val.prod_quan,0);
+              det[obj._id] = quantity > 0?quantity:0;
             });
             if(this.data.data.account){
               let cr_dt = this.data.data.account.data;

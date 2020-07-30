@@ -13,7 +13,8 @@ import { BootstrapService } from './services/bootstrap.service';
 import { LoaderComponent } from './loader/loader.component';
 import {MatProgressSpinnerModule} from '@angular/material';
 import { HashLocationStrategy, LocationStrategy, DatePipe } from '@angular/common';
-
+import { LoaderService } from './loader/loader.service';
+import { LoaderHttpInterceptor } from './services/http-interceptor.service'
 export function configServiceFactory(config: BootstrapService) {
     return () => config.load();
 }
@@ -57,7 +58,8 @@ export const createTranslateLoader = (http: HttpClient) => {
         deps: [BootstrapService],
         multi: true
         },
-        {provide: LocationStrategy, useClass: HashLocationStrategy}
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
+        LoaderService
     ],
     bootstrap: [AppComponent],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

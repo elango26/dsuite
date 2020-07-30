@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { PrinterService } from 'src/app/services/printer.service';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 @Component({
   selector: 'app-recentsales',
@@ -17,13 +19,15 @@ export class RecentsalesComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   editView:boolean = false;
   editData: any;
+  selectedDate = new Date();
+  custFormMaxDate = new Date();
 
   public salesList: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private commonService: CommonService, private dialog: MatDialog, public printerService:PrinterService, public router: Router) {
+  constructor(private commonService: CommonService, private dialog: MatDialog, private datePipe: DatePipe, public printerService:PrinterService, public router: Router, public snackbar:MatSnackBar) {
   }
 
   ngOnInit() {
@@ -31,11 +35,24 @@ export class RecentsalesComponent implements OnInit {
   }
 
   loadRecentSales(){
-    this.commonService.getMethod(environment.urls.getRecentSales).subscribe((data) => {
-      this.salesList = data;
-      this.dataSource = new MatTableDataSource(this.salesList);
-      this.dataSource.paginator = this.paginator;
-      //this.dataSource.sort = this.sort;
+    console.log(this.selectedDate);
+    let date = this.datePipe.transform(this.selectedDate,"yyyy-MM-dd");
+    this.commonService.getMethod(environment.urls.getRecentSales+'?date='+date).subscribe((data:GenericResp) => {
+      if(data.code == 200){
+        this.salesList = data.data;
+        this.dataSource = new MatTableDataSource(this.salesList);
+        this.dataSource.paginator = this.paginator;
+        //this.dataSource.sort = this.sort;
+        if(data.message != ''){
+          this.snackbar.open("Success","No records found!!",{
+            duration: 1000
+          });
+        }
+      } else {
+        this.snackbar.open("Failure","Some error!!",{
+          duration: 1000
+        });
+      }  
     });
   }
 

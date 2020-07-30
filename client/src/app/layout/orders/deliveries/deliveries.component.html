@@ -45,7 +45,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <mat-chip-list *ngIf="row._id.orders">
-              <mat-chip *ngFor="let order of row.details">{{order.products.alias}}: {{order.prod_quan}} </mat-chip>                                           
+              <mat-chip *ngFor="let order of row.details">{{order.products.prod_name}}: <span class="highlight-text">{{order.prod_quan}}</span> </mat-chip>                                           
           </mat-chip-list>   
           <div class="example-button-row">        
             <button mat-stroked-button color="warn" (click)="editOrder(row)">Edit</button>      

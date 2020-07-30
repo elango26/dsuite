@@ -38,7 +38,7 @@ const userSchema = mongoose.Schema({
     role : {
         type : String,
         require : true,
-        enum: ['ADMIN', 'USER']
+        enum: ['SUPERADMIN','ADMIN', 'USER']
     },
     is_active : {
         type : String,

@@ -18,6 +18,7 @@ export interface Sales {
     customer_id:string;
     sale_date:Date;
     total_amount:number;
+    payment_type:string;
     details: ProdDescription[];
     discounts?: DiscountTransaction[];
 }

@@ -19,6 +19,10 @@ const salesSchema = mongoose.Schema({
         type : Number,
         require : true
     },
+    payment_type : {
+        type : String,
+        require : true
+    },
     is_active : {
         type : String,
         require : true,

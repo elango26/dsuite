@@ -9,6 +9,7 @@ import { Rate } from 'src/app/interfaces/rate';
 import { RateMapping } from '../interfaces/rateMapping';
 import { Customer } from '../interfaces/customer';
 import { DatePipe } from '@angular/common';
+import { LoaderEnabled } from '../loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -70,10 +71,12 @@ export class CommonService {
     return product.length > 0 ? product[0]['product']['rate_active'][type]:null;
   }
 
+  @LoaderEnabled()
   getMethod( url:string){
     return this.http.get(url);
   }
 
+  @LoaderEnabled()
   postMethod( url:string, data:any){
     data['createdBy'] = this.userservice.user._id;
     return this.http.post(url,data).pipe(
@@ -81,6 +84,7 @@ export class CommonService {
     );
   }
 
+  @LoaderEnabled()
   putMethod( url:string, data:any){
     data['updatedBy'] = this.userservice.user._id;
     return this.http.put(url,data).pipe(

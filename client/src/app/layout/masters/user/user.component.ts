@@ -128,7 +128,7 @@ export class UserComponent implements OnInit {
       "validation": {
         "required": true
       },
-      "options": [{key:"ADMIN",value:"ADMIN"},{key:"USER",value:"USER"}]
+      "options": [{key:"ADMIN",value:"ADMIN"},{key:"USER",value:"USER"},{key:"SUPERADMIN",value:"SUPERADMIN"}]
     }];
 
     const dialogRef = this.dialog.open(CommonModalComponent, {

@@ -8,20 +8,27 @@ const common = require('./common');
 
 router.get('/getOutstanding',(req,res,next)=>{
     sales.aggregate([
+        {"$match":{
+            _id: ObjectId(req.query.cust_id),
+            is_active: 'YES',
+            is_delete: 'NO',
+            payment_type: 'CREDIT'
+        }},
         {"$group": {
             _id: '$customer_id',
             total_sales: {
               $sum: '$total_amount'
             }
           }
-        },
-        {"$match":{
-            _id: ObjectId(req.query.cust_id)
-        }}
+        }
     ]).exec((err,list)=>{
         if(!err){            
             if(list != null){                            
                 payment.aggregate([
+                    {"$match":{
+                        is_active: "YES",
+                        is_delete: "NO"
+                    }},
                     {"$group":{
                         _id: '$customer_id',
                         total_payment: {
