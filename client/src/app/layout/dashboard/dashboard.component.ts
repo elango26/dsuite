@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
     matGrids:any[];
     creditsList:any[];
     session: any;
+    selectedDate: Date = new Date();
 
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace
@@ -108,8 +109,17 @@ export class DashboardComponent implements OnInit {
         this.loadCredits();
     }
 
+    refreshAll(){
+        this.loadDashboard();
+        this.loadCredits();
+    }
+
     loadCredits(){
-        this.commonService.getMethod(environment.urls.getCreditList).subscribe((data:GenericResp)=>{
+        let q = "?date="+this.datePipe.transform(this.selectedDate,"yyyy-MM-dd");
+        if(this.session.role == 'USER'){
+            q+= "&user_id="+this.session.user_id;
+        }
+        this.commonService.getMethod(environment.urls.getCreditList+q).subscribe((data:GenericResp)=>{
             console.log(data);
             if(data.code == 200){
                 if(this.session.role == 'ADMIN' || this.session.role == 'SUPERADMIN'){
@@ -159,7 +169,7 @@ export class DashboardComponent implements OnInit {
     }
 
     loadDashboard(){
-        let q = '?date='+this.datePipe.transform(new Date,"yyyy-MM-dd");
+        let q = '?date='+this.datePipe.transform(this.selectedDate,"yyyy-MM-dd");
         this.commonService.getMethod(environment.urls.getDashboardGrids+q).subscribe((data:GenericResp) =>{
             if(data.code == 200){
                 var details = data.data;

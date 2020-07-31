@@ -1,4 +1,12 @@
-<div *ngIf="session.role == 'ADMIN' || session.role == 'SUPERADMIN'" class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+<div *ngIf="session.role == 'ADMIN' || session.role == 'SUPERADMIN'" class="pull-right">
+    <mat-form-field>
+        <input matInput [(ngModel)]="selectedDate" (ngModelChange)="refreshAll()" [max]="custFormMaxDate" [matDatepicker]="picker" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+</div>
+
+<div *ngIf="session.role == 'ADMIN' || session.role == 'SUPERADMIN'" class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">    
     <div fxFlex *ngFor="let grid of matGrids">
         <app-stat [bgClass]="grid.class" [icon]="grid.icon" [count]="grid.count | currency:'INR'" [label]="grid.label"></app-stat>
     </div>

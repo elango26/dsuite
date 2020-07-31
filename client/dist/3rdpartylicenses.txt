@@ -261,19 +261,23 @@ THE SOFTWARE.
 @angular/forms
 MIT
 
-@angular/material/card
-
 @angular/material/snack-bar
-
-@angular/material/select
 
 @angular/material/core
 
+@angular/material/select
+
 @angular/material/tooltip
+
+@angular/material/card
 
 @angular/material/dialog
 
 @angular/material/datepicker
+
+@angular/material/paginator
+
+@angular/material/table
 
 @angular/flex-layout
 MIT
@@ -505,10 +509,6 @@ THE SOFTWARE.
 >>>>>>> Initial commit
 
 
-@angular/material/paginator
-
-@angular/material/table
-
 @angular/material/icon
 
 @angular/material/checkbox
@@ -520,9 +520,6 @@ THE SOFTWARE.
 @angular/material/chips
 
 @angular/material/autocomplete
-
-@angular/core
-MIT
 
 tslib
 Apache-2.0
@@ -583,6 +580,12 @@ If the Work includes a "NOTICE" text file as part of its distribution, then any 
 END OF TERMS AND CONDITIONS
 
 
+@angular/core
+MIT
+
+@angular/common
+MIT
+
 hammerjs
 MIT
 The MIT License (MIT)
@@ -607,9 +610,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-
-@angular/common
-MIT
 
 @angular/platform-browser
 MIT
@@ -682,3 +682,5 @@ THE SOFTWARE.
 @angular/material/menu
 
 @angular/material/list
+
+@angular/material/sort

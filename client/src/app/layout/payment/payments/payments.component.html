@@ -9,9 +9,9 @@
             <mat-form-field class="example-margin customer-col">
                 <span matSuffix [className]="outstandingDet.classname">&nbsp; <i>{{outstandingDet.amount | currency:'INR'}}</i></span>
                 <input type="text" autofocus placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer" [readonly]="dedicatedCustomer">
-                <button mat-icon-button matSuffix (click)="clear()">
+                <!-- <button mat-icon-button matSuffix (click)="clear()">
                     <mat-icon>clear</mat-icon>
-                    </button>
+                    </button> -->
                 <mat-autocomplete #customer="matAutocomplete" [displayWith]="displayCustomerFn">
                   <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
                     {{customer.customerName}}

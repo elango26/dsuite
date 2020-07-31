@@ -10,6 +10,7 @@ export const environment = {
     authenticate:apiUrl+'/auth/authenticate',
     //dashboard
     getDashboardGrids:apiUrl+'/dashboard/grids',
+    getCreditList:apiUrl+'/dashboard/totalCredits',
     //payments
     getPayment:apiUrl+'/payment/list',
     postPayment:apiUrl+'/payment/create',
@@ -45,6 +46,7 @@ export const environment = {
     deleteVendor:apiUrl+'/vendor/delete',
     getProduct:apiUrl+'/product/list',
     postProduct:apiUrl+'/product/create',
+    updateProduct:apiUrl+'/product/update',
     deleteProduct:apiUrl+'/product/delete',
     getUser:apiUrl+'/user/list',
     postUser:apiUrl+'/user/create',
@@ -82,6 +84,12 @@ export const environment = {
     modifyIndex:apiUrl+'/personalize/modifyIndex',
     //remainders
     //alerts
+
+    //discounts
+    discountList:apiUrl+'/discount/list',
+    discountCreate:apiUrl+'/discount/create',
+    discountUpdate:apiUrl+'/discount/update',
+
 
     //printer
     printInvoices:apiUrl+'/printer/invoices',

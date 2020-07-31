@@ -50,7 +50,7 @@ export class SalesComponent implements OnInit {
   lastSales:any;
   custFormMaxDate = new Date();
   availableDiscounts: any[];
-  payment_types: any[];
+  payment_types: any[]=[];
   default_payment_type:string;
 
   @ViewChild("productName") prodField: ElementRef;
@@ -73,10 +73,12 @@ export class SalesComponent implements OnInit {
     this.loadCustomers();
     this.loadDiscounts(); 
     this.default_payment_type = DEFAULT_PAYMENT_TYPE;
-    this.payment_types = PAYMENT_TYPE.map(val => {
-      return {
-        key: val,
-        value: val
+    PAYMENT_TYPE.forEach(t=>{
+      if(t != 'CREDIT'){
+        this.payment_types.push({
+          key: t,
+          value: t
+        })
       }
     });
     //"POS0000013"
@@ -84,6 +86,15 @@ export class SalesComponent implements OnInit {
     //   saleid: "POS0000013",
     //   saleamount: "768"
     // }
+    this.onChanges();
+  }
+
+  onChanges() : void{
+    this.custForm.get('customerName').valueChanges.subscribe(val => {
+      if(val.customerName){
+        this.payment_types.push({key:'CREDIT',value:'CREDIT'});
+      }
+    });
   }
 
   loadDiscounts(){

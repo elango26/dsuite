@@ -141,19 +141,30 @@ router.get("/totalCredits",(req,res,next)=>{
     let resp_data = {};
     let user_id = req.query.user_id;
     let date = req.query.date;
+    let user_match = {};
+    if(user_id && user_id != ''){
+        user_match = {
+            'user_id': user_id
+        }
+    }
     pro_payment = new Promise((resolve,reject)=>{
         user.aggregate([
+            {"$match": user_match},
             {"$lookup":{
                 from: 'payments',
                 let : {'createdBy':'$_id'},
                 as: 'payments',
                 pipeline:[
+                    {$addFields:{
+                       createdDate : {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
+                    }},
                     {$match:{
                         $expr:{
                             $and:[
                                 {$eq:['$createdBy','$$createdBy']},
                                 {$eq:['$is_active','YES']},
-                                {$eq:['$is_delete','NO']}
+                                {$eq:['$is_delete','NO']},
+                                {$eq:['$createdDate',date]}
                             ]
                         }
                     }}
@@ -186,17 +197,22 @@ router.get("/totalCredits",(req,res,next)=>{
 
     pro_sales = new Promise((resolve,reject)=>{
         user.aggregate([
+            {"$match": user_match},
             {"$lookup":{
                 from: 'sales',
                 let : {'createdBy':'$_id'},
                 as: 'sales',
                 pipeline:[
+                    {$addFields:{
+                        saleDate : {$dateToString:{format:'%Y-%m-%d',date:'$sale_date',timezone:'+05:30'}}
+                    }},
                     {$match:{
                         $expr:{
                             $and:[
                                 {$eq:['$createdBy','$$createdBy']},
                                 {$eq:['$is_active','YES']},
-                                {$eq:['$is_delete','NO']}
+                                {$eq:['$is_delete','NO']},
+                                {$eq:['$saleDate',date]}
                             ]
                         }
                     }}
