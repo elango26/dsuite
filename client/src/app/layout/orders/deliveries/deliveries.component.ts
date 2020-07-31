@@ -18,7 +18,7 @@ import { GenericResp } from 'src/app/interfaces/genericResp';
   styleUrls: ['./deliveries.component.scss']
 })
 export class DeliveriesComponent implements OnInit {
-  maxToDate = new Date();
+  maxToDate: Date;
   delDate: Date;
   selRoute: string = "all";
   searKey: string = "";
@@ -56,6 +56,9 @@ export class DeliveriesComponent implements OnInit {
     });
     this.routes.push({key:'all',value:'All'});
     this.addEvent();
+    let tdy = new Date();
+    tdy.setDate(tdy.getDate() +1);
+    this.maxToDate = tdy;
   }
 
   public addEvent(){

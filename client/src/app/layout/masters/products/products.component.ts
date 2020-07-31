@@ -176,6 +176,7 @@ export class ProductsComponent implements OnInit {
   }
 
   editProduct(row:any):void{
+    this.initialize();
     this.product_form_details.map(inp => {
       inp.value = row[inp.name];
     });
@@ -202,6 +203,7 @@ export class ProductsComponent implements OnInit {
   }
 
   openDialog(): void {
+    this.initialize();
     const dialogRef = this.dialog.open(CommonModalComponent, {
       width: '600px',
       data: {formData:this.product_form_details.sort((a, b) => a.order - b.order),formTitle:"Products",url:environment.urls.postProduct}
