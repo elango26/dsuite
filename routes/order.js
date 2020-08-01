@@ -362,7 +362,7 @@ router.post('/create',(req,res,next)=>{
                     res.json(err);
                 }else{
                     if(!req.body.details || !req.body.details.length) res.json({msg:'Please enter orders'});
-                    let count = 0;
+                    //let count = 0;
                     //removing all trasaction details 
                     if(req.body._id){
                         const query = { parent_id : ObjectId(req.body._id) };
@@ -372,18 +372,25 @@ router.post('/create',(req,res,next)=>{
                         .catch(err => console.error(`Delete failed with error: ${err}`));
                     }                
                     //inserting new transactions
+                    let newTransObj = [];
                     for (let i = 0, len = req.body.details.length; i < len; i++) {
                         req.body.details[i].parent_id = orders._id;
-                        req.body.details[i].type = "ORDER";                
-                        let newtransaction = new transactionDetails(req.body.details[i]);
-                        newtransaction.save((errs,transaction)=>{
-                            if(errs){
-                                res.json(errs); 
-                            }
-                            count++
-                            if(count === len) res.json({msg:'Orders added successfully'});
-                        });
+                        req.body.details[i].type = "ORDER";
+                        newTransObj.push(req.body.details[i]);
+                        // let newtransaction = new transactionDetails(req.body.details[i]);
+                        // newtransaction.save((errs,transaction)=>{
+                        //     if(errs){
+                        //         res.json(errs); 
+                        //     }
+                        //     count++
+                        //     if(count === len) res.json({msg:'Orders added successfully'});
+                        // });
                     }
+                    transactionDetails.insertMany(newTransObj).then(result => {
+                        res.json({msg:'Orders added successfully'});
+                    }).catch(err => {
+                        res.json(err);
+                    });
                 }
             });
         }else{

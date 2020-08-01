@@ -230,7 +230,7 @@ export class ProdtableComponent implements OnInit {
                 (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.customer_id))
               })
     }
-    console.log(matching);
+    //console.log(matching);
     if(matching.length > 0){
       //_did = matching[0]._id;
       switch(matching[0].discount_type){
