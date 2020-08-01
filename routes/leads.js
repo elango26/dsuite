@@ -401,8 +401,9 @@ router.get('/lead_report',(req,res,next)=>{
                   "branches": [
                     { "case": { "$lte": [ "$$dte", dat1 ] }, "then": "old" },
                     { "case": { "$lte": [ "$$dte", dat2 ] }, "then": "week" },
-                    { "case": { "$lte": [ "$$dte", dat3 ] }, "then": "today" },
-                  ]
+                    { "case": { "$lte": [ "$$dte", dat3 ] }, "then": "today" },                    
+                  ],
+                  "default": "today"
                 }
               }
             }
@@ -441,7 +442,8 @@ router.get('/lead_report',(req,res,next)=>{
                         { "case": { "$lte": [ "$$dte", dat1 ] }, "then": "old" },
                         { "case": { "$lte": [ "$$dte", dat2 ] }, "then": "week" },
                         { "case": { "$lte": [ "$$dte", dat3 ] }, "then": "today" },
-                      ]
+                      ],
+                      "default": "today"
                     }
                   }
                 }
