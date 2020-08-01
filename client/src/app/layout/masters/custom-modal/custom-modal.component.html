@@ -72,9 +72,9 @@
               </mat-card-header>
               <mat-card-content>
                 <mat-form-field class="example-width">
-                  <input matInput [matDatepicker]="picker" [(ngModel)]="data.effective_date" name="effective_date" placeholder="Effective date">
+                  <input matInput disabled [matDatepicker]="picker" [(ngModel)]="data.effective_date" name="effective_date" placeholder="Effective date">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-datepicker disabled="false" #picker></mat-datepicker>
                 </mat-form-field>
                 <br>
                 <mat-form-field class="example-width">                

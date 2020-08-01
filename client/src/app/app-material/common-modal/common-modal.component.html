@@ -16,9 +16,9 @@
             <mat-option *ngFor="let opt of form.options" [value]="opt.key">{{opt.value}}</mat-option>
           </mat-select>          
           <ng-container *ngSwitchCase="'date'">
-            <input matInput [min]="form.min_date" [matDatepicker]="picker" [formControlName] = "form.name" [placeholder]="form.placeholder">
+            <input matInput disabled [min]="form.min_date" [matDatepicker]="picker" [formControlName] = "form.name" [placeholder]="form.placeholder">
             <mat-datepicker-toggle  matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <mat-datepicker disabled="false" #picker></mat-datepicker>
           </ng-container>
       </mat-form-field>            
     </mat-card-content>

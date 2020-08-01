@@ -3,9 +3,9 @@
     <div class="font-smaller">
       <label>Customer: <b><i>{{customer.customerName}}</i></b></label>
       <mat-form-field class="example-margin date-col">
-        <input matInput [min]="delDate" [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="delDate">
+        <input matInput [min]="delDate" [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="delDate" disabled>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker #picker disabled="false"></mat-datepicker>
       </mat-form-field>
     </div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">           

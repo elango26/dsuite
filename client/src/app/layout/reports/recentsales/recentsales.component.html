@@ -8,9 +8,9 @@
               <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
           </mat-form-field>
           <mat-form-field class="example-margin">
-            <input matInput [(ngModel)]="selectedDate" (ngModelChange)="loadRecentSales()" [max]="custFormMaxDate" [matDatepicker]="picker" placeholder="Choose a date">
+            <input matInput disabled [(ngModel)]="selectedDate" (ngModelChange)="loadRecentSales()" [max]="custFormMaxDate" [matDatepicker]="picker" placeholder="Choose a date">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <mat-datepicker disabled="false" #picker></mat-datepicker>
           </mat-form-field>
       </section>
   </mat-card-content>

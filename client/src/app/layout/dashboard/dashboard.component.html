@@ -1,8 +1,8 @@
 <div *ngIf="session.role == 'ADMIN' || session.role == 'SUPERADMIN'" class="pull-right">
     <mat-form-field>
-        <input matInput [(ngModel)]="selectedDate" (ngModelChange)="refreshAll()" [max]="custFormMaxDate" [matDatepicker]="picker" placeholder="Choose a date">
+        <input matInput disabled [(ngModel)]="selectedDate" (ngModelChange)="refreshAll()" [max]="custFormMaxDate" [matDatepicker]="picker" placeholder="Choose a date">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker disabled="false" #picker></mat-datepicker>
     </mat-form-field>
 </div>
 

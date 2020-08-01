@@ -12,6 +12,8 @@ router.get('/list',(req,res,next)=>{
       { $eq: ['$customer_id', '$$cust_id'] },
       { $eq: ['$local_date',req.query.order_date]},
       { $eq: ['$is_delivered', 'NO']},
+      { $eq: ['$is_active', 'YES']},
+      { $eq: ['$is_delete', 'NO']},
     ];
     
     if(req.query.route != 'all'){    
@@ -143,6 +145,9 @@ router.get('/consolidatelist',(req,res,next)=>{
       'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
     }},
     {"$match":{
+      is_active:'YES',
+      is_delete:'NO',
+      is_delivered:'NO',
       local_date:req.query.order_date
     }},
     {"$lookup":{

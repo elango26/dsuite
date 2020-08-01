@@ -26,9 +26,9 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field class="example-margin">
-          <input matInput [max]="maxToDate" [matDatepicker]="picker" placeholder="Choose a date" name="delDate" (dateInput)="addEvent()" [(ngModel)]="delDate">
+          <input matInput disabled [max]="maxToDate" [matDatepicker]="picker" placeholder="Choose a date" name="delDate" (dateInput)="addEvent()" [(ngModel)]="delDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker disabled="false" #picker></mat-datepicker>
         </mat-form-field>
     </section>
     <mat-accordion class="example-headers-align">
