@@ -74,21 +74,21 @@
                 <li>
                     <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/sales']"><span>{{ 'Sales' | translate }}</span></a>
                 </li>
-                <li *ngIf="userDetail.role=='ADMIN'">
+                <li *ngIf="userDetail.role=='ADMIN' || userDetail.role=='SUPERADMIN'">
                     <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/purchase']"><span>{{ 'Purchase' | translate }}</span></a>
                 </li>
-                <li *ngIf="userDetail.role=='ADMIN'">
+                <li>
                     <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/expenses']"><span>{{ 'Expenses' | translate }}</span></a>
                 </li>
                 <li>
                     <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/damages']"><span>{{ 'Return / Spoil' | translate }}</span></a>
                 </li>
-                <li>
+                <li *ngIf="userDetail.role=='ADMIN' || userDetail.role=='SUPERADMIN'">
                     <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/transactions/openingbalance']"><span>{{ 'Opening Balance' | translate }}</span></a>
                 </li>
             </ul>
         </div>
-        <div class="nested-menu">
+        <div class="nested-menu" *ngIf="userDetail.role=='ADMIN' || userDetail.role=='SUPERADMIN'">
             <a mat-list-item (click)="addExpandClass('personalize')">
                 <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Personalize' | translate }}
             </a>
@@ -101,7 +101,7 @@
                 </li>                
             </ul>
         </div>
-        <div class="nested-menu">
+        <div class="nested-menu" *ngIf="userDetail.role=='ADMIN'">
             <a mat-list-item (click)="addExpandClass('discounts')">
                 <mat-icon class="sidenav-icon">local_offer</mat-icon> {{ 'Discounts' | translate }}
             </a>

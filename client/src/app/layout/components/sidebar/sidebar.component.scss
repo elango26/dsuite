@@ -28,6 +28,10 @@
     }
     & .expand {
         &.submenu {
+            background: aliceblue;
+            font-weight: lighter;
+            font-variant: petite-caps;
+
             display: block;
             list-style-type: none;
             height: auto;
@@ -36,6 +40,9 @@
                 a {
                     padding: 10px;
                     display: block;
+                }
+                span::before {
+                    content: "- ";
                 }
             }
         }
