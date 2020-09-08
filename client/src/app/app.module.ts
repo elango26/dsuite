@@ -3,7 +3,7 @@ import { NgModule, Injectable, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from '@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -14,7 +14,7 @@ import { LoaderComponent } from './loader/loader.component';
 import {MatProgressSpinnerModule} from '@angular/material';
 import { HashLocationStrategy, LocationStrategy, DatePipe } from '@angular/common';
 import { LoaderService } from './loader/loader.service';
-import { LoaderHttpInterceptor } from './services/http-interceptor.service'
+import { JwtHttpInterceptor } from './services/http-interceptor.service'
 export function configServiceFactory(config: BootstrapService) {
     return () => config.load();
 }
@@ -59,7 +59,8 @@ export const createTranslateLoader = (http: HttpClient) => {
         multi: true
         },
         {provide: LocationStrategy, useClass: HashLocationStrategy},
-        LoaderService
+        LoaderService,
+        {provide: HTTP_INTERCEPTORS,useClass:JwtHttpInterceptor,multi:true}
     ],
     bootstrap: [AppComponent],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

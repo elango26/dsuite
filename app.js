@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var bodyparser = require('body-parser');
 var cors = require('cors');
 var path = require('path');
+var middleware = require('./middleware/middleware');
 
 // assigning express to app variable
 var app = express();
@@ -37,7 +38,7 @@ const test = require('./routes/test');
 mongoose.connect('mongodb://localhost:27017/dsuite');
 
 // on mongodb connection
-mongoose.connection.on('connected',()=>{
+mongoose.connection.on('connected',()=>{    
     console.log('Connected to mongodb database @ 27017');
 });
 
@@ -61,12 +62,20 @@ app.use(bodyparser.json());
 // automatically it will refer index.html file
 app.use(express.static(path.join(__dirname,'public'))); 
 
+//common no middleware
+app.use('/api/auth',auth);
+app.use('/api/test',test);
+app.use('/api/route',route);
+
+//middleware
+app.use(middleware.checkToken);
+
 // adding router to app with initial path
 app.use('/api/user',user);
 app.use('/api/customer',customer);
 app.use('/api/vendor',vendor);
 app.use('/api/product',product);
-app.use('/api/route',route);
+//app.use('/api/route',route);
 app.use('/api/ratemapping',ratemapping);
 app.use('/api/rate',rate);
 app.use('/api/sales',sales);
@@ -84,8 +93,8 @@ app.use('/api/personalize',personalize);
 app.use('/api/printer',printer);
 app.use('/api/dashboard',dashboard);
 app.use('/api/ob',ob);
-app.use('/api/auth',auth);
-app.use('/api/test',test);
+// app.use('/api/auth',auth);
+// app.use('/api/test',test);
 
 // test server for home page
 app.get('/',(req,res)=>{

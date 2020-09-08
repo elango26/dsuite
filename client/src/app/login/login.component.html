@@ -20,11 +20,15 @@
                 </div>
             </div>
             <div fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 20px 0 30px 0">
-                <div fxFlex>
+                <!-- <div fxFlex>
                     <mat-checkbox color="primary">Remember Me</mat-checkbox>
-                </div>
+                </div> -->
                 <div fxFlex  fxLayoutAlign="end">
-                    <a href="javascript:void(0)">Forget Password</a>
+                    <!-- <a href="javascript:void(0)">Forget Password</a> -->
+                    <re-captcha (resolved)="resolved($event)" 
+                                formControlName="recaptchaReactive" 
+                                siteKey="6LfInckZAAAAAHFxYqXAWcNdr-4V1GFWS9OK4fyx">  
+                    </re-captcha>
                 </div>
             </div>
             <div fxFlex  fxLayout="row" fxLayout.lt-md="column">

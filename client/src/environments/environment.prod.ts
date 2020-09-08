@@ -8,6 +8,7 @@ export const environment = {
 
     //auth
     authenticate:apiUrl+'/auth/authenticate',
+    captchaValidation: apiUrl+'/auth/token_validate',
     //dashboard
     getDashboardGrids:apiUrl+'/dashboard/grids',
     getCreditList:apiUrl+'/dashboard/totalCredits',

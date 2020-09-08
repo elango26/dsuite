@@ -22,6 +22,7 @@ export class CommonService {
   discounts: any[];
   constructor(private http: HttpClient,private userservice: UserService,private datePipe:DatePipe) {
     console.log("service called");
+    console.log(this.userservice);
     //this.user = this.getMethod(environment.urls.getUser);
     //fetch product details
     this.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
@@ -46,7 +47,7 @@ export class CommonService {
     this.getMethod(environment.urls.discountList+q).subscribe((data:any[]) => {
       this.discounts = data;
     });
-   }
+  }
   
   getProductList(){
     return this.products;
@@ -73,12 +74,16 @@ export class CommonService {
 
   @LoaderEnabled()
   getMethod( url:string){
-    return this.http.get(url);
+    //let header = new HttpHeaders({ "Authorization": "Bearer oooooososoos"});
+    return this.http.get(url).pipe(
+      catchError(this.handleError)
+    );
   }
 
   @LoaderEnabled()
-  postMethod( url:string, data:any){
+  postMethod( url:string, data:any){    
     data['createdBy'] = this.userservice.user._id;
+    //let header = new HttpHeaders({ "Authorization": "Bearer oooooososoos"});
     return this.http.post(url,data).pipe(
       catchError(this.handleError)
     );
@@ -87,6 +92,7 @@ export class CommonService {
   @LoaderEnabled()
   putMethod( url:string, data:any){
     data['updatedBy'] = this.userservice.user._id;
+    //let header = new HttpHeaders({ "Authorization": "Bearer oooooososoos"});
     return this.http.put(url,data).pipe(
       catchError(this.handleError)
     );
@@ -104,8 +110,7 @@ export class CommonService {
         `body was: ${error.error}`);
     }
     // return an observable with a user-facing error message
-    return throwError(
-      'Something bad happened; please try again later.');
+    return throwError('Something bad happened; please try again later..');
   };
 
 }

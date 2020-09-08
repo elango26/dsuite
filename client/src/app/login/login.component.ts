@@ -20,8 +20,27 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         this.form = new FormGroup({
             'username': new FormControl('',Validators.required),
-            'password': new FormControl('',Validators.required)
+            'password': new FormControl('',Validators.required),
+            'recaptchaReactive' : new FormControl('',Validators.required)
         })
+    }
+
+    async resolved(captchaResponse: string) {
+        //console.log(`Resolved response token: ${captchaResponse}`);       
+        await this.sendTokenToBackend(captchaResponse);
+    }
+
+    sendTokenToBackend(tok){
+        //calling the service and passing the token to the service
+        this.http.post(environment.urls.captchaValidation,{recaptcha: tok}).subscribe(
+          data => {
+            console.log(data)
+          },
+          err => {
+            console.log(err)
+          },
+          () => {}
+        );
     }
 
     onLogin() {
@@ -37,6 +56,7 @@ export class LoginComponent implements OnInit {
                         lastname: data.data[0].lastname,
                         email: data.data[0].email,
                         role: data.data[0].role,
+                        token: data.data[0].token
                     }     
                     this.userservice.user = userDetails;               
                     localStorage.setItem('userdetails', JSON.stringify(userDetails));

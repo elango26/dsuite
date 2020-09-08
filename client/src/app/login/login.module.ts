@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 //import {MatProgressSpinnerModule} from '@angular/material';
 
 @NgModule({
@@ -18,6 +19,8 @@ import { LoginComponent } from './login.component';
         FormsModule,
         ReactiveFormsModule,
         MatSnackBarModule,
+        RecaptchaModule,
+        RecaptchaFormsModule,
         //MatProgressSpinnerModule,
         FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
