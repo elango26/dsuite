@@ -1,0 +1,841 @@
+[{
+  "_id": {
+    "$oid": "5e6518b2d440121bc8333b77"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Mariyappan",
+  "alias": "Mariyappan",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "chennai",
+  "city": "chennai",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000001",
+  "index": 0,
+  "createdAt": {
+    "$date": "2020-03-08T16:09:23.075Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651a57d440121bc8333b78"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Naidu",
+  "alias": "Naidu",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "Chennai",
+  "city": "Chennai",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000002",
+  "index": 2,
+  "createdAt": {
+    "$date": "2020-03-08T16:16:23.604Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651a90d440121bc8333b79"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Rani store",
+  "alias": "Rani",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "chennai",
+  "city": "chennai",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000003",
+  "index": 3,
+  "createdAt": {
+    "$date": "2020-03-08T16:17:20.187Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651ab1d440121bc8333b7a"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Dayalan store",
+  "alias": "Dayalan",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "Chennai",
+  "city": "Chennai",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000004",
+  "index": 4,
+  "createdAt": {
+    "$date": "2020-03-08T16:17:53.347Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651adfd440121bc8333b7b"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Kumar Store",
+  "alias": "Harikumar",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "Chennai",
+  "city": "chennai",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000005",
+  "index": 6,
+  "createdAt": {
+    "$date": "2020-03-08T16:18:39.083Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651b3ed440121bc8333b7c"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Aravind store",
+  "alias": "Aravind",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000006",
+  "index": 7,
+  "createdAt": {
+    "$date": "2020-03-08T16:20:14.793Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651b76d440121bc8333b7d"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Venkatesan",
+  "alias": "Venkatesan",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000007",
+  "index": 8,
+  "createdAt": {
+    "$date": "2020-03-08T16:21:10.242Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651d1ed440121bc8333b7e"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Ganapathy",
+  "alias": "Ganapathy",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000008",
+  "index": 9,
+  "createdAt": {
+    "$date": "2020-03-08T16:28:14.541Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651d3fd440121bc8333b7f"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Bhavani",
+  "alias": "Bhavani",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000009",
+  "index": 1,
+  "createdAt": {
+    "$date": "2020-03-08T16:28:47.268Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651d55d440121bc8333b80"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Manikandan",
+  "alias": "Manikandan",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000010",
+  "index": 10,
+  "createdAt": {
+    "$date": "2020-03-08T16:29:09.229Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651d9ed440121bc8333b81"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Saranya Store",
+  "alias": "Saranya",
+  "firstName": "Dharma",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000011",
+  "index": 11,
+  "createdAt": {
+    "$date": "2020-03-08T16:30:22.964Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651db7d440121bc8333b82"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Harikrishna",
+  "alias": "Harikrishna",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000012",
+  "index": 12,
+  "createdAt": {
+    "$date": "2020-03-08T16:30:47.796Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651dd0d440121bc8333b83"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Murugan",
+  "alias": "Murugan",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000013",
+  "index": 13,
+  "createdAt": {
+    "$date": "2020-03-08T16:31:12.891Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651decd440121bc8333b84"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Lakshmi store",
+  "alias": "Lakshmi",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000014",
+  "index": 14,
+  "createdAt": {
+    "$date": "2020-03-08T16:31:40.722Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651e08d440121bc8333b85"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Karthikeyan",
+  "alias": "Karthikeyan",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000015",
+  "index": 15,
+  "createdAt": {
+    "$date": "2020-03-08T16:32:08.883Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651e31d440121bc8333b86"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "V.S Store",
+  "alias": "V.S Store",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000016",
+  "index": 16,
+  "createdAt": {
+    "$date": "2020-03-08T16:32:49.875Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651e58d440121bc8333b87"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Rajagopal Store",
+  "alias": "Thatha",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000017",
+  "index": 17,
+  "createdAt": {
+    "$date": "2020-03-08T16:33:28.700Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651e6dd440121bc8333b88"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Lingusamy",
+  "alias": "Lingusamy",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000018",
+  "index": 18,
+  "createdAt": {
+    "$date": "2020-03-08T16:33:49.260Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651e81d440121bc8333b89"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Kumar Store",
+  "alias": "Kumar ",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000019",
+  "index": 19,
+  "createdAt": {
+    "$date": "2020-03-08T16:34:09.769Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651e91d440121bc8333b8a"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Uma",
+  "alias": "Uma",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000020",
+  "index": 20,
+  "createdAt": {
+    "$date": "2020-03-08T16:34:25.571Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651ea9d440121bc8333b8b"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Kali Store",
+  "alias": "Kali",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000021",
+  "index": 21,
+  "createdAt": {
+    "$date": "2020-03-08T16:34:49.571Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651f0fd440121bc8333b8c"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Selvam Store",
+  "alias": "Selvam",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000022",
+  "index": 22,
+  "createdAt": {
+    "$date": "2020-03-08T16:36:31.657Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651f30d440121bc8333b8d"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "New Kannan",
+  "alias": "Kannan",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000023",
+  "index": 23,
+  "createdAt": {
+    "$date": "2020-03-08T16:37:04.499Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651f54d440121bc8333b8e"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Thangamani",
+  "alias": "Thangamani",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000024",
+  "index": 24,
+  "createdAt": {
+    "$date": "2020-03-08T16:37:40.443Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651f6ad440121bc8333b8f"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Paper",
+  "alias": "Paper",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000025",
+  "index": 25,
+  "createdAt": {
+    "$date": "2020-03-08T16:38:02.481Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651f97d440121bc8333b90"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Gurusamy store",
+  "alias": "Gurusamy",
+  "firstName": "xx",
+  "lastName": "xx",
+  "contactNo": 0,
+  "contactNo1": null,
+  "address": "ch",
+  "city": "ch",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000026",
+  "index": 26,
+  "createdAt": {
+    "$date": "2020-03-08T16:38:47.079Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f240538d4a1ff02bc4fe337"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "Balamurugan",
+  "alias": "Balamurugan",
+  "firstName": "Bala",
+  "lastName": "bala",
+  "contactNo": 0,
+  "contactNo1": 0,
+  "address": "pk",
+  "city": "chennai",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 600040,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000027",
+  "index": 27,
+  "createdAt": {
+    "$date": "2020-07-31T11:49:13.008Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f2aea63c71ef00b9cef1c38"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "customerName": "New Shop",
+  "alias": "new shop",
+  "firstName": "new",
+  "lastName": "new",
+  "contactNo": 0,
+  "contactNo1": 0,
+  "address": "pk",
+  "city": "chennai",
+  "route": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "pincode": 600040,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "customer_id": "CUS0000028",
+  "index": 5,
+  "createdAt": {
+    "$date": "2020-08-05T17:20:35.969Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-05T17:21:10.316Z"
+  },
+  "__v": 0
+}]

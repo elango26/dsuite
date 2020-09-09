@@ -1,0 +1,91 @@
+[{
+  "_id": {
+    "$oid": "5e651862d440121bc8333b72"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "areaName": "PK",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "route_id": "R0000001",
+  "createdAt": {
+    "$date": "2020-03-08T16:08:02.798Z"
+  },
+  "updatedAt": {
+    "$date": "2020-03-08T16:08:02.798Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651869d440121bc8333b73"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "areaName": "PPN",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "route_id": "R0000002",
+  "createdAt": {
+    "$date": "2020-03-08T16:08:09.038Z"
+  },
+  "updatedAt": {
+    "$date": "2020-03-08T16:08:09.038Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e65186fd440121bc8333b74"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "areaName": "ME",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "route_id": "R0000003",
+  "createdAt": {
+    "$date": "2020-03-08T16:08:15.303Z"
+  },
+  "updatedAt": {
+    "$date": "2020-03-08T16:08:15.303Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e65187ad440121bc8333b75"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "areaName": "Others",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "route_id": "R0000004",
+  "createdAt": {
+    "$date": "2020-03-08T16:08:26.503Z"
+  },
+  "updatedAt": {
+    "$date": "2020-03-08T16:08:26.503Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e651882d440121bc8333b76"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "areaName": "Shop",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "route_id": "R0000005",
+  "createdAt": {
+    "$date": "2020-03-08T16:08:34.072Z"
+  },
+  "updatedAt": {
+    "$date": "2020-03-08T16:08:34.072Z"
+  },
+  "__v": 0
+}]

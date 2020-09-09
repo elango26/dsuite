@@ -1,0 +1,702 @@
+[{
+  "_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "AROKYA SM500 ML",
+  "alias": "SM500",
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "SM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000001",
+  "index": 11,
+  "createdAt": {
+    "$date": "2020-03-08T15:44:41.524Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:55:26.304Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 24,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 500
+},{
+  "_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "FCM 2000ML",
+  "alias": "FCM2L",
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "FCM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000002",
+  "index": 12,
+  "createdAt": {
+    "$date": "2020-03-08T15:49:32.661Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:55:35.709Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 6,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 2000
+},{
+  "_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "FCM 500ML",
+  "alias": "FCM500",
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "FCM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000003",
+  "index": 14,
+  "createdAt": {
+    "$date": "2020-03-08T15:53:24.852Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:55:48.515Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 24,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 500
+},{
+  "_id": {
+    "$oid": "5e651510d440121bc8333b61"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "FCM 250ML",
+  "alias": "FCM250",
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "FCM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000004",
+  "index": 15,
+  "createdAt": {
+    "$date": "2020-03-08T15:53:52.525Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:55:55.882Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 44,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 250
+},{
+  "_id": {
+    "$oid": "5e651564d440121bc8333b62"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "FCM 200ML",
+  "alias": "FCM200",
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "FCM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000005",
+  "index": 16,
+  "createdAt": {
+    "$date": "2020-03-08T15:55:16.843Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:56:03.566Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 50,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 200
+},{
+  "_id": {
+    "$oid": "5e651578d440121bc8333b63"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "FCM 150ML",
+  "alias": "FCM150",
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "FCM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000006",
+  "index": 17,
+  "createdAt": {
+    "$date": "2020-03-08T15:55:36.435Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:56:20.518Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 60,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 150
+},{
+  "_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "TM 500ML",
+  "alias": "TM500",
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "TM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000007",
+  "index": 18,
+  "createdAt": {
+    "$date": "2020-03-08T15:56:08.517Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:56:29.523Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 24,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 500
+},{
+  "_id": {
+    "$oid": "5e6515bbd440121bc8333b65"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "SM CAN 1500ML",
+  "alias": "CAN",
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "SM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000008",
+  "index": 19,
+  "createdAt": {
+    "$date": "2020-03-08T15:56:43.273Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:56:42.763Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 1,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 1500
+},{
+  "_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "COW MILK 500ML",
+  "alias": "CW500",
+  "brand_name": "HATSUN",
+  "category": "Milk",
+  "sub_category": "COW",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000009",
+  "index": 10,
+  "createdAt": {
+    "$date": "2020-03-08T15:57:21.339Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T12:11:38.860Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 24,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 500
+},{
+  "_id": {
+    "$oid": "5e651603d440121bc8333b67"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "CUP 50G",
+  "alias": "H50",
+  "brand_name": "HATSUN",
+  "category": "Curd",
+  "sub_category": "Cup",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000010",
+  "index": 0,
+  "createdAt": {
+    "$date": "2020-03-08T15:57:55.455Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T12:34:59.808Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 12,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.05
+},{
+  "_id": {
+    "$oid": "5e651638d440121bc8333b68"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "POUCH 140GM",
+  "alias": "P140",
+  "brand_name": "HATSUN",
+  "category": "Curd",
+  "sub_category": "Pouch",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000011",
+  "index": 2,
+  "createdAt": {
+    "$date": "2020-03-08T15:58:48.677Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:48:31.857Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 60,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.14
+},{
+  "_id": {
+    "$oid": "5e65168dd440121bc8333b69"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "HAT POUCH 200GM",
+  "alias": "P200",
+  "brand_name": "HATSUN",
+  "category": "Curd",
+  "sub_category": "Pouch",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000012",
+  "index": 3,
+  "createdAt": {
+    "$date": "2020-03-08T16:00:13.610Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:48:53.793Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 50,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.2
+},{
+  "_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "HAT POUCH 500GM",
+  "alias": "P500",
+  "brand_name": "HATSUN",
+  "category": "Curd",
+  "sub_category": "Pouch",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000013",
+  "index": 4,
+  "createdAt": {
+    "$date": "2020-03-08T16:01:08.728Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:50:33.668Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 24,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.5
+},{
+  "_id": {
+    "$oid": "5e6516dcd440121bc8333b6b"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "HAT POUCH 1000GM",
+  "alias": "P1000",
+  "brand_name": "HATSUN",
+  "category": "Curd",
+  "sub_category": "Pouch",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000014",
+  "index": 5,
+  "createdAt": {
+    "$date": "2020-03-08T16:01:32.080Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:50:45.346Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 12,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 1
+},{
+  "_id": {
+    "$oid": "5e651714d440121bc8333b6c"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "HAT BUTTERMILK 200ML",
+  "alias": "BM200",
+  "brand_name": "HATSUN",
+  "category": "Drinks",
+  "sub_category": "Others",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000015",
+  "index": 9,
+  "createdAt": {
+    "$date": "2020-03-08T16:02:28.474Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:55:02.242Z"
+  },
+  "__v": 0,
+  "measure_unit": "ML",
+  "quan_per_grade": 50,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 200
+},{
+  "_id": {
+    "$oid": "5e651730d440121bc8333b6d"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "ARO POUCH 140GM",
+  "alias": "P140",
+  "brand_name": "AROKYA",
+  "category": "Curd",
+  "sub_category": "Pouch",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000016",
+  "index": 6,
+  "createdAt": {
+    "$date": "2020-03-08T16:02:56.191Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:51:09.049Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 60,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.14
+},{
+  "_id": {
+    "$oid": "5e651747d440121bc8333b6e"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "ARO POUCH 200GM",
+  "alias": "P200",
+  "brand_name": "AROKYA",
+  "category": "Curd",
+  "sub_category": "Pouch",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000017",
+  "index": 7,
+  "createdAt": {
+    "$date": "2020-03-08T16:03:19.816Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:51:23.304Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 50,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.2
+},{
+  "_id": {
+    "$oid": "5e651763d440121bc8333b6f"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "ARO POUCH 450GM",
+  "alias": "P450",
+  "brand_name": "AROKYA",
+  "category": "Curd",
+  "sub_category": "Pouch",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000018",
+  "index": 8,
+  "createdAt": {
+    "$date": "2020-03-08T16:03:47.183Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:51:51.430Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 24,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.45
+},{
+  "_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "ARO CUP 200GM",
+  "alias": "C200",
+  "brand_name": "AROKYA",
+  "category": "Curd",
+  "sub_category": "Cup",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000019",
+  "index": 1,
+  "createdAt": {
+    "$date": "2020-03-08T16:04:24.269Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:47:39.304Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 6,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.2
+},{
+  "_id": {
+    "$oid": "5e6517b4d440121bc8333b71"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "HAT PANEER 200GM",
+  "alias": "PN200",
+  "brand_name": "HATSUN",
+  "category": "Paneer",
+  "sub_category": "Others",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000020",
+  "index": 20,
+  "createdAt": {
+    "$date": "2020-03-08T16:05:08.016Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:57:06.924Z"
+  },
+  "__v": 0,
+  "measure_unit": "KG",
+  "quan_per_grade": 6,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "volume_per_unit": 0.2
+},{
+  "_id": {
+    "$oid": "5f240a6ad4a1ff02bc4fe338"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "FCM 1000ML",
+  "alias": "F1000",
+  "measure_unit": "ML",
+  "volume_per_unit": 1000,
+  "quan_per_grade": 12,
+  "brand_name": "AROKYA",
+  "category": "Milk",
+  "sub_category": "FCM",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000021",
+  "index": 13,
+  "createdAt": {
+    "$date": "2020-07-31T12:11:22.911Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:55:41.012Z"
+  },
+  "__v": 0,
+  "updatedBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24235e77c6b21684269bc1"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "prod_name": "HAT Paneer 100G",
+  "alias": "PN100G",
+  "measure_unit": "KG",
+  "volume_per_unit": 0.1,
+  "quan_per_grade": 6,
+  "brand_name": "HATSUN",
+  "category": "Paneer",
+  "sub_category": "Others",
+  "vendor_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "product_id": "SKU0000022",
+  "index": 21,
+  "createdAt": {
+    "$date": "2020-07-31T13:57:50.517Z"
+  },
+  "updatedAt": {
+    "$date": "2020-07-31T13:57:50.517Z"
+  },
+  "__v": 0
+}]

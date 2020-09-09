@@ -1,0 +1,2483 @@
+[{
+  "_id": {
+    "$oid": "5e652360d440121bc8333b91"
+  },
+  "prod_id": {
+    "$oid": "5e6517b4d440121bc8333b71"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T16:53:01.293Z"
+  },
+  "type": "Retail",
+  "price": "110",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652360d440121bc8333b92"
+  },
+  "prod_id": {
+    "$oid": "5e6517b4d440121bc8333b71"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T16:53:01.293Z"
+  },
+  "type": "Wholesale",
+  "price": "93",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652360d440121bc8333b93"
+  },
+  "prod_id": {
+    "$oid": "5e6517b4d440121bc8333b71"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T16:53:01.293Z"
+  },
+  "type": "Silver",
+  "price": "93",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652360d440121bc8333b94"
+  },
+  "prod_id": {
+    "$oid": "5e6517b4d440121bc8333b71"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T16:53:01.293Z"
+  },
+  "type": "Gold",
+  "price": "93",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652360d440121bc8333b95"
+  },
+  "prod_id": {
+    "$oid": "5e6517b4d440121bc8333b71"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T16:53:01.293Z"
+  },
+  "type": "Diamond",
+  "price": "90",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e6523add440121bc8333b96"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T16:55:06.548Z"
+  },
+  "type": "Retail",
+  "price": 20,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e6523add440121bc8333b97"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T16:55:06.548Z"
+  },
+  "type": "Wholesale",
+  "price": 18,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e6523add440121bc8333b98"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T16:55:06.548Z"
+  },
+  "type": "Silver",
+  "price": 18,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e6523add440121bc8333b99"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T16:55:06.548Z"
+  },
+  "type": "Gold",
+  "price": 18,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e6523add440121bc8333b9a"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T16:55:06.548Z"
+  },
+  "type": "Diamond",
+  "price": 17.5,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652a42d440121bc8333b9b"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:20:50.866Z"
+  },
+  "type": "Retail",
+  "price": 64,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652a42d440121bc8333b9c"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:20:50.866Z"
+  },
+  "type": "Wholesale",
+  "price": 61.5,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652a42d440121bc8333b9d"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:20:50.866Z"
+  },
+  "type": "Silver",
+  "price": 61.5,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652a42d440121bc8333b9e"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:20:50.866Z"
+  },
+  "type": "Gold",
+  "price": 61.25,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652a42d440121bc8333b9f"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:20:50.866Z"
+  },
+  "type": "Diamond",
+  "price": 61,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652ad3d440121bc8333ba0"
+  },
+  "prod_id": {
+    "$oid": "5e651510d440121bc8333b61"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:25:33.344Z"
+  },
+  "type": "Retail",
+  "price": "16",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652ad3d440121bc8333ba1"
+  },
+  "prod_id": {
+    "$oid": "5e651510d440121bc8333b61"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:25:33.344Z"
+  },
+  "type": "Wholesale",
+  "price": "15",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652ad3d440121bc8333ba2"
+  },
+  "prod_id": {
+    "$oid": "5e651510d440121bc8333b61"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:25:33.344Z"
+  },
+  "type": "Silver",
+  "price": "15",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652ad3d440121bc8333ba3"
+  },
+  "prod_id": {
+    "$oid": "5e651510d440121bc8333b61"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:25:33.344Z"
+  },
+  "type": "Gold",
+  "price": "14.75",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652ad3d440121bc8333ba4"
+  },
+  "prod_id": {
+    "$oid": "5e651510d440121bc8333b61"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:25:33.344Z"
+  },
+  "type": "Diamond",
+  "price": "14.5",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b59d440121bc8333ba5"
+  },
+  "prod_id": {
+    "$oid": "5e651564d440121bc8333b62"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:26:50.135Z"
+  },
+  "type": "Retail",
+  "price": "13",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b59d440121bc8333ba6"
+  },
+  "prod_id": {
+    "$oid": "5e651564d440121bc8333b62"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:26:50.135Z"
+  },
+  "type": "Wholesale",
+  "price": "12.25",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b59d440121bc8333ba7"
+  },
+  "prod_id": {
+    "$oid": "5e651564d440121bc8333b62"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:26:50.135Z"
+  },
+  "type": "Silver",
+  "price": "12.25",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b59d440121bc8333ba8"
+  },
+  "prod_id": {
+    "$oid": "5e651564d440121bc8333b62"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:26:50.135Z"
+  },
+  "type": "Gold",
+  "price": "12",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b59d440121bc8333ba9"
+  },
+  "prod_id": {
+    "$oid": "5e651564d440121bc8333b62"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:26:50.135Z"
+  },
+  "type": "Diamond",
+  "price": "12",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b79d440121bc8333baa"
+  },
+  "prod_id": {
+    "$oid": "5e651578d440121bc8333b63"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:01.662Z"
+  },
+  "type": "Retail",
+  "price": "10",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b79d440121bc8333bab"
+  },
+  "prod_id": {
+    "$oid": "5e651578d440121bc8333b63"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:01.662Z"
+  },
+  "type": "Wholesale",
+  "price": "9.25",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b79d440121bc8333bac"
+  },
+  "prod_id": {
+    "$oid": "5e651578d440121bc8333b63"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:01.662Z"
+  },
+  "type": "Silver",
+  "price": "9.25",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b79d440121bc8333bad"
+  },
+  "prod_id": {
+    "$oid": "5e651578d440121bc8333b63"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:01.662Z"
+  },
+  "type": "Gold",
+  "price": "9",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652b79d440121bc8333bae"
+  },
+  "prod_id": {
+    "$oid": "5e651578d440121bc8333b63"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:01.662Z"
+  },
+  "type": "Diamond",
+  "price": "9",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bb0d440121bc8333baf"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:34.582Z"
+  },
+  "type": "Retail",
+  "price": 50,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bb0d440121bc8333bb0"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:34.582Z"
+  },
+  "type": "Wholesale",
+  "price": 47.5,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bb0d440121bc8333bb1"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:34.582Z"
+  },
+  "type": "Silver",
+  "price": 48,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bb0d440121bc8333bb2"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:34.582Z"
+  },
+  "type": "Gold",
+  "price": 47.75,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bb0d440121bc8333bb3"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:29:34.582Z"
+  },
+  "type": "Diamond",
+  "price": 47,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bcfd440121bc8333bb4"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:30:32.758Z"
+  },
+  "type": "Retail",
+  "price": 50,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bcfd440121bc8333bb5"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:30:32.758Z"
+  },
+  "type": "Wholesale",
+  "price": 47.5,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bcfd440121bc8333bb6"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:30:32.758Z"
+  },
+  "type": "Silver",
+  "price": 48,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bcfd440121bc8333bb7"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:30:32.758Z"
+  },
+  "type": "Gold",
+  "price": 47.75,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652bcfd440121bc8333bb8"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:30:32.758Z"
+  },
+  "type": "Diamond",
+  "price": 47,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652c16d440121bc8333bb9"
+  },
+  "prod_id": {
+    "$oid": "5e651603d440121bc8333b67"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:31:00.086Z"
+  },
+  "type": "Retail",
+  "price": "6",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652c16d440121bc8333bba"
+  },
+  "prod_id": {
+    "$oid": "5e651603d440121bc8333b67"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:31:00.086Z"
+  },
+  "type": "Wholesale",
+  "price": "5.5",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652c16d440121bc8333bbb"
+  },
+  "prod_id": {
+    "$oid": "5e651603d440121bc8333b67"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:31:00.086Z"
+  },
+  "type": "Silver",
+  "price": "5.5",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652c16d440121bc8333bbc"
+  },
+  "prod_id": {
+    "$oid": "5e651603d440121bc8333b67"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:31:00.086Z"
+  },
+  "type": "Gold",
+  "price": "5.25",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652c16d440121bc8333bbd"
+  },
+  "prod_id": {
+    "$oid": "5e651603d440121bc8333b67"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-08T17:31:00.086Z"
+  },
+  "type": "Diamond",
+  "price": "5.25",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652c34d440121bc8333bbe"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:32:12.645Z"
+  },
+  "type": "Retail",
+  "price": 56,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652c34d440121bc8333bbf"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:32:12.645Z"
+  },
+  "type": "Wholesale",
+  "price": 53.5,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652ccfd440121bc8333bc0"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:33:55.303Z"
+  },
+  "type": "Silver",
+  "price": 54,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652ccfd440121bc8333bc1"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:33:55.303Z"
+  },
+  "type": "Gold",
+  "price": 53.25,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e652ccfd440121bc8333bc2"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-08T17:33:55.303Z"
+  },
+  "type": "Diamond",
+  "price": 53,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c379a03ac30d68e374f0"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:52:39.379Z"
+  },
+  "type": "Retail",
+  "price": 64,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c379a03ac30d68e374f1"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:52:39.379Z"
+  },
+  "type": "Wholesale",
+  "price": 64,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c379a03ac30d68e374f2"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:52:39.379Z"
+  },
+  "type": "Silver",
+  "price": 62,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c379a03ac30d68e374f3"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:52:39.379Z"
+  },
+  "type": "Diamond",
+  "price": 64,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c3ada03ac30d68e374f4"
+  },
+  "prod_id": {
+    "$oid": "5e651638d440121bc8333b68"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:55:17.620Z"
+  },
+  "type": "Retail",
+  "price": "10",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c3ada03ac30d68e374f5"
+  },
+  "prod_id": {
+    "$oid": "5e651638d440121bc8333b68"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:55:17.620Z"
+  },
+  "type": "Wholesale",
+  "price": "9",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c3ada03ac30d68e374f6"
+  },
+  "prod_id": {
+    "$oid": "5e651638d440121bc8333b68"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:55:17.620Z"
+  },
+  "type": "Silver",
+  "price": "9",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c3ada03ac30d68e374f7"
+  },
+  "prod_id": {
+    "$oid": "5e651638d440121bc8333b68"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:55:17.620Z"
+  },
+  "type": "Gold",
+  "price": "9",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c3ada03ac30d68e374f8"
+  },
+  "prod_id": {
+    "$oid": "5e651638d440121bc8333b68"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:55:17.620Z"
+  },
+  "type": "Diamond",
+  "price": "9",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c420a03ac30d68e374f9"
+  },
+  "prod_id": {
+    "$oid": "5e65168dd440121bc8333b69"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:56:00.190Z"
+  },
+  "type": "Retail",
+  "price": "14",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c420a03ac30d68e374fa"
+  },
+  "prod_id": {
+    "$oid": "5e65168dd440121bc8333b69"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:56:00.190Z"
+  },
+  "type": "Wholesale",
+  "price": "12.5",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c420a03ac30d68e374fb"
+  },
+  "prod_id": {
+    "$oid": "5e65168dd440121bc8333b69"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:56:00.190Z"
+  },
+  "type": "Silver",
+  "price": "13",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c420a03ac30d68e374fc"
+  },
+  "prod_id": {
+    "$oid": "5e65168dd440121bc8333b69"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:56:00.190Z"
+  },
+  "type": "Gold",
+  "price": "12.25",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c420a03ac30d68e374fd"
+  },
+  "prod_id": {
+    "$oid": "5e65168dd440121bc8333b69"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:56:00.190Z"
+  },
+  "type": "Diamond",
+  "price": "12",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c45aa03ac30d68e374fe"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:57:42.064Z"
+  },
+  "type": "Retail",
+  "price": 33,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c45aa03ac30d68e374ff"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:57:42.064Z"
+  },
+  "type": "Wholesale",
+  "price": 30.5,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c45aa03ac30d68e37500"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:57:42.064Z"
+  },
+  "type": "Silver",
+  "price": 31,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c45aa03ac30d68e37501"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:57:42.064Z"
+  },
+  "type": "Gold",
+  "price": 30.25,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c45aa03ac30d68e37502"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:57:42.064Z"
+  },
+  "type": "Diamond",
+  "price": 30,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4a9a03ac30d68e37503"
+  },
+  "prod_id": {
+    "$oid": "5e6516dcd440121bc8333b6b"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:58:42.563Z"
+  },
+  "type": "Retail",
+  "price": 64,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4a9a03ac30d68e37504"
+  },
+  "prod_id": {
+    "$oid": "5e6516dcd440121bc8333b6b"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:58:42.563Z"
+  },
+  "type": "Wholesale",
+  "price": 63,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4a9a03ac30d68e37505"
+  },
+  "prod_id": {
+    "$oid": "5e6516dcd440121bc8333b6b"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:58:42.563Z"
+  },
+  "type": "Silver",
+  "price": 62,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4a9a03ac30d68e37506"
+  },
+  "prod_id": {
+    "$oid": "5e6516dcd440121bc8333b6b"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T10:58:42.563Z"
+  },
+  "type": "Gold",
+  "price": 62,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4a9a03ac30d68e37507"
+  },
+  "prod_id": {
+    "$oid": "5e6516dcd440121bc8333b6b"
+  },
+  "is_active": "NO",
+  "effective_date": {
+    "$date": "2020-03-11T10:58:42.563Z"
+  },
+  "type": "Diamond",
+  "price": 62,
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4cda03ac30d68e37508"
+  },
+  "prod_id": {
+    "$oid": "5e651730d440121bc8333b6d"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:15.422Z"
+  },
+  "type": "Retail",
+  "price": "10",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4cda03ac30d68e37509"
+  },
+  "prod_id": {
+    "$oid": "5e651730d440121bc8333b6d"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:15.422Z"
+  },
+  "type": "Wholesale",
+  "price": "9",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4cda03ac30d68e3750a"
+  },
+  "prod_id": {
+    "$oid": "5e651730d440121bc8333b6d"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:15.422Z"
+  },
+  "type": "Silver",
+  "price": "9",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4cda03ac30d68e3750b"
+  },
+  "prod_id": {
+    "$oid": "5e651730d440121bc8333b6d"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:15.422Z"
+  },
+  "type": "Gold",
+  "price": "9",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4cda03ac30d68e3750c"
+  },
+  "prod_id": {
+    "$oid": "5e651730d440121bc8333b6d"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:15.422Z"
+  },
+  "type": "Diamond",
+  "price": "9",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4eca03ac30d68e3750d"
+  },
+  "prod_id": {
+    "$oid": "5e651747d440121bc8333b6e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:34.515Z"
+  },
+  "type": "Retail",
+  "price": "14",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4eca03ac30d68e3750e"
+  },
+  "prod_id": {
+    "$oid": "5e651747d440121bc8333b6e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:34.515Z"
+  },
+  "type": "Wholesale",
+  "price": "12.5",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4eca03ac30d68e3750f"
+  },
+  "prod_id": {
+    "$oid": "5e651747d440121bc8333b6e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:34.515Z"
+  },
+  "type": "Silver",
+  "price": "13",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4eca03ac30d68e37510"
+  },
+  "prod_id": {
+    "$oid": "5e651747d440121bc8333b6e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:34.515Z"
+  },
+  "type": "Gold",
+  "price": "12.25",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c4eca03ac30d68e37511"
+  },
+  "prod_id": {
+    "$oid": "5e651747d440121bc8333b6e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:00:34.515Z"
+  },
+  "type": "Diamond",
+  "price": "12",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c541a03ac30d68e37512"
+  },
+  "prod_id": {
+    "$oid": "5e651763d440121bc8333b6f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:01:10.840Z"
+  },
+  "type": "Retail",
+  "price": "30",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c541a03ac30d68e37513"
+  },
+  "prod_id": {
+    "$oid": "5e651763d440121bc8333b6f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:01:10.840Z"
+  },
+  "type": "Wholesale",
+  "price": "28",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c541a03ac30d68e37514"
+  },
+  "prod_id": {
+    "$oid": "5e651763d440121bc8333b6f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:01:10.840Z"
+  },
+  "type": "Silver",
+  "price": "28",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c541a03ac30d68e37515"
+  },
+  "prod_id": {
+    "$oid": "5e651763d440121bc8333b6f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:01:10.840Z"
+  },
+  "type": "Gold",
+  "price": "27.5",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5e68c541a03ac30d68e37516"
+  },
+  "prod_id": {
+    "$oid": "5e651763d440121bc8333b6f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-03-11T11:01:10.840Z"
+  },
+  "type": "Diamond",
+  "price": "27",
+  "tax": "0",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2427fb77c6b21684269bc2"
+  },
+  "prod_id": {
+    "$oid": "5e6515bbd440121bc8333b65"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:14:50Z"
+  },
+  "type": "Retail",
+  "price": "95",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2427fb77c6b21684269bc3"
+  },
+  "prod_id": {
+    "$oid": "5e6515bbd440121bc8333b65"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:14:50Z"
+  },
+  "type": "Wholesale",
+  "price": "85",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2427fb77c6b21684269bc4"
+  },
+  "prod_id": {
+    "$oid": "5e6515bbd440121bc8333b65"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:14:50Z"
+  },
+  "type": "Silver",
+  "price": "85",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2427fb77c6b21684269bc5"
+  },
+  "prod_id": {
+    "$oid": "5e6515bbd440121bc8333b65"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:14:50Z"
+  },
+  "type": "Gold",
+  "price": "85",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2427fb77c6b21684269bc6"
+  },
+  "prod_id": {
+    "$oid": "5e6515bbd440121bc8333b65"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:14:50Z"
+  },
+  "type": "Diamond",
+  "price": "85",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24285477c6b21684269bc7"
+  },
+  "prod_id": {
+    "$oid": "5f24235e77c6b21684269bc1"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:17:50.188Z"
+  },
+  "type": "Retail",
+  "price": "55",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24285477c6b21684269bc8"
+  },
+  "prod_id": {
+    "$oid": "5f24235e77c6b21684269bc1"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:17:50.188Z"
+  },
+  "type": "Wholesale",
+  "price": "42",
+  "tax": "5",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24285477c6b21684269bc9"
+  },
+  "prod_id": {
+    "$oid": "5f24235e77c6b21684269bc1"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:17:50.188Z"
+  },
+  "type": "Silver",
+  "price": "42",
+  "tax": "5",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24285477c6b21684269bca"
+  },
+  "prod_id": {
+    "$oid": "5f24235e77c6b21684269bc1"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:17:50.188Z"
+  },
+  "type": "Gold",
+  "price": "42",
+  "tax": "5",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24285477c6b21684269bcb"
+  },
+  "prod_id": {
+    "$oid": "5f24235e77c6b21684269bc1"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:17:50.188Z"
+  },
+  "type": "Diamond",
+  "price": "42",
+  "tax": "5",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428ce77c6b21684269bcc"
+  },
+  "prod_id": {
+    "$oid": "5e651714d440121bc8333b6c"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:20:45.198Z"
+  },
+  "type": "Retail",
+  "price": "8",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428ce77c6b21684269bcd"
+  },
+  "prod_id": {
+    "$oid": "5e651714d440121bc8333b6c"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:20:45.198Z"
+  },
+  "type": "Wholesale",
+  "price": "7",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428ce77c6b21684269bce"
+  },
+  "prod_id": {
+    "$oid": "5e651714d440121bc8333b6c"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:20:45.198Z"
+  },
+  "type": "Silver",
+  "price": "7",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428ce77c6b21684269bcf"
+  },
+  "prod_id": {
+    "$oid": "5e651714d440121bc8333b6c"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:20:45.198Z"
+  },
+  "type": "Gold",
+  "price": "7",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428ce77c6b21684269bd0"
+  },
+  "prod_id": {
+    "$oid": "5e651714d440121bc8333b6c"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:20:45.198Z"
+  },
+  "type": "Diamond",
+  "price": "6.75",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428e077c6b21684269bd1"
+  },
+  "prod_id": {
+    "$oid": "5f240a6ad4a1ff02bc4fe338"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:21:06.491Z"
+  },
+  "type": "Retail",
+  "price": "63",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428e077c6b21684269bd2"
+  },
+  "prod_id": {
+    "$oid": "5f240a6ad4a1ff02bc4fe338"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:21:06.491Z"
+  },
+  "type": "Wholesale",
+  "price": "63",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428e077c6b21684269bd3"
+  },
+  "prod_id": {
+    "$oid": "5f240a6ad4a1ff02bc4fe338"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:21:06.491Z"
+  },
+  "type": "Silver",
+  "price": "63",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428e077c6b21684269bd4"
+  },
+  "prod_id": {
+    "$oid": "5f240a6ad4a1ff02bc4fe338"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:21:06.491Z"
+  },
+  "type": "Gold",
+  "price": "63",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2428e077c6b21684269bd5"
+  },
+  "prod_id": {
+    "$oid": "5f240a6ad4a1ff02bc4fe338"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:21:06.491Z"
+  },
+  "type": "Diamond",
+  "price": "63",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24299477c6b21684269bd6"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:22:13.248Z"
+  },
+  "type": "Retail",
+  "price": "25",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24299477c6b21684269bd7"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:22:13.248Z"
+  },
+  "type": "Wholesale",
+  "price": "23.75",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24299477c6b21684269bd8"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:22:13.248Z"
+  },
+  "type": "Silver",
+  "price": "24",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24299477c6b21684269bd9"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:22:13.248Z"
+  },
+  "type": "Gold",
+  "price": "23.80",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f24299477c6b21684269bda"
+  },
+  "prod_id": {
+    "$oid": "5e6515e1d440121bc8333b66"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:22:13.248Z"
+  },
+  "type": "Diamond",
+  "price": "23.5",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242a2f77c6b21684269bdb"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:25:42.786Z"
+  },
+  "type": "Retail",
+  "price": 33,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242a2f77c6b21684269bdc"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:25:42.786Z"
+  },
+  "type": "Wholesale",
+  "price": 31,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242a2f77c6b21684269bdd"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:25:42.786Z"
+  },
+  "type": "Silver",
+  "price": 32,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242a2f77c6b21684269bde"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:25:42.786Z"
+  },
+  "type": "Gold",
+  "price": 31,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242a2f77c6b21684269bdf"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:25:42.786Z"
+  },
+  "type": "Diamond",
+  "price": 30,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ade77c6b21684269be0"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:28:42.398Z"
+  },
+  "type": "Retail",
+  "price": "28",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ade77c6b21684269be1"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:28:42.398Z"
+  },
+  "type": "Wholesale",
+  "price": "26.75",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ade77c6b21684269be2"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:28:42.398Z"
+  },
+  "type": "Silver",
+  "price": "27",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ade77c6b21684269be3"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:28:42.398Z"
+  },
+  "type": "Gold",
+  "price": "26.8",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ade77c6b21684269be4"
+  },
+  "prod_id": {
+    "$oid": "5e6512e9d440121bc8333b5e"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:28:42.398Z"
+  },
+  "type": "Diamond",
+  "price": "26.5",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b2377c6b21684269be5"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:30:15.285Z"
+  },
+  "type": "Retail",
+  "price": "32",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b2377c6b21684269be6"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:30:15.285Z"
+  },
+  "type": "Wholesale",
+  "price": "30.75",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b2377c6b21684269be7"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:30:15.285Z"
+  },
+  "type": "Silver",
+  "price": "31",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b2377c6b21684269be8"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:30:15.285Z"
+  },
+  "type": "Gold",
+  "price": "30.8",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b2377c6b21684269be9"
+  },
+  "prod_id": {
+    "$oid": "5e6514f4d440121bc8333b60"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:30:15.285Z"
+  },
+  "type": "Diamond",
+  "price": "30.5",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b4177c6b21684269bea"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:31:06.609Z"
+  },
+  "type": "Retail",
+  "price": "120",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b4177c6b21684269beb"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:31:06.609Z"
+  },
+  "type": "Wholesale",
+  "price": "120",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b4177c6b21684269bec"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:31:06.609Z"
+  },
+  "type": "Silver",
+  "price": "120",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b4177c6b21684269bed"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:31:06.609Z"
+  },
+  "type": "Gold",
+  "price": "120",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b4177c6b21684269bee"
+  },
+  "prod_id": {
+    "$oid": "5e65140cd440121bc8333b5f"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:31:06.609Z"
+  },
+  "type": "Diamond",
+  "price": "120",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242b8277c6b21684269bef"
+  },
+  "prod_id": {
+    "$oid": "5e6516dcd440121bc8333b6b"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:32:26.886Z"
+  },
+  "type": "Diamond",
+  "price": "61",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ba477c6b21684269bf0"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:32:44.137Z"
+  },
+  "type": "Retail",
+  "price": "25",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ba477c6b21684269bf1"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:32:44.137Z"
+  },
+  "type": "Wholesale",
+  "price": "23.75",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ba477c6b21684269bf2"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:32:44.137Z"
+  },
+  "type": "Silver",
+  "price": "24",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ba477c6b21684269bf3"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:32:44.137Z"
+  },
+  "type": "Gold",
+  "price": "23.8",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242ba477c6b21684269bf4"
+  },
+  "prod_id": {
+    "$oid": "5e651598d440121bc8333b64"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:32:44.137Z"
+  },
+  "type": "Diamond",
+  "price": "23.5",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242bd077c6b21684269bf5"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:33:35.378Z"
+  },
+  "type": "Silver",
+  "price": 17.5,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f242bd077c6b21684269bf6"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-07-31T14:33:35.378Z"
+  },
+  "type": "Diamond",
+  "price": 17,
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f251209be91c418bc2a04b7"
+  },
+  "prod_id": {
+    "$oid": "5e6516c4d440121bc8333b6a"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-08-01T06:54:45.179Z"
+  },
+  "type": "Gold",
+  "price": "30.5",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2512b3be91c418bc2a04b8"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-08-01T06:58:11.499Z"
+  },
+  "type": "Wholesale",
+  "price": "17",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2512b3be91c418bc2a04b9"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-08-01T06:58:11.499Z"
+  },
+  "type": "Silver",
+  "price": "18",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+},{
+  "_id": {
+    "$oid": "5f2512b3be91c418bc2a04ba"
+  },
+  "prod_id": {
+    "$oid": "5e651788d440121bc8333b70"
+  },
+  "is_active": "YES",
+  "effective_date": {
+    "$date": "2020-08-01T06:58:11.499Z"
+  },
+  "type": "Gold",
+  "price": "17.5",
+  "tax": "",
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  }
+}]

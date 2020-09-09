@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "5e6512cfd440121bc8333b5d"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "vendorName": "HAP",
+  "firstName": "HATSUN",
+  "lastName": "AGRO",
+  "contactNo": 0,
+  "contactNo1": null,
+  "contactPerson": "ADMIN",
+  "address": "CHENNAI",
+  "city": "CHENNAI",
+  "pincode": 0,
+  "createdBy": {
+    "$oid": "5e64df4bd440121bc8333b58"
+  },
+  "vendor_id": "V0000001",
+  "createdAt": {
+    "$date": "2020-03-08T15:44:15.680Z"
+  },
+  "updatedAt": {
+    "$date": "2020-03-08T15:44:15.680Z"
+  },
+  "__v": 0
+}]
