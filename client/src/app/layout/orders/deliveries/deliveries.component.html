@@ -13,30 +13,31 @@
     <mat-icon title="Consolidated view" (click)="showConsolidated()" class="print-right">assessment</mat-icon>
   </mat-card-title>
   <mat-card-content>
-    <section class="example-section">
-        <mat-form-field class="example-margin">
+    <section class="example-section" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+        <mat-form-field fxFlex class="">
             <input matInput name="searKey" [(ngModel)]="searKey" (keyup)="addEvent()" placeholder="Filter">
             <button mat-icon-button matSuffix (click)="clear()">
               <mat-icon>{{searKey?'clear':''}}</mat-icon>
               </button>
         </mat-form-field>
-        <mat-form-field class="example-margin">
+        <mat-form-field fxFlex class="">
             <mat-select name="selRoute" [(ngModel)]="selRoute" (selectionChange)="addEvent()" placeholder="Route" >
                 <mat-option *ngFor="let r of routes" [value]="r.key">{{r.value}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field class="example-margin">
+        <mat-form-field fxFlex class="">
           <input matInput disabled [max]="maxToDate" [matDatepicker]="picker" placeholder="Choose a date" name="delDate" (dateInput)="addEvent()" [(ngModel)]="delDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker disabled="false" #picker></mat-datepicker>
         </mat-form-field>
     </section>
-    <mat-accordion class="example-headers-align">
+    <mat-accordion class="example-headers-align" fxLayout="column">
       <ng-container *ngFor="let row of deliveryList;let i = index">
         <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" >            
           <mat-expansion-panel-header>
-            <mat-panel-title>
+            <mat-panel-title >
               {{row._id.customer.customerName}}
+              <span class="cus-title">-{{row._id.customer.routes[0].areaName}}</span>
             </mat-panel-title>
             <mat-panel-description>
               <span>&nbsp;</span>

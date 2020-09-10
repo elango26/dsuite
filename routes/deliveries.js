@@ -114,13 +114,19 @@ router.get('/list',(req,res,next)=>{
             from: 'customers',
             localField: '_id.customer',
             foreignField: '_id',
-            as: '_id.customer'
+            as: '_id.customer',
           }},
         {"$unwind":{
             path: '$_id.customer',
             //includeArrayIndex: '<<string>>',
             preserveNullAndEmptyArrays: true
           }},
+        {"$lookup":{
+          from: 'routes',
+          localField: '_id.customer.route',
+          foreignField: '_id',
+          as: '_id.customer.routes'          
+        }},
         {"$unwind":{
             path: '$_id.orders',
             //includeArrayIndex: '<<string>>',
