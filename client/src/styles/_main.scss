@@ -20,3 +20,9 @@ body {
 .mat-form-field{
     width: 230px;
 }
+
+@media screen and (max-width: 992px) {
+    .main-container {
+        padding : 0.28em !important;
+    }
+}

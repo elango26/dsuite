@@ -8,7 +8,7 @@ import { Product } from 'src/app/interfaces/product';
 import { BootstrapService } from 'src/app/services/bootstrap.service';
 import { Route } from 'src/app/interfaces/route';
 import { PrinterService } from 'src/app/services/printer.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ConsViewComponent } from './cons-view/cons-view.component';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 
@@ -41,10 +41,16 @@ export class DeliveriesComponent implements OnInit {
   deliveryList:any[];
   productList:any[];
   consolidatedList:any[];
+  enableSearch:boolean = false;
 
   constructor(private datePipe: DatePipe, private commonService: CommonService, private dialog: MatDialog, private bootstrap:BootstrapService,
     private printerService: PrinterService, private router: Router, private snackBar:MatSnackBar) { 
-    this.delDate = new Date();
+      this.router.events.subscribe(val => {
+        if (val instanceof NavigationEnd && window.innerWidth <= 992 ) {
+            //this.enableSearch = false;
+        }
+      });
+      this.delDate = new Date();
   }
 
   ngOnInit() {
