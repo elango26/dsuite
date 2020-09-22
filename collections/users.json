@@ -1,0 +1,51 @@
+[{
+  "_id": {
+    "$oid": "5d9b0f992ec2143ae490bbef"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "username": "admin",
+  "password": "admin",
+  "firstName": "admin",
+  "lastName": "admin",
+  "contactNo": "000000000",
+  "contactNo1": "",
+  "email": "admin@dsuite.in",
+  "role": "ADMIN",
+  "createdBy": {
+    "$oid": "5cb1765cd833d31d8c81157d"
+  },
+  "user_id": "USR0000001",
+  "createdAt": {
+    "$date": "2019-10-07T10:12:41.384Z"
+  },
+  "updatedAt": {
+    "$date": "2019-10-07T10:12:41.384Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e15cbe9e2177d4c68d22809"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "username": "churchil",
+  "password": "churchil",
+  "firstName": "Hatsun",
+  "lastName": "Daily",
+  "contactNo": "000000000",
+  "contactNo1": "00000000",
+  "email": "dsuite@gmail.com",
+  "role": "USER",
+  "createdBy": {
+    "$oid": "5d9b0f992ec2143ae490bbef"
+  },
+  "user_id": "USR0000002",
+  "createdAt": {
+    "$date": "2020-01-08T12:32:41.557Z"
+  },
+  "updatedAt": {
+    "$date": "2020-01-08T12:32:41.557Z"
+  },
+  "__v": 0
+}]
