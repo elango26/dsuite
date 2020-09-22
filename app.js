@@ -35,7 +35,7 @@ const auth = require('./routes/auth');
 const test = require('./routes/test');
 
 // connect to mongodb
-mongoose.connect('mongodb://localhost:27017/dsuite');
+mongoose.connect('mongodb://localhost:27017/pv');
 
 // on mongodb connection
 mongoose.connection.on('connected',()=>{    
@@ -50,7 +50,7 @@ mongoose.connection.on('error',(error)=>{
 
 
 // port no
-const port = 3000;
+const port = 3001;
 
 // adding middleware -cors
 app.use(cors());
