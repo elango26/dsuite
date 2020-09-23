@@ -1,7 +1,7 @@
-export const CATEGORY = ['Milk','Curd','Paneer','Icecream','Dairy','Drinks','BM'];
-export const SUBCATEGORY = ['SM','FCM','TM','Cup','Pouch','Others','COW'];
-export const BRANDS = ['AROKYA','HATSUN'];
-export const MEASURE_UNIT = [{'key':'KG','value':'KILOGRAM'},{'key':'ML','value':'MILLILITRE'}];
+export const CATEGORY = ['MINERALS'];
+export const SUBCATEGORY = ['BT'];
+export const BRANDS = ['GANGAR'];
+export const MEASURE_UNIT = [{'key':'ML','value':'MILLILITRE'}];
 export const EXPENSE_TYPE = ['Fuel','Snacks','Stationery','Automobile','EB','Compensation','Others'];
 export const PAYMENT_TYPE = ['CASH','WALLET','CREDIT'];
 export const DEFAULT_RATE_TYPE = 'Retail';
