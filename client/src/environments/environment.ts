@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 let wind = window.location;
 //let apiUrl = wind.protocol+'//'+wind.hostname+':3000/api';
-let apiUrl = 'http//'+wind.hostname+':3000/api';
+let apiUrl = 'http://'+wind.hostname+':3000/api';
 export const environment = {
   production: true,
   urls:{
