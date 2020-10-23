@@ -5,6 +5,10 @@ var bodyparser = require('body-parser');
 var cors = require('cors');
 var path = require('path');
 var middleware = require('./middleware/middleware');
+var env = require('dotenv').config();
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
 
 // assigning express to app variable
 var app = express();
@@ -50,7 +54,11 @@ mongoose.connection.on('error',(error)=>{
 
 
 // port no
-const port = 3000;
+const port = env.parsed.PORT;
+const prod_port = env.parsed.PROD_PORT;
+
+// env
+const environment = env.parsed.NODE_ENV;
 
 // adding middleware -cors
 app.use(cors());
@@ -102,7 +110,22 @@ app.get('/',(req,res)=>{
 });
 
 // assigning the port to application
-app.listen(port,()=>{
-    console.log('server started at port:'+port);
-});
+// app.listen(port,()=>{
+//     console.log('server started at port:'+port);
+// });
+if(environment == 'dev'){
+    var httpServer = http.createServer(app);
+    httpServer.listen(port,()=>{
+        console.log('server started at port:'+port);
+    });
+}else{
+    var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+    var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+    var credentials = {key: privateKey, cert: certificate};
+    var httpsServer = https.createServer(credentials, app);
+    httpsServer.listen(prod_port,()=>{
+        console.log('server started at port:'+port);
+    });
+}
+
 
