@@ -35,6 +35,7 @@ const personalize = require('./routes/personalize');
 const printer = require('./routes/printer');
 const dashboard = require('./routes/dashboard');
 const ob = require('./routes/openingbalance');
+const mtMngTrans = require('./routes/emptyTransaction');
 const auth = require('./routes/auth');
 const test = require('./routes/test');
 
@@ -101,6 +102,7 @@ app.use('/api/personalize',personalize);
 app.use('/api/printer',printer);
 app.use('/api/dashboard',dashboard);
 app.use('/api/ob',ob);
+app.use('/api/mt',mtMngTrans);
 // app.use('/api/auth',auth);
 // app.use('/api/test',test);
 
@@ -119,9 +121,16 @@ if(environment == 'dev'){
         console.log('server started at port:'+port);
     });
 }else{
-    var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
-    var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
-    var credentials = {key: privateKey, cert: certificate};
+    // Certificate
+    const privateKey = fs.readFileSync('/etc/letsencrypt/live/dsuite.webbehinds.com/privkey.pem', 'utf8');
+    const certificate = fs.readFileSync('/etc/letsencrypt/live/dsuite.webbehinds.com/cert.pem', 'utf8');
+    const ca = fs.readFileSync('/etc/letsencrypt/live/dsuite.webbehinds.com/chain.pem', 'utf8');
+
+    const credentials = {
+        key: privateKey,
+        cert: certificate,
+        ca: ca
+    };
     var httpsServer = https.createServer(credentials, app);
     httpsServer.listen(prod_port,()=>{
         console.log('server started at port:'+port);
