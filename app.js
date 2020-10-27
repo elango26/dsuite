@@ -133,7 +133,7 @@ if(environment == 'dev'){
     };
     var httpsServer = https.createServer(credentials, app);
     httpsServer.listen(prod_port,()=>{
-        console.log('server started at port:'+port);
+        console.log('server started at port:'+prod_port);
     });
 }
 
