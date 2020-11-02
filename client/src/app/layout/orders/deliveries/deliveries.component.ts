@@ -11,6 +11,7 @@ import { PrinterService } from 'src/app/services/printer.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { ConsViewComponent } from './cons-view/cons-view.component';
 import { GenericResp } from 'src/app/interfaces/genericResp';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-deliveries',
@@ -44,7 +45,7 @@ export class DeliveriesComponent implements OnInit {
   enableSearch:boolean = false;
 
   constructor(private datePipe: DatePipe, private commonService: CommonService, private dialog: MatDialog, private bootstrap:BootstrapService,
-    private printerService: PrinterService, private router: Router, private snackBar:MatSnackBar) { 
+    private printerService: PrinterService, private router: Router, private userservice: UserService, private snackBar:MatSnackBar) { 
       this.router.events.subscribe(val => {
         if (val instanceof NavigationEnd && window.innerWidth <= 992 ) {
             //this.enableSearch = false;
@@ -121,6 +122,14 @@ export class DeliveriesComponent implements OnInit {
     this.addEvent();
   }
 
+  enablePlaceOrder(){
+    if(this.userservice.user && this.userservice.user.role == "ADMIN"){
+      return true;
+    }else{
+      return this.datePipe.transform(this.delDate,"yyyy-MM-dd") == this.datePipe.transform(new Date(),"yyyy-MM-dd");
+    }
+  }
+
   public editOrder(o:any){
     // console.log(o);
     let isEdit = false;
@@ -128,8 +137,8 @@ export class DeliveriesComponent implements OnInit {
       isEdit = true;
     }
     const dialogRef = this.dialog.open(ProdtableComponent, {
-      width: '90%',
-      height:'80%',
+      //width: '90%',
+      //height:'80%',
       data: {order_date:this.delDate,order_details:o._id.orders,customer:o._id.customer,edit_details:o.details,url:environment.urls.postOrder,isEdit:isEdit,source:'delivery'},
       panelClass: 'custom-modalbox'
     });

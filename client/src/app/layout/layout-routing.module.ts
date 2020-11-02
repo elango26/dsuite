@@ -50,6 +50,10 @@ const routes: Routes = [
                 loadChildren: './discounts/discounts.module#DiscountsModule'
             },
             {
+                path: 'grade',
+                loadChildren: './grade-mgmt/grade-mgmt.module#GradeMgmtModule'
+            },
+            {
                 path: 'printview', 
                 outlet: 'printpage',                  
                 loadChildren: './print-layout/print-layout.module#PrintLayoutModule'

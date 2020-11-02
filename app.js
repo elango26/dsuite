@@ -131,9 +131,13 @@ if(environment == 'dev'){
         cert: certificate,
         ca: ca
     };
+    var httpServer = http.createServer(app);
     var httpsServer = https.createServer(credentials, app);
     httpsServer.listen(prod_port,()=>{
-        console.log('server started at port:'+prod_port);
+        console.log('server started at port1:'+prod_port);
+    });
+    httpServer.listen(port,()=>{
+        console.log('server started at port2:'+port);
     });
 }
 

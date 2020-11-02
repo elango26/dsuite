@@ -101,19 +101,19 @@
                 </li>                
             </ul>
         </div>
-        <!-- <div class="nested-menu" *ngIf="userDetail.role=='ADMIN' || userDetail.role=='SUPERADMIN'">
-            <a mat-list-item (click)="addExpandClass('personalize')">
-                <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Personalize' | translate }}
+        <div class="nested-menu" *ngIf="userDetail.role=='ADMIN' || userDetail.role=='SUPERADMIN'">
+            <a mat-list-item (click)="addExpandClass('grade')">
+                <mat-icon class="sidenav-icon">moped</mat-icon> {{ 'Grade Management' | translate }}
             </a>
-            <ul class="nested submenu" [class.expand]="showMenu === 'personalize'">
+            <ul class="nested submenu" [class.expand]="showMenu === 'grade'">
                 <li>
-                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/personalize/customers']"><span>{{ 'Customer' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/grade/management']"><span>{{ 'Management' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/personalize/products']"><span>{{ 'Products' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/grade/transaction']"><span>{{ 'Transactions' | translate }}</span></a>
                 </li>                
             </ul>
-        </div> -->
+        </div>
         <div class="nested-menu" *ngIf="userDetail.role=='ADMIN'">
             <a mat-list-item (click)="addExpandClass('discounts')">
                 <mat-icon class="sidenav-icon">local_offer</mat-icon> {{ 'Discounts' | translate }}

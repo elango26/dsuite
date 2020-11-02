@@ -10,6 +10,7 @@ import {
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSliderModule, MatSlideToggleModule, MatIconModule
 } from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
 import { SalesReportPopComponent } from './sales-report-pop/sales-report-pop.component';
 //import { EditTemplateComponent } from './edit-template/edit-template.component';
 
@@ -19,6 +20,7 @@ import { SalesReportPopComponent } from './sales-report-pop/sales-report-pop.com
     CommonModule,
     MatAutocompleteModule,
     FormModule,
+    MatDialogModule,
     ReactiveFormsModule,
     MatSlideToggleModule,
     MatFormFieldModule,
