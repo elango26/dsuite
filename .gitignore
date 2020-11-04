@@ -5,3 +5,7 @@ node_modules/
 # client side node modules
 
 client/node_modules/
+
+#env variables
+
+.env
