@@ -162,7 +162,7 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
-  getTotal(inp){
+  getTotal(inp:string){
     switch(inp){
       case 'balance':
         return this.customerGradeList.reduce((acc,list) => (acc+list.t_deliver),0) - this.customerGradeList.reduce((acc,list) => (acc+list.t_receive),0);
@@ -174,6 +174,11 @@ export class TransactionsComponent implements OnInit {
         return this.customerGradeList.reduce((acc,list) => (acc+list.c_receive),0);
         break;
     }
+  }
+
+  clear():void{
+    this.searKey = '';
+    this.addEvent();
   }
 
 }

@@ -96,6 +96,13 @@ export const environment = {
 
     //printer
     printInvoices:apiUrl+'/printer/invoices',
+
+    //grade mngmt
+    getGradeMngtList:apiUrl+'/grade/mngmtList',
+    saveGradeMngt:apiUrl+'/grade/mngmtCreate',
+    gradeUpdate:apiUrl+'/grade/update',
+    getGradeTransList:apiUrl+'/grade/transList',
+    saveGradeTrans:apiUrl+'/grade/transSave',
     
   }
 };
