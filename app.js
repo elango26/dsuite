@@ -136,9 +136,9 @@ if(environment == 'dev'){
     httpsServer.listen(prod_port,()=>{
         console.log('server started at port1:'+prod_port);
     });
-    httpServer.listen(port,()=>{
-        console.log('server started at port2:'+port);
-    });
+    // httpServer.listen(port,()=>{
+    //     console.log('server started at port2:'+port);
+    // });
 }
 
 

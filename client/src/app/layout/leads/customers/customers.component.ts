@@ -26,12 +26,14 @@ export class CustomersComponent implements OnInit {
   public customerList: Customer[];
   showLeadsPage:boolean = true;
   rowData:any;
+  routes:any;
+  selRoute: string = "all";
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private commonService: CommonService, private dialog: MatDialog, private printerService:PrinterService,
-    private datePipe: DatePipe, private router: Router) {
+    private datePipe: DatePipe, private router: Router, private bootstrap:BootstrapService) {
     //this.customerList = [];
   }
 
@@ -43,10 +45,17 @@ export class CustomersComponent implements OnInit {
 
       
     // });
+    this.routes = this.bootstrap.routes.map(function(val) {
+      return {
+        key:val._id,
+        value:val.areaName
+      }
+    });
+    this.routes.push({key:'all',value:'All'});
   }
 
   private loadLeads(){
-    this.commonService.getMethod(environment.urls.getLeads).subscribe((data: Leads[]) => {
+    this.commonService.getMethod(environment.urls.getLeads+"?route="+this.selRoute).subscribe((data: Leads[]) => {
       this.customerList = data;
       this.dataSource = new MatTableDataSource(this.customerList);
       this.dataSource.paginator = this.paginator;

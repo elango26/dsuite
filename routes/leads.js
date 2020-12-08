@@ -7,8 +7,15 @@ const customer = require('../models/customer');
 const payments = require('../models/payments');
 
 router.get('/list',(req,res,next)=>{
-    customer.aggregate([        
-        {    
+  var customerMatchArr = [{"is_active":"YES"}];
+  if(req.query.route != 'all'){
+    customerMatchArr.push({"route":ObjectId(req.query.route)}); 
+  }
+    customer.aggregate([
+      {"$match":{
+        "$and": customerMatchArr
+      }},
+        {
         "$lookup": {
             "from": "users",
             "localField": "createdBy",
