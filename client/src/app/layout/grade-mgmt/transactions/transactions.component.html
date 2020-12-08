@@ -1,3 +1,94 @@
-<p>
-  transactions works!
-</p>
+<form>
+  <mat-card>
+    <mat-card-title>
+      Grade Transactions      
+      <mat-icon title="Consolidated view" (click)="showConsolidated()" class="print-right">assessment</mat-icon>
+    </mat-card-title>
+    <mat-card-content>
+      <section class="example-section" [ngClass]="{'toggle':enableSearch}" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+        <span class="no-margin"><mat-icon (click)="enableSearch = !enableSearch">search</mat-icon></span>
+        <mat-form-field fxFlex class="">
+            <input matInput name="searKey" [(ngModel)]="searKey" (keyup)="addEvent()" placeholder="Filter">
+            <button mat-icon-button matSuffix (click)="clear()">
+              <mat-icon>{{searKey?'clear':''}}</mat-icon>
+              </button>
+        </mat-form-field>
+        <mat-form-field fxFlex class="">
+            <mat-select name="selRoute" [(ngModel)]="selRoute" (selectionChange)="addEvent()" placeholder="Route" >
+                <mat-option *ngFor="let r of routes" [value]="r.key">{{r.value}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex class="">
+          <input matInput disabled [max]="maxToDate" [matDatepicker]="picker" placeholder="Choose a date" name="delDate" (dateInput)="addEvent()" [(ngModel)]="delDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #picker></mat-datepicker>
+        </mat-form-field>
+    </section> 
+    
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- Color Column -->
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Sno </th>
+          <td mat-cell *matCellDef="let row; let i=index" > {{i+1}} </td>
+          <td mat-footer-cell *matFooterCellDef>  </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customer">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+          <td mat-cell *matCellDef="let row" > {{row.customer[0].customer_id}}-{{row.customer[0].customer_name}} </td>
+          <td mat-footer-cell *matFooterCellDef [attr.rowspan]="2"> <strong> TOTAL</strong> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="balance">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Balance </th>
+          <td mat-cell *matCellDef="let row; let i=index" >
+            {{row.t_deliver - row.t_receive}}
+            <!-- <mat-form-field class="input-number">
+              <input matInput type="number" name="balance{{i}}" [(ngModel)]="row.balance.count" size="10"/>
+            </mat-form-field> -->
+          </td>
+          <td mat-footer-cell *matFooterCellDef> <strong>{{getTotal('balance')}}</strong> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delivered">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Delivered </th>
+          <td mat-cell *matCellDef="let row; let i=index" >
+            <mat-form-field class="input-number">
+              <input matInput type="number" tabindex="{{i+1}}" name="deliver{{i}}" [(ngModel)]="row.c_deliver" size="10"/>
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> <strong>{{getTotal('deliver')}}</strong> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="received">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Received </th>
+          <td mat-cell *matCellDef="let row; let i=index" >
+            <mat-form-field class="input-number">
+              <input matInput type="number" tabindex="{{i+1+dataSource.data.length}}" name="receive{{i}}" [(ngModel)]="row.c_receive" size="10"/>
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> <strong>{{getTotal('receive')}}</strong> </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+          <td mat-cell *matCellDef="let row" > <p class="display-inline">
+            <mat-icon class="print" (click)="editGrade(row)">edit</mat-icon>
+            <mat-icon class="print" (click)="deleteEntry(row)">delete</mat-icon>
+            </p> </td>
+          <td mat-footer-cell *matFooterCellDef>  </td>
+        </ng-container> -->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+    </table>
+
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+    <button mat-raised-button color="primary" (click)="onsubmit()">Submit</button>
+  </mat-card-content>
+</mat-card>
+</form>

@@ -10,9 +10,10 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModalComponent } from './common-modal/common-modal.component';
+import { ConfirmPopComponent } from './confirm-pop/confirm-pop.component';
 
 @NgModule({
-  declarations: [CommonModalComponent],
+  declarations: [CommonModalComponent, ConfirmPopComponent],
   imports: [
     CommonModule,
     MatPaginatorModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
@@ -26,6 +27,6 @@ import { CommonModalComponent } from './common-modal/common-modal.component';
     MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule, MatIconModule,
     MatExpansionModule, MatChipsModule, MatSnackBarModule
   ],
-  entryComponents: [CommonModalComponent]
+  entryComponents: [CommonModalComponent, ConfirmPopComponent]
 })
 export class AppMaterialModule { }

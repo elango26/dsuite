@@ -69,7 +69,7 @@ router.get('/list',(req,res,next)=>{
         {    
         "$lookup": {
             "from": "payments",
-            "let": {"customer_id":"_id"},
+            "let": {"customer_id":"$_id"},
             "as": "payments",
             "pipeline":[
               {

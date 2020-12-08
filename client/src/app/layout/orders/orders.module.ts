@@ -3,9 +3,6 @@ import { CommonModule, DatePipe } from '@angular/common';
 
 import { OrdersRoutingModule } from './orders-routing.module';
 import { DeliveriesComponent, DeliveriesPrintComponent } from './deliveries/deliveries.component';
-
-DeliveriesPrintComponent
-
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
 import {

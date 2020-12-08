@@ -69,6 +69,8 @@ router.get('/list',(req,res,next)=>{
                         } 
                     }); 
                 }
+            }else{
+                res.json(result);
             }
         }
     });

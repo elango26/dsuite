@@ -102,7 +102,7 @@ app.use('/api/personalize',personalize);
 app.use('/api/printer',printer);
 app.use('/api/dashboard',dashboard);
 app.use('/api/ob',ob);
-app.use('/api/mt',mtMngTrans);
+app.use('/api/grade',mtMngTrans);
 // app.use('/api/auth',auth);
 // app.use('/api/test',test);
 

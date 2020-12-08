@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 
 const emptyTransSchema = mongoose.Schema({
     customer_id : {
-        type: Schema.ObjectId,
-        ref: 'Customer'
+        type: String,
+        require: true
     },
     emptyName: {
         type: String,
-        require: true
+        require: false
     },
     count: {
         type: Number,
@@ -20,6 +20,10 @@ const emptyTransSchema = mongoose.Schema({
     },
     description: {
         type: String,
+        require: true
+    },
+    t_date: {
+        type: Date,
         require: true
     },
     is_active : {

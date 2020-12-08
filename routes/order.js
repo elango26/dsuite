@@ -346,7 +346,7 @@ router.get('/list',(req,res,next)=>{
     
 router.post('/create',(req,res,next)=>{
     orders.countDocuments(function(err, count) {
-        if(!err){     
+        if(!err){
     
             if(req.body.createdBy) req.body.createdBy = {_id: ObjectId(req.body.createdBy)}
             if(!req.body._id) req.body['order_id'] = common.padding(count+1,7,'SO');
