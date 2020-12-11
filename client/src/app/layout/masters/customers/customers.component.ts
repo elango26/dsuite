@@ -89,6 +89,7 @@ export class CustomersComponent implements OnInit {
         console.log('The dialog was closed');
         if(result && result == 'YES'){
           row.is_delete = 'YES';
+          row.is_active = 'NO';
           this.commonService.putMethod(environment.urls.updateCustomer+'/'+row._id,row).subscribe((data:GenericResp)=>{
             if(data.code == 200){
               this.snackBar.open(data.message, "Success", {
