@@ -25,7 +25,7 @@ import { ConfirmPopComponent } from './confirm-pop/confirm-pop.component';
     MatPaginatorModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
     MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
     MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule, MatIconModule,
-    MatExpansionModule, MatChipsModule, MatSnackBarModule
+    MatExpansionModule, MatChipsModule, MatSnackBarModule, FormModule, ReactiveFormsModule, CommonModule
   ],
   entryComponents: [CommonModalComponent, ConfirmPopComponent]
 })

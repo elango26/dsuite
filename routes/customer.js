@@ -4,6 +4,14 @@ const router = express.Router();
 const customer = require('../models/customer');
 const common = require('./common');
 
+var genResp = function() {
+    return {
+        code : 201,
+        message : "Error Occurred",
+        data: []
+    };
+}
+
 router.get('/list',(req,res,next)=>{
 
     customer.aggregate([
@@ -59,12 +67,15 @@ router.post('/create',(req,res,next)=>{
 });
 
 router.put('/update/:id',(req,res,next)=>{
-
+    let _resp = genResp ();
     customer.findByIdAndUpdate(req.params.id, {$set: req.body},(err,customer)=>{
         if(err){
-            res.json(err);
+            _resp.message = err;
+            res.json(_resp);
         }else{
-            res.json({msg:'customer updated successfully'});
+            _resp.code=200;
+            _resp.message='customer updated successfully';
+            res.json(_resp);
         }
     });
 });

@@ -1,18 +1,19 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+//import { CommonModule } from '@angular/common';
+//import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MastersRoutingModule } from './masters-routing.module';
 import { CustomersComponent } from './customers/customers.component';
 
-import {
-  MatPaginatorModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
-  MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule, MatIconModule,
-} from '@angular/material';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+// import {
+//   MatPaginatorModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
+//   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
+//   MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule, MatIconModule,
+// } from '@angular/material';
+import { AppMaterialModule } from './../../app-material/app-material.module';
+// import {MatExpansionModule} from '@angular/material/expansion';
+// import {MatChipsModule} from '@angular/material/chips';
+// import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CommonModalComponent } from './common-modal/common-modal.component';
 import { RoutesComponent } from './routes/routes.component';
 import { VendorComponent } from './vendor/vendor.component';
@@ -26,30 +27,31 @@ import { RateMappingComponent } from './rate-mapping/rate-mapping.component';
 @NgModule({
   declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent, CustomModalComponent, CustomerMappingComponent, RateMappingComponent],
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
+    // CommonModule,
+    // FormsModule,
+    // ReactiveFormsModule,
     MastersRoutingModule,
-    MatTableModule,
-    MatFormFieldModule,
-    MatPaginatorModule,
-    MatInputModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSelectModule,
-    MatSliderModule,
-    MatAutocompleteModule,
-    MatSlideToggleModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-    MatExpansionModule,
-    MatChipsModule,
-    MatIconModule
+    // MatTableModule,
+    // MatFormFieldModule,
+    // MatPaginatorModule,
+    // MatInputModule,
+    // MatCardModule,
+    // MatCheckboxModule,
+    // MatRadioModule,
+    // MatDatepickerModule,
+    // MatNativeDateModule,
+    // MatSelectModule,
+    // MatSliderModule,
+    // MatAutocompleteModule,
+    // MatSlideToggleModule,
+    // MatButtonModule,
+    // MatDialogModule,
+    // MatTooltipModule,
+    // MatSnackBarModule,
+    // MatExpansionModule,
+    // MatChipsModule,
+    // MatIconModule
+    AppMaterialModule
   ],
   entryComponents: [CommonModalComponent,CustomModalComponent,RateMappingComponent]
 })

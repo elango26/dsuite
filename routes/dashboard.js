@@ -211,6 +211,7 @@ router.get("/totalCredits",(req,res,next)=>{
                             $and:[
                                 {$eq:['$createdBy','$$createdBy']},
                                 {$eq:['$is_active','YES']},
+                                {$ne:['$payment_type','CREDIT']},
                                 {$eq:['$is_delete','NO']},
                                 {$eq:['$saleDate',date]}
                             ]

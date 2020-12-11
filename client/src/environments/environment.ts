@@ -68,6 +68,8 @@ export const environment = {
     getMappingCustomers:apiUrl+'/ratemapping/customers', //removed
     getRateByCustomer:apiUrl+'/ratemapping/getRateByCustomer',
     getRateTypeByCustomer:apiUrl+'/ratemapping/getRateTypeByCustomer',
+
+    updateCustomer:apiUrl+'/customer/update',
     
     //transactions
     getSales:apiUrl+'/sales/list',

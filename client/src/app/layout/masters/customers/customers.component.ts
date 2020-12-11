@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { Customer } from 'src/app/interfaces/customer';
 import { Route } from 'src/app/interfaces/route';
 import { CommonService } from 'src/app/services/common.service';
@@ -8,6 +8,8 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { CommonModalComponent } from './../common-modal/common-modal.component';
 import { environment } from 'src/environments/environment';
 import { RoutesComponent } from '../routes/routes.component';
+import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 
 @Component({
@@ -17,17 +19,18 @@ import { RoutesComponent } from '../routes/routes.component';
 })
 export class CustomersComponent implements OnInit {
 
-  displayedColumns = ['customerName', 'alias', 'route'];
+  displayedColumns = ['customerName', 'alias', 'route','actions'];
   dataSource: MatTableDataSource<Customer>;
 
   customerList: Customer[];
   customer_form_details : any;
   routes=[];
+  confirmBox: string = "YES";
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private commonService: CommonService, public dialog: MatDialog) {
+  constructor(private commonService: CommonService, public dialog: MatDialog, public snackBar: MatSnackBar) {
     
   }
 
@@ -60,6 +63,86 @@ export class CustomersComponent implements OnInit {
   }
 
   openDialog(): void {
+    this.loadVariables();
+
+    const dialogRef = this.dialog.open(CommonModalComponent, {
+      width: '600px',
+      data: {formData:this.customer_form_details.sort((a, b) => a.order - b.order),formTitle:"Customers",url:environment.urls.postCustomer}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //reload
+      this.loadCustomer();
+    });
+  }
+
+  deleteEntry(row:any): void {
+    console.log(row);
+      const dialogRef = this.dialog.open(ConfirmPopComponent, {
+        width: '250px',
+        data: {confirm:this.confirmBox}
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        if(result && result == 'YES'){
+          row.is_delete = 'YES';
+          this.commonService.putMethod(environment.urls.updateCustomer+'/'+row._id,row).subscribe((data:GenericResp)=>{
+            if(data.code == 200){
+              this.snackBar.open(data.message, "Success", {
+                duration: 500,
+              });
+              this.loadCustomer();
+            }else{
+              this.snackBar.open(data.message, "Error", {
+                duration: 500,
+              });
+            }
+          });
+        }
+      });
+  }
+
+  editCustomer(row:any):void {    
+    this.loadVariables();
+    this.customer_form_details.map(inp => {
+      inp.value = row[inp.name];
+    });
+    this.customer_form_details.push({
+      "order": 0,
+      "type": "input",
+      "inputType": "hidden",
+      "name": "_id",
+      "value": row._id,
+      "placeholder": "_ID",
+        "validation": {
+          "required": true
+        }
+    });
+    this.customer_form_details.push({
+      "order": 10,
+      "type": "select",
+      "inputType": "dropdown",
+      "name": "is_active",
+      "value":row.is_active,
+      "placeholder": "Is Active",
+      "validation": {
+        "required": true
+      },
+      "options": [{key:'YES',value:'YES'},{key:'NO',value:'NO'}]
+    });
+    const dialogRef = this.dialog.open(CommonModalComponent, {
+      //width: '300px',
+      data: {formData:this.customer_form_details.sort((a, b) => a.order - b.order),formTitle:"Edit",url:environment.urls.updateCustomer,method:'PUT' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadCustomer();   
+      this.loadVariables(); // refreh the variables
+    });
+  }
+
+  loadVariables(){
     this.customer_form_details = [{
       "order": 1,
       "type": "input",
@@ -162,15 +245,5 @@ export class CustomersComponent implements OnInit {
       },
       "options": this.routes
     }];
-
-    const dialogRef = this.dialog.open(CommonModalComponent, {
-      width: '600px',
-      data: {formData:this.customer_form_details.sort((a, b) => a.order - b.order),formTitle:"Customers",url:environment.urls.postCustomer}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      //reload
-      this.loadCustomer();
-    });
   }
 }
