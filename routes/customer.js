@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {ObjectId} = require('mongodb');
 
 const customer = require('../models/customer');
 const common = require('./common');
@@ -14,7 +15,14 @@ var genResp = function() {
 
 router.get('/list',(req,res,next)=>{
 
+    var customerMatchArr = [{"is_delete":"NO"}];
+    if(req.query.route != 'all'){
+        customerMatchArr.push({"route":ObjectId(req.query.route)}); 
+    }
     customer.aggregate([
+        {"$match":{
+            "$and": customerMatchArr
+        }},
         {    
         "$lookup": {
             "from": "users",

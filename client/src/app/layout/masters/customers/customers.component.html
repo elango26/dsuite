@@ -8,8 +8,9 @@
               <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
           </mat-form-field>
           <mat-form-field class="example-margin">
-              <mat-select placeholder="Route" >
-                  <mat-option *ngFor="let route of routes" [value]="route.value">{{route.value}}</mat-option>
+              <mat-select placeholder="Route" [(ngModel)]="selRoute" (selectionChange)="loadCustomer()">
+                  <mat-option value="all">All</mat-option>
+                  <mat-option *ngFor="let route of routes" [value]="route.key">{{route.value}}</mat-option>
               </mat-select>
           </mat-form-field>
       </section>

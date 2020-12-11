@@ -26,6 +26,7 @@ export class CustomersComponent implements OnInit {
   customer_form_details : any;
   routes=[];
   confirmBox: string = "YES";
+  selRoute: string = "all";
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -41,11 +42,12 @@ export class CustomersComponent implements OnInit {
         let keyarr = {key:val._id,value:val.areaName};
         this.routes.push(keyarr);
       }
+      //this.routes.push({key:'all',value:'All'});
     });
   }
 
   loadCustomer(){
-    this.commonService.getMethod(environment.urls.getCustomer).subscribe((data:Customer[]) => {
+    this.commonService.getMethod(environment.urls.getCustomer+"?route="+this.selRoute).subscribe((data:Customer[]) => {
       this.customerList = data;
       this.dataSource = new MatTableDataSource(this.customerList);
       this.dataSource.paginator = this.paginator;
