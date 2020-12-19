@@ -103,7 +103,7 @@ export class SalesComponent implements OnInit {
   }
 
   loadCustomers(){
-    this.commonService.getMethod(environment.urls.getCustomer).subscribe((data:Customer[]) => {
+    this.commonService.getMethod(environment.urls.getCustomer+'?isactive=yes').subscribe((data:Customer[]) => {
       this.customerList = data;
       this._callCustomerFilter();  
     });

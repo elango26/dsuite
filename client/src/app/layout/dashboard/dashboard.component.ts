@@ -176,6 +176,8 @@ export class DashboardComponent implements OnInit {
                 this.matGrids.forEach((element)=>{
                     if(details[element.label.toLowerCase()].length > 0)
                         element.count = details[element.label.toLowerCase()][0].value;
+                    else
+                        element.count = 0;
                 });
             }
         });

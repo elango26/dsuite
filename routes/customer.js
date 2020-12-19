@@ -20,6 +20,9 @@ router.get('/list',(req,res,next)=>{
     if(req.query.route && req.query.route != 'all'){
         customerMatchArr.push({"route":ObjectId(req.query.route)}); 
     }
+    if(req.query.isactive && req.query.isactive == 'yes'){
+        customerMatchArr.push({"is_active":'YES'}); 
+    }
     //console.log(customerMatchArr);
     customer.aggregate([
         {"$match":{
