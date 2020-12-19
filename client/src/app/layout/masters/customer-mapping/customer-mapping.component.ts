@@ -9,6 +9,7 @@ import { Customer } from 'src/app/interfaces/customer';
 import { CustomModalComponent } from './../custom-modal/custom-modal.component';
 import { environment } from 'src/environments/environment';
 import { RateMappingComponent } from '../rate-mapping/rate-mapping.component';
+import { Route } from 'src/app/interfaces/route';
 
 @Component({
   selector: 'app-customer-mapping',
@@ -23,6 +24,8 @@ export class CustomerMappingComponent implements OnInit {
   form_details : any;
   options:any[];
   rateTranslate = {'retail':'Retail','wholesale1':'Wholesale 1','wholesale2':"Wholesale 2",'purchase':'Purchase','custom':'Custom'};
+  selRoute: string = "all";
+  routes=[];
     
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,13 +35,20 @@ export class CustomerMappingComponent implements OnInit {
   ngOnInit() {
     this.load();
     this.form_details = [];
+    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:Route[]) => {
+      for(let val of data){
+        let keyarr = {key:val._id,value:val.areaName};
+        this.routes.push(keyarr);
+      }
+      //this.routes.push({key:'all',value:'All'});
+    });
   }
 
   load(){
     // this.commonService.getMethod(environment.urls.getRateMapping).subscribe((data:CustomerMapping[]) => {
     // });
 
-    this.commonService.getMethod(environment.urls.getCustomer).subscribe((data:Customer[]) => {
+    this.commonService.getMethod(environment.urls.getCustomer+"?route="+this.selRoute).subscribe((data:Customer[]) => {
       this.customerList = data;
       this.dataSource = new MatTableDataSource(this.customerList);
       this.dataSource.paginator = this.paginator;

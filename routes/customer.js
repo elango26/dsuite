@@ -16,9 +16,11 @@ var genResp = function() {
 router.get('/list',(req,res,next)=>{
 
     var customerMatchArr = [{"is_delete":"NO"}];
-    if(req.query.route != 'all'){
+    //console.log(req.query);
+    if(req.query.route && req.query.route != 'all'){
         customerMatchArr.push({"route":ObjectId(req.query.route)}); 
     }
+    //console.log(customerMatchArr);
     customer.aggregate([
         {"$match":{
             "$and": customerMatchArr
