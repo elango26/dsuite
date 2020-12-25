@@ -233,26 +233,42 @@ router.post('/placeOrders',(req,res,next)=>{
                   }
                 });
                 if(key == order_size - 1){
+                  var err = "";
                   console.log(updateTransObj);
                   console.log(newTransObj);
                   console.log(updateOrderObj);
                   console.log(newDiscountObj);
-                  if(newDiscountObj.length > 0)
-                    discountTransaction.insertMany(newDiscountObj);  
+                  try{
+                    if(newDiscountObj.length > 0)
+                      discountTransaction.insertMany(newDiscountObj);  
+                  }catch(e){
+                    err += "::disTrans::"+e;
+                  }                  
                   try{
                     if(newTransObj.length > 0){
-                        console.log('inside many');
+                        //console.log('inside many');
                         transactionDetails.insertMany(newTransObj); 
                     }
                   }catch(e){
-                      console.log('err'+e);
+                    err += "::newTrans::"+e;
                   }
                   //update transaction orders
-                  if(updateTransObj.length > 0)
-                    transactionDetails.bulkWrite(updateTransObj);
+                  try{
+                    if(updateTransObj.length > 0)
+                      transactionDetails.bulkWrite(updateTransObj);
+                  }catch(e){
+                    err += "::transDet::"+e;
+                  }                  
                   //update order
-                  if(updateOrderObj.length > 0)
-                    orders.bulkWrite(updateOrderObj); 
+                  try{
+                    if(updateOrderObj.length > 0)
+                      orders.bulkWrite(updateOrderObj); 
+                  }catch(e){
+                    err += "::updOrder::"+e;
+                  }  
+                  console.log(err);
+                  if(err !="")
+                    _resp.data = err;
                   _resp.code = 200;
                   _resp.message = "success";
                   res.json(_resp);
