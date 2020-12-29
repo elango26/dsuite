@@ -30,6 +30,7 @@ export class ProdtableComponent implements OnInit {
   edit_details:any;
   order_details:any;
   isEdit:boolean = false;
+  isRepeat:boolean = false;
   sale_type_arr: any[];
   selectedCategory:string;
   availableDiscounts: any[];
@@ -96,10 +97,14 @@ export class ProdtableComponent implements OnInit {
 
   public repeatOrder(){
     console.log('repeat order');
-    let query = '?id='+this.customer._id+'&searchDate='+this.datePipe.transform(new Date(),"yyyy-MM-dd")+"&delivered=YES";
+    let prevDate = new Date();
+    prevDate.setDate(this.delDate.getDate() - 1);
+    let query = '?id='+this.customer._id+'&searchDate='+this.datePipe.transform(prevDate,"yyyy-MM-dd")+"&delivered=YES";
+    //let query = '?id='+this.customer._id+'&searchDate='+this.datePipe.transform(new Date(),"yyyy-MM-dd")+"&delivered=YES";
     this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
       if(data.length > 0){
-        this.isEdit = true;
+        //this.isEdit = true;
+        this.isRepeat = true;
         this.edit_details = data[0].details;
         this.order_details = data[0];
         this.loadProduct();    
@@ -124,9 +129,9 @@ export class ProdtableComponent implements OnInit {
           tempArr[val.category][val.sub_category][val.brand_name] = [];
 
           val['class'] = '';
-        if(this.isEdit){
+        if(this.isEdit || this.isRepeat){
           let quan = this.edit_details.filter((det:any) => det.prod_id == val._id).reduce((acc,val) => acc + val.prod_quan ,0);
-          console.log(quan);
+          //console.log(quan);
           if(quan > 0){
             val['class'] = "input-bg-color";
             fieldsCtrls[val.product_id] = new FormControl(quan);
@@ -199,6 +204,7 @@ export class ProdtableComponent implements OnInit {
         if(this.order_details && this.isEdit)
           data['_id'] = this.order_details._id;
         
+        //console.log(data);
         this.commonService.postMethod(this.url,data).subscribe(resp =>{    
           this.transaction_desc = [];
           this.form.reset();  
