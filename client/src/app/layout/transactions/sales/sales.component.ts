@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Directive, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidatorFn } 
     from '@angular/forms';
 import { MatTableDataSource,MatSnackBar, MatDialog } from '@angular/material';
@@ -54,6 +54,7 @@ export class SalesComponent implements OnInit {
   default_payment_type:string;
 
   @ViewChild("productName") prodField: ElementRef;
+  @ViewChild("customerName") custField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router, private route: ActivatedRoute, 
     public printerService: PrinterService, public dialog: MatDialog, private datePipe: DatePipe) { 
     this.form = new FormGroup({
@@ -87,6 +88,7 @@ export class SalesComponent implements OnInit {
     //   saleamount: "768"
     // }
     this.onChanges();
+    this.custField.nativeElement.focus();
   }
 
   onChanges() : void{
@@ -387,6 +389,20 @@ export class SalesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       //reload
     });
+  }
+
+  resetForm(){
+    //this.custForm.reset();
+    this.form.reset();
+    this.transaction_desc = [];
+    this.discount_desc = [];
+    this.dataSource = new MatTableDataSource(this.transaction_desc);
+    this.default_payment_type = DEFAULT_PAYMENT_TYPE;
+    this.custForm.setValue({'customerName':'','curDate':new Date()});
+    // this.custForm = new FormGroup({
+    //   'customerName': new FormControl('',[Validators.required,objValidator('customerName')]),
+    //   'curDate': new FormControl(new Date(),Validators.required)
+    // });
   }
 
 }

@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 })
 export class CustomersComponent implements OnInit {
 
-  displayedColumns = ['customerName', 'alias', 'route','totalAmount','actions'];
+  displayedColumns = ['customerName', 'customer_id', 'route','totalAmount','actions'];
   dataSource: MatTableDataSource<Customer>;
 
   public customerList: Customer[];
@@ -28,6 +28,7 @@ export class CustomersComponent implements OnInit {
   rowData:any;
   routes:any;
   selRoute: string = "all";
+  searKey:string = "";
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -144,6 +145,12 @@ export class CustomersComponent implements OnInit {
         this.router.navigate(['/layout',{ outlets: { printpage: 'printview' }}],{ skipLocationChange: true });
       });
     });
+  }
+
+  clear():void{
+    this.searKey = '';
+    this.applyFilter('');
+    //this.addEvent();
   }
 
 }

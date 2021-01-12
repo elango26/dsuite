@@ -146,16 +146,34 @@ router.get('/list',(req,res,next)=>{
 });
 
 router.get('/consolidatelist',(req,res,next)=>{
+  var consMatchArr = {
+    'is_active':'YES',
+    'is_delete':'NO',
+    'is_delivered':'NO',
+    'local_date':req.query.order_date,
+    //'customers.route': ObjectId(req.query.route)
+  };
+
+  if(req.query.route && req.query.route != 'all'){
+    consMatchArr['customers.route']=ObjectId(req.query.route);
+  }
+
   orders.aggregate([
+    {"$lookup":{
+      from: 'customers',
+      localField: 'customer_id',
+      foreignField: '_id',
+      as: 'customers'
+    }},
+    {"$unwind":{
+      path: '$customers',
+      //includeArrayIndex: 'string',
+      preserveNullAndEmptyArrays: true
+    }},
     {"$addFields":{
       'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
     }},
-    {"$match":{
-      is_active:'YES',
-      is_delete:'NO',
-      is_delivered:'NO',
-      local_date:req.query.order_date
-    }},
+    {"$match":consMatchArr},
     {"$lookup":{
       from: 'transactiondetails',
       as: 'details',

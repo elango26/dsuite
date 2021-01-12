@@ -40,6 +40,7 @@ export class DeliveriesComponent implements OnInit {
   }
 
   deliveryList:any[];
+  tempDeliveryList:any[];
   productList:any[];
   consolidatedList:any[];
   enableSearch:boolean = false;
@@ -76,7 +77,7 @@ export class DeliveriesComponent implements OnInit {
 
   private loadDelivers(query:string){    
     this.commonService.getMethod(environment.urls.getDeliveries+query).subscribe((data:any[])=>{
-      this.deliveryList = data;
+      this.tempDeliveryList = this.deliveryList = data;
     });
   }
 
@@ -119,7 +120,15 @@ export class DeliveriesComponent implements OnInit {
 
   clear(){
     this.searKey = '';
-    this.addEvent();
+    //this.addEvent();
+    this.applyFilter('');
+  }
+
+  applyFilter(filterValue: string) {
+    let dataList = this.tempDeliveryList;
+    //this.deliveryList = dataList.filter((list:any)=>{
+    this.deliveryList = dataList.filter(list => list._id.customer.customerName.toLowerCase().indexOf(filterValue.toLowerCase()) > -1);
+    //console.log(temp);
   }
 
   enablePlaceOrder(){

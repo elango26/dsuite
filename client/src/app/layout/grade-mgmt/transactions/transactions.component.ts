@@ -21,7 +21,7 @@ export class TransactionsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['sno','customer','balance','delivered','received'];
-  dataSource: MatTableDataSource<CustomerGradeTrans>;
+  dataSource: MatTableDataSource<any>;
   
   enableSearch:boolean = false;
   routes:any;
@@ -83,10 +83,19 @@ export class TransactionsComponent implements OnInit {
         //   if(!t.received)
         //     t.received = temp1;
         // });
-        console.log(this.customerGradeList);
+        //console.log(this.customerGradeList);
         this.dataSource = new MatTableDataSource(this.customerGradeList);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.dataSource.filterPredicate = (data, filter: string)  => {
+          const accumulator = (currentTerm, key) => {
+            return key === 'customer' ? currentTerm + data.customer[0].customer_name : currentTerm + data[key];
+          };
+          const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+          // Transform the filter by converting it to lowercase and removing whitespace.
+          const transformedFilter = filter.trim().toLowerCase();
+          return dataStr.indexOf(transformedFilter) !== -1;
+        };
       }else{
         this.snackBar.open(data.message, "Error", {
           duration: 500,
@@ -95,8 +104,17 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+    if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+    }
+  }
+
   onsubmit(){    
-    console.log(this.customerGradeList);
+    //console.log(this.customerGradeList);
     //return false;
     let current_date = this.datePipe.transform(this.delDate,"yyyy-MM-dd");
     let live_date = this.datePipe.transform(new Date(),"yyyy-MM-dd");
@@ -163,22 +181,36 @@ export class TransactionsComponent implements OnInit {
   }
 
   getTotal(inp:string){
+    debugger;
     switch(inp){
       case 'balance':
-        return this.customerGradeList.reduce((acc,list) => (acc+list.t_deliver),0) - this.customerGradeList.reduce((acc,list) => (acc+list.t_receive),0);
+        if(this.customerGradeList && this.customerGradeList.length > 0){
+          return this.customerGradeList.reduce((acc,list) => (acc+list.t_deliver),0) - this.customerGradeList.reduce((acc,list) => (acc+list.t_receive),0);
+        } else {
+          return 0;
+        }
         break;
       case 'deliver':
-        return this.customerGradeList.reduce((acc,list) => (acc+list.c_deliver),0);
+        if(this.customerGradeList && this.customerGradeList.length > 0){
+          return this.customerGradeList.reduce((acc,list) => (acc+list.c_deliver),0);
+        } else {
+          return 0;
+        }
         break;
       case 'receive':
-        return this.customerGradeList.reduce((acc,list) => (acc+list.c_receive),0);
+        if(this.customerGradeList && this.customerGradeList.length > 0){
+          return this.customerGradeList.reduce((acc,list) => (acc+list.c_receive),0);
+        }else{
+          return 0;
+        }
         break;
     }
   }
 
   clear():void{
     this.searKey = '';
-    this.addEvent();
+    this.applyFilter('');
+    //this.addEvent();
   }
 
 }

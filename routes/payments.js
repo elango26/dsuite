@@ -89,6 +89,9 @@ router.get('/list',(req,res,next)=>{
         }},
         {"$addFields":{
             'localdate':{ "$dateToString": { format: "%d-%m-%Y", date: "$createdAt", timezone: "+05:30" } }
+        }},
+        {"$match":{
+            "localdate": req.query.pdate
         }}
     ];
 

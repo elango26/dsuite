@@ -11,6 +11,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { AbstractControl } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 export function ValidateUrl(control: AbstractControl) {
   if (control.value && !control.value.customerName) {
@@ -42,11 +43,14 @@ export class PaymentsComponent implements OnInit {
   };
   currentCustomer:Customer;
   dedicatedCustomer:boolean=false;
+  maxToDate: Date = new Date();
+  pDate: Date = new Date();
+  searKey: string = "";
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public commonService: CommonService, public snackBar:MatSnackBar,
-    public dialogRef:MatDialogRef<PaymentsComponent>,
+    public dialogRef:MatDialogRef<PaymentsComponent>,private datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
     if(form_value.customer){
       this.currentCustomer = form_value.customer;
@@ -56,7 +60,6 @@ export class PaymentsComponent implements OnInit {
 
   ngOnInit() {
 //    this.dataSource.filterPredicate = (data, filter: string) => data.customer[0].customerName.toLowerCase().includes(filter) || data.payment_type.toString() === filter;
-    
     this.payment_type = PAYMENT_TYPE.map(val=>{
       return {
         key: val,
@@ -124,9 +127,9 @@ export class PaymentsComponent implements OnInit {
   }
 
   loadPayments(){
-    var url = environment.urls.getPayment;
+    var url = environment.urls.getPayment+'?pdate='+this.datePipe.transform(this.pDate,"dd-MM-yyyy");
     if(this.dedicatedCustomer){
-      url+="?cust_id="+this.currentCustomer._id;
+      url+="&cust_id="+this.currentCustomer._id;
     }
     this.commonService.getMethod(url).subscribe((data:Payment[]) => {
       this.payments = data;
@@ -136,6 +139,15 @@ export class PaymentsComponent implements OnInit {
       // this.dataSource.filterPredicate = (data, filter: string) => {
       //   return data.payment_type == filter;
       // };
+      this.dataSource.filterPredicate = (data, filter: string)  => {
+        const accumulator = (currentTerm, key) => {
+          return key === 'customer' ? currentTerm + data.customer[0].customerName : currentTerm + data[key];
+        };
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+        // Transform the filter by converting it to lowercase and removing whitespace.
+        const transformedFilter = filter.trim().toLowerCase();
+        return dataStr.indexOf(transformedFilter) !== -1;
+      };
     });
   }
 
@@ -146,6 +158,11 @@ export class PaymentsComponent implements OnInit {
     if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
     }
+  }
+
+  clear(){
+    this.searKey = "";
+    this.dataSource.filter = this.searKey;
   }
 
   closeModal(){

@@ -6,7 +6,7 @@
         <form [formGroup]="custForm">
           <section class="example-section">
               <mat-form-field class="example-margin customer-col">
-                  <input type="text" autofocus placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
+                  <input type="text" #customerName placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
                   <mat-autocomplete (optionSelected)='loadCustomerRateType($event.option.value)' #customer="matAutocomplete" [displayWith]="displayCustomerFn">
                     <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
                       {{customer.customerName}}
@@ -116,6 +116,7 @@
     </div>
   </div>
   <div class="pull-right">
+    <button mat-raised-button color="default" (click)="resetForm()">Reset</button>
     <button mat-raised-button color="primary" [disabled]="!dataSource || transaction_desc.length === 0" (click)="_saveOrder('print')">Print</button>
     <button mat-raised-button color="primary" [disabled]="!dataSource || transaction_desc.length === 0" (click)="_saveOrder('save')">Save</button>
   </div>

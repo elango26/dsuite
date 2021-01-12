@@ -217,6 +217,7 @@ router.post('/placeOrders',(req,res,next)=>{
                   }
                   //new sale
                   if(list[key].newDetails.length > 0){
+                    //updateTransObj.push({ insertOne : list[key].newDetails});
                     newTransObj = newTransObj.concat(list[key].newDetails);
                   }                       
                   
@@ -234,44 +235,84 @@ router.post('/placeOrders',(req,res,next)=>{
                 });
                 if(key == order_size - 1){
                   var err = "";
-                  console.log(updateTransObj);
-                  console.log(newTransObj);
-                  console.log(updateOrderObj);
-                  console.log(newDiscountObj);
-                  try{
-                    if(newDiscountObj.length > 0)
-                      discountTransaction.insertMany(newDiscountObj);  
-                  }catch(e){
-                    err += "::disTrans::"+e;
-                  }                  
-                  try{
-                    if(newTransObj.length > 0){
-                        //console.log('inside many');
-                        transactionDetails.insertMany(newTransObj); 
+                  var promises = [];
+                  // console.log(updateTransObj);
+                  // console.log(newTransObj);
+                  // console.log(updateOrderObj);
+                  // console.log(newDiscountObj);
+                  //try{
+                    if(newDiscountObj.length > 0){
+                      promises.push(new Promise((resolve,reject)=>{
+                        discountTransaction.insertMany(newDiscountObj,{ordered:false}).then(sucess=>{
+                          resolve(sucess);
+                        }).catch(error=>{
+                          reject(error);
+                        });
+                      }));                       
                     }
-                  }catch(e){
-                    err += "::newTrans::"+e;
-                  }
+                  //}catch(e){
+                    //err += "::disTrans::"+e;
+                  //}                  
+                  //try{
+                    if(newTransObj.length > 0){
+                      //console.log('inside many');
+                      //transactionDetails.insertMany(newTransObj,{ordered:false}); 
+                      promises.push(new Promise((resolve,reject)=>{
+                        transactionDetails.insertMany(newTransObj,{ordered:false}).then(sucess=>{
+                          resolve(sucess);
+                        }).catch(error=>{
+                          reject(error);
+                        });
+                      })); 
+                    }
+                  //}catch(e){
+                    //err += "::newTrans::"+e;
+                  //}
                   //update transaction orders
-                  try{
-                    if(updateTransObj.length > 0)
-                      transactionDetails.bulkWrite(updateTransObj);
-                  }catch(e){
-                    err += "::transDet::"+e;
-                  }                  
+                  //try{
+                    if(updateTransObj.length > 0){
+                      promises.push(new Promise((resolve,reject)=>{
+                        transactionDetails.bulkWrite(updateTransObj,{ordered:false}).then(sucess=>{
+                          resolve(sucess);
+                        }).catch(error=>{
+                          reject(error);
+                        });
+                      }));
+                    }
+                    //transactionDetails.bulkWrite(updateTransObj,{ordered:false});
+                  //}catch(e){
+                    //err += "::transDet::"+e;
+                  //}                  
                   //update order
-                  try{
-                    if(updateOrderObj.length > 0)
-                      orders.bulkWrite(updateOrderObj); 
-                  }catch(e){
-                    err += "::updOrder::"+e;
-                  }  
-                  console.log(err);
-                  if(err !="")
-                    _resp.data = err;
-                  _resp.code = 200;
-                  _resp.message = "success";
-                  res.json(_resp);
+                  //try{
+                    if(updateOrderObj.length > 0){
+                      promises.push(new Promise((resolve,reject)=>{
+                        orders.bulkWrite(updateOrderObj,{ordered:false}).then(sucess=>{
+                          resolve(sucess);
+                        }).catch(error=>{
+                          reject(error);
+                        });
+                      }));
+                    }
+                    //orders.bulkWrite(updateOrderObj,{ordered:false}); 
+                  // }catch(e){
+                  //   err += "::updOrder::"+e;
+                  // }  
+
+                  // console.log(err);
+                  // if(err !="")
+                  //   _resp.data = err;
+                  Promise.all(promises).then(responses => {
+                    _resp.code = 200;
+                    _resp.data = responses;
+                    _resp.message = "success";
+                    res.json(_resp);
+                  }).catch(error => {
+                    _resp.code = 201;
+                    _resp.data = error;
+                    _resp.message = "failed";
+                    res.json(_resp);
+                  });                 
                 }
               });
             }

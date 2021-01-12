@@ -275,6 +275,8 @@ MIT
 
 @angular/material/datepicker
 
+@angular/material/icon
+
 @angular/material/paginator
 
 @angular/material/table
@@ -508,8 +510,6 @@ THE SOFTWARE.
 
 >>>>>>> Initial commit
 
-
-@angular/material/icon
 
 @angular/material/checkbox
 
