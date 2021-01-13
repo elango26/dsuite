@@ -28,9 +28,20 @@ export class ConsViewComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
       if(form_value.cons_data)
         this.consolidatedData = form_value.cons_data;
+
+      console.log(this.consolidatedData);
       this.dataSource = new MatTableDataSource(this.consolidatedData);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = (data, filter: string)  => {
+        const accumulator = (currentTerm, key) => {
+          return key === 'products' ? currentTerm + data[key].prod_name : currentTerm + data[key];
+        };
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+        // Transform the filter by converting it to lowercase and removing whitespace.
+        const transformedFilter = filter.trim().toLowerCase();
+        return dataStr.indexOf(transformedFilter) !== -1;
+      };
   }
 
   ngOnInit() {

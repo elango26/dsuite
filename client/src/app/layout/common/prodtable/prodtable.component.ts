@@ -161,9 +161,9 @@ export class ProdtableComponent implements OnInit {
   }
 
   onSubmit(){    
-    console.log("Click Sbmit");
-    console.log(this.form.status);
-    console.log(this.form.value);
+    // console.log("Click Sbmit");
+    // console.log(this.form.status);
+    // console.log(this.form.value);
     if(this.form.status == "VALID"){
       for (let key in this.form.value) {
         let quan = this.form.value[key];
@@ -194,15 +194,26 @@ export class ProdtableComponent implements OnInit {
           this.transaction_desc.push(trans_desc);
         }
       }
-      if(this.transaction_desc.length > 0){
-        let data = {
-          customer_id: this.customer._id,
-          order_date: this.delDate,
-          details: this.transaction_desc
-        }
-
-        if(this.order_details && this.isEdit)
-          data['_id'] = this.order_details._id;
+      if(this.transaction_desc.length > 0 || this.isEdit){
+        let data;
+        if(this.transaction_desc.length == 0){
+          data = {
+            _id: this.order_details._id,
+            is_delete: 'YES',
+            customer_id: this.customer._id,
+            order_date: this.delDate,
+            details: this.transaction_desc
+          }
+        } else {
+          data = {
+            customer_id: this.customer._id,
+            order_date: this.delDate,
+            details: this.transaction_desc
+          }
+  
+          if(this.order_details && this.isEdit)
+            data['_id'] = this.order_details._id;
+        }        
         
         //console.log(data);
         this.commonService.postMethod(this.url,data).subscribe(resp =>{    

@@ -9,6 +9,10 @@ const common = require('./common');
 
 router.get('/searchOrders',(req,res,next)=>{
     orders.aggregate([
+        {"$match":{
+          "is_delete":"NO",
+          "is_active":"YES"
+        }},
         {
             $project:{
                 is_delivered: '$is_delivered',
@@ -123,6 +127,8 @@ router.post('/placeOrders',(req,res,next)=>{
             'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
         }},
         {"$match":{
+            is_active: 'YES',
+            is_delete: 'NO',
             is_delivered: 'NO',
             local_date: req.body.orderdate
         }},
