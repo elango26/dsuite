@@ -12,6 +12,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { ConsViewComponent } from './cons-view/cons-view.component';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { UserService } from 'src/app/services/user.service';
+//import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
 
 @Component({
   selector: 'app-deliveries',
@@ -44,6 +45,7 @@ export class DeliveriesComponent implements OnInit {
   productList:any[];
   consolidatedList:any[];
   enableSearch:boolean = false;
+  //confirmBox: string = "YES";
 
   constructor(private datePipe: DatePipe, private commonService: CommonService, private dialog: MatDialog, private bootstrap:BootstrapService,
     private printerService: PrinterService, private router: Router, private userservice: UserService, private snackBar:MatSnackBar) { 
@@ -159,23 +161,25 @@ export class DeliveriesComponent implements OnInit {
   }
 
   public placeOrder(){
-    let data = {
-      "orderdate":this.datePipe.transform(this.delDate,"yyyy-MM-dd"),
-      "customerid":"all"
+    if(confirm('Make sure all the orders are delivered correctly, if yes click ok')){
+      let data = {
+        "orderdate":this.datePipe.transform(this.delDate,"yyyy-MM-dd"),
+        "customerid":"all"
+      }
+      //environment.urls.postOrderSales
+      this.commonService.postMethod(environment.urls.postOrderSales,data).subscribe((data:GenericResp)=>{
+        if(data.code == 200){
+          this.snackBar.open(data.message, "Success", {
+            duration: 1000,
+          });
+          this.addEvent();
+        }else{
+          this.snackBar.open(data.message, "Error", {
+            duration: 1000,
+          });
+        }      
+      });
     }
-    //environment.urls.postOrderSales
-    this.commonService.postMethod(environment.urls.postOrderSales,data).subscribe((data:GenericResp)=>{
-      if(data.code == 200){
-        this.snackBar.open(data.message, "Success", {
-          duration: 1000,
-        });
-        this.addEvent();
-      }else{
-        this.snackBar.open(data.message, "Error", {
-          duration: 1000,
-        });
-      }      
-    });
   }
 
   callPrintModal(){

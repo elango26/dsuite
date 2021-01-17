@@ -10,6 +10,7 @@ import { Product } from 'src/app/interfaces/product';
 import { CATEGORY, SUBCATEGORY, BRANDS, DEFAULT_RATE_TYPE } from '../../../constants/contants';
 import { TransactionDesc } from 'src/app/interfaces/transaction';
 import { Customer } from 'src/app/interfaces/customer';
+import { OrdersRoutingModule } from '../../orders/orders-routing.module';
 
 @Component({
   selector: 'app-prodtable',
@@ -20,7 +21,7 @@ export class ProdtableComponent implements OnInit {
   form: FormGroup;
   productList: any[]=[];
   transaction_desc: TransactionDesc[]=[];
-  strucProductList:any[];
+  strucProductList:any;
   category:any[];
   subcategory:any[];
   brand:any[];
@@ -34,6 +35,7 @@ export class ProdtableComponent implements OnInit {
   sale_type_arr: any[];
   selectedCategory:string;
   availableDiscounts: any[];
+  orderby:any[];
   constructor(private datePipe: DatePipe, private commonService: CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<ProdtableComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
@@ -150,9 +152,20 @@ export class ProdtableComponent implements OnInit {
           name:val.prod_name
         }
       }
-      this.form = new FormGroup(fieldsCtrls);
+      this.form = new FormGroup(fieldsCtrls);      
+      //order by hardcoded
+      //let tempArr1 = {};
+      //let orderby = CATEGORY;
+      // console.log(orderby);
+      // for(let key of orderby){
+      //   if(tempArr[key])
+      //     tempArr1[key] = tempArr[key];
+      // }
+      // console.log(tempArr1);
+      // this.strucProductList = tempArr1;
       console.log(tempArr);
       this.strucProductList = tempArr;
+      this.orderby = CATEGORY;
     });
   }
 

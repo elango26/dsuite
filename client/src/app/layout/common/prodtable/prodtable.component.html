@@ -10,17 +10,17 @@
   <mat-dialog-content class="mb-20 flex-display" fxFlex fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="2px" >
   <!-- <div fxFlex="50" class="flex-display">  -->          
     <mat-tab-group class="reduce-margin" >
-    <div *ngFor="let cat of strucProductList | keyvalue">        
-          <mat-tab label="{{cat.key}}">
-            <div *ngFor="let sub of strucProductList[cat.key] | keyvalue" >
-            <mat-card class="mat-card" *ngFor="let brands of strucProductList[cat.key][sub.key] | keyvalue">
+    <div *ngFor="let cat of orderby">        
+          <mat-tab label="{{cat}}">
+            <div *ngFor="let sub of strucProductList[cat] | keyvalue" >
+            <mat-card class="mat-card" *ngFor="let brands of strucProductList[cat][sub.key] | keyvalue">
               <mat-card-header>
                   <mat-card-title>{{brands.key}} {{sub.key}}</mat-card-title>
               </mat-card-header>
               <mat-card-content>
                 <section class="example-section">
-                  <mat-form-field *ngFor="let prod of strucProductList[cat.key][sub.key][brands.key] | keyvalue" class="input-prod example-margin">
-                      <input matInput [ngClass]="prod.value.class" [formControlName]="prod.value.product_id" [placeholder]="prod.value.alias" aria-label="prod.alias" type="number" size="10"/>                  
+                  <mat-form-field *ngFor="let prod of strucProductList[cat][sub.key][brands.key] | keyvalue" class="input-prod example-margin">
+                      <input matInput [ngClass]="prod.value.class" [formControlName]="prod.value.product_id" [placeholder]="prod.value.alias" aria-label="prod.alias" type="number" size="10" (click)="$event.target.select()"/>                  
                   </mat-form-field>              
                 </section>
               </mat-card-content>

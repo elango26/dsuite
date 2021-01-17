@@ -1,4 +1,4 @@
-export const CATEGORY = ['Milk','Curd','Paneer','Icecream','Dairy','Drinks','BM'];
+export const CATEGORY = ['Milk','Curd','Paneer','BM','Dairy','Drinks','Icecream'];
 export const SUBCATEGORY = ['SM','FCM','TM','Cup','Pouch','Others','COW'];
 export const BRANDS = ['AROKYA','HATSUN'];
 export const MEASURE_UNIT = [{'key':'KG','value':'KILOGRAM'},{'key':'ML','value':'MILLILITRE'}];
