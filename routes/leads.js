@@ -156,7 +156,12 @@ router.get('/getTransactions',(req,res,next)=>{
         message : "Error!!",
         data: []
     };
+    var today = new Date();
+    var limit = new Date(today.setDate(today.getDate() - 10));
     var salesAgg = [
+        {"$match":{
+          sale_date : {$gte: limit}
+        }},
         {"$addFields":{
             localDate: {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
         }},
@@ -185,6 +190,11 @@ router.get('/getTransactions',(req,res,next)=>{
             res.json(_resp);
         }else{
             var payAgg = [
+                {"$match":{
+                  createdAt: {$gte: limit},
+                  is_active: 'YES',
+                  is_delete: 'NO',
+                }},
                 {"$addFields":{
                     localDate: {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
                 }},

@@ -70,16 +70,18 @@ export class CustomersViewComponent implements OnInit {
     }
 
     loadInvoice(row:any){
-        this.invoiceView = true;
-        console.log(row);
-        let data = {
-            invoices: row.sale_ids,
-            type: 'SALES'
-          };
-          this.commonService.postMethod(environment.urls.printInvoices,data).subscribe((data:GenericResp)=>{
+        if(row.debit){
+            this.invoiceView = true;
+            console.log(row);
+            let data = {
+                invoices: row.sale_ids,
+                type: 'SALES'
+            };
+            this.commonService.postMethod(environment.urls.printInvoices,data).subscribe((data:GenericResp)=>{
             console.log(data);
             if(data.code == 200)
-              this.invoiceData = data.data;
-          });
+                this.invoiceData = data.data;
+            });
+        }
     }
 }

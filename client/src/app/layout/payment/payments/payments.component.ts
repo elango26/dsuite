@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { AbstractControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 export function ValidateUrl(control: AbstractControl) {
   if (control.value && !control.value.customerName) {
@@ -30,7 +31,7 @@ export interface outstandingDetails {
 })
 
 export class PaymentsComponent implements OnInit {
-  displayedColumns = ['type','amount'];
+  displayedColumns = ['type','amount','actions'];
   dataSource: MatTableDataSource<Payment>;
   payment_type: any[];
   payments: Payment[];
@@ -83,6 +84,11 @@ export class PaymentsComponent implements OnInit {
     }    
   }
 
+  editPayment(p:any){
+    console.log(p);
+    //this.form.controls['customerName'].setValue(this.currentCustomer);
+  }
+
   loadCustomers(){
     this.commonService.getMethod(environment.urls.getCustomer).subscribe((data:Customer[]) => {
       this.customerList = data;
@@ -117,12 +123,14 @@ export class PaymentsComponent implements OnInit {
   }
 
   private outstandingApi(cust_id:string){
-    this.commonService.getMethod(environment.urls.getOutstanding+'?cust_id='+cust_id).subscribe((data:any)=>{
-      let outstanding = data.total_sales - data.total_payment;
-      this.outstandingDet = {
-        amount: outstanding,
-        classname: (outstanding <= 0)?'negative-amt':'positive-amt'
-      }
+    this.commonService.getMethod(environment.urls.getOutstanding+'?cust_id='+cust_id).subscribe((data:GenericResp)=>{
+      if(data.code == 200){
+        let outstanding = data.data.total_sales - data.data.total_payment;
+        this.outstandingDet = {
+          amount: outstanding,
+          classname: (outstanding <= 0)?'negative-amt':'positive-amt'
+        }
+      }      
     });
   }
 
@@ -167,6 +175,10 @@ export class PaymentsComponent implements OnInit {
 
   closeModal(){
     if(!this.dedicatedCustomer){
+      this.outstandingDet = {
+        amount:0,
+        classname: 'negative-amt'
+      };
       this.form.reset();
     }else{
       this.dialogRef.close();

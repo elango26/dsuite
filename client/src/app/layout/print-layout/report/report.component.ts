@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { catchError } from 'rxjs/operators';
+import { V_CATEGORY } from 'src/app/constants/contants';
 
 @Component({
   selector: 'app-report',
@@ -27,6 +28,7 @@ export class ReportComponent implements OnInit {
   constructor(public commonService:CommonService, public router: Router) { }
 
   ngOnInit() { 
+    console.log(this.data);
     this.products = this.commonService.getProductList();    
     this.reportDate = this.data.date;
     this.route = this.data.data.route;
@@ -111,26 +113,28 @@ export class ReportComponent implements OnInit {
 
   loadHeaders(){
     var products = {};
+    //var cat2show = V_CATEGORY;
     this.products.forEach(function(obj){
-      if(!products[obj.category]){
-        products[obj.category] = {};
-        products[obj.category]['count'] = 0;
+      if(V_CATEGORY.indexOf(obj.category) > -1){ //condition to check only products shown in prodtable
+        if(!products[obj.category]){
+          products[obj.category] = {};
+          products[obj.category]['count'] = 0;
+        }
+        products[obj.category]['count'] += 1;
+        if(!products[obj.category][obj.brand_name]){
+          products[obj.category][obj.brand_name] = {};
+          products[obj.category][obj.brand_name]['count'] = 0;
+        }
+        products[obj.category][obj.brand_name]['count'] += 1;
+        if(!products[obj.category][obj.brand_name][obj.sub_category]){
+          products[obj.category][obj.brand_name][obj.sub_category] = [];
+          //products[obj.category][obj.brand_name][obj.sub_category]['count'] = 0;
+        }
+        //products[obj.category][obj.brand_name][obj.sub_category]['count'] += 1;
+        products[obj.category][obj.brand_name][obj.sub_category].push(obj);
       }
-      products[obj.category]['count'] += 1;
-      if(!products[obj.category][obj.brand_name]){
-        products[obj.category][obj.brand_name] = {};
-        products[obj.category][obj.brand_name]['count'] = 0;
-      }
-      products[obj.category][obj.brand_name]['count'] += 1;
-      if(!products[obj.category][obj.brand_name][obj.sub_category]){
-        products[obj.category][obj.brand_name][obj.sub_category] = [];
-        //products[obj.category][obj.brand_name][obj.sub_category]['count'] = 0;
-      }
-      //products[obj.category][obj.brand_name][obj.sub_category]['count'] += 1;
-      products[obj.category][obj.brand_name][obj.sub_category].push(obj);
-
     });
-    console.log(products);        
+    //console.log(products);        
 
     let row1 = [],row2=[],row3=[],_products=[];
     for(let cat in products){

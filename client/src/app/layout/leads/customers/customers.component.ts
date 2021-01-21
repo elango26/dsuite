@@ -30,7 +30,10 @@ export class CustomersComponent implements OnInit {
   selRoute: string = "all";
   searKey:string = "";
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  //@ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) set matPaginator(paginator: MatPaginator) {
+    this.dataSource.paginator = paginator;
+  }
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private commonService: CommonService, private dialog: MatDialog, private printerService:PrinterService,
@@ -59,7 +62,7 @@ export class CustomersComponent implements OnInit {
     this.commonService.getMethod(environment.urls.getLeads+"?route="+this.selRoute).subscribe((data: Leads[]) => {
       this.customerList = data;
       this.dataSource = new MatTableDataSource(this.customerList);
-      this.dataSource.paginator = this.paginator;
+      //this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }

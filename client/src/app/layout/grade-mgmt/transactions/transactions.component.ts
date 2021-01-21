@@ -181,7 +181,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   getTotal(inp:string){
-    debugger;
+    //debugger;
     switch(inp){
       case 'balance':
         if(this.customerGradeList && this.customerGradeList.length > 0){

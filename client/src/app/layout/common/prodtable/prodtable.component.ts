@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { Product } from 'src/app/interfaces/product';
-import { CATEGORY, SUBCATEGORY, BRANDS, DEFAULT_RATE_TYPE } from '../../../constants/contants';
+import { CATEGORY, SUBCATEGORY, BRANDS, DEFAULT_RATE_TYPE, V_CATEGORY } from '../../../constants/contants';
 import { TransactionDesc } from 'src/app/interfaces/transaction';
 import { Customer } from 'src/app/interfaces/customer';
 import { OrdersRoutingModule } from '../../orders/orders-routing.module';
@@ -165,7 +165,7 @@ export class ProdtableComponent implements OnInit {
       // this.strucProductList = tempArr1;
       console.log(tempArr);
       this.strucProductList = tempArr;
-      this.orderby = CATEGORY;
+      this.orderby = V_CATEGORY;
     });
   }
 
