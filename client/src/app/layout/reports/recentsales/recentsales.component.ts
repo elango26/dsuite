@@ -43,6 +43,15 @@ export class RecentsalesComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.salesList);
         this.dataSource.paginator = this.paginator;
         //this.dataSource.sort = this.sort;
+        this.dataSource.filterPredicate = (data, filter: string)  => {
+          const accumulator = (currentTerm, key) => {
+            return key === 'customerDetail' ? currentTerm + data.customerDetail[0].customerName : currentTerm + data[key];
+          };
+          const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+          // Transform the filter by converting it to lowercase and removing whitespace.
+          const transformedFilter = filter.trim().toLowerCase();
+          return dataStr.indexOf(transformedFilter) !== -1;
+        };
         if(data.message != ''){
           this.snackbar.open("Success","No records found!!",{
             duration: 1000
