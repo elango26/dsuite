@@ -12,6 +12,7 @@ export interface TransactionDesc {
     is_delivered?:boolean;
     is_delete?:string;
     is_active?:string;
+    _id?:string;
 }
 
 export interface Sales {

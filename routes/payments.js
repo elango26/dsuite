@@ -297,6 +297,24 @@ router.put('/update/:id',(req,res,next)=>{
     });
 });
 
+router.put('/delete/:id',(req,res,next)=>{
+    let _resp = {
+        code : 201,
+        message : "Error Occurred",
+        data: []
+    };
+    payment.findByIdAndUpdate(req.params.id, {$set: {'is_delete':'YES'}},(err,payment)=>{
+        if(err){
+            _resp.data = err;
+            res.json(_resp);
+        }else{
+            _resp.code == 200;
+            _resp.message = "Successfully deleted!!";
+            res.json(_resp);
+        }
+    });
+});
+
 router.delete('/delete/:id',(req,res,next)=>{
     payment.remove({_id:req.params.id},(err,result)=>{
         if(err){

@@ -85,7 +85,15 @@ export class PaymentsComponent implements OnInit {
   }
 
   editPayment(p:any){
-    console.log(p);
+    let data = {};
+    this.commonService.putMethod(environment.urls.deletePayment+'/'+p._id,data).subscribe((data:GenericResp) =>{  
+      if(data.code == 200){
+        this.snackBar.open("Deleted successfully!!", "Success", {
+          duration: 1000,
+        });
+      }
+      this.loadPayments(); 
+    });
     //this.form.controls['customerName'].setValue(this.currentCustomer);
   }
 

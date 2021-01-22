@@ -27,7 +27,7 @@ export class RecentsalesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private commonService: CommonService, private dialog: MatDialog, private datePipe: DatePipe, public printerService:PrinterService, public router: Router, public snackbar:MatSnackBar) {
+  constructor(public snackBar: MatSnackBar,private commonService: CommonService, private dialog: MatDialog, private datePipe: DatePipe, public printerService:PrinterService, public router: Router, public snackbar:MatSnackBar) {
   }
 
   ngOnInit() {
@@ -77,6 +77,18 @@ export class RecentsalesComponent implements OnInit {
   editSales(row:any){
     this.editView = true;
     this.editData = row;
+  }
+
+  deleteSales(row:any){
+    let data = {};
+    this.commonService.putMethod(environment.urls.deleteSales+'/'+row._id,data).subscribe((data:GenericResp) =>{  
+      if(data.code == 200){
+        this.snackBar.open("Deleted successfully!!", "Success", {
+          duration: 1000,
+        });
+      }
+      this.loadRecentSales();
+    });
   }
 
   backToReport(e){

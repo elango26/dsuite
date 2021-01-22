@@ -9,7 +9,7 @@
                   <input type="text" #customerName placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
                   <mat-autocomplete (optionSelected)='loadCustomerRateType($event.option.value)' #customer="matAutocomplete" [displayWith]="displayCustomerFn">
                     <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
-                      {{customer.customerName}}
+                      {{customer.customerName}}-{{customer.routes.areaName}}-{{customer.customer_id|slice:-3}}
                     </mat-option>
                   </mat-autocomplete>
               </mat-form-field>

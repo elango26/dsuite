@@ -48,6 +48,11 @@ router.get('/list',(req,res,next)=>{
             "localField": "route",
             "foreignField": "_id",
             "as": "routes"
+        }},
+        {"$unwind":{
+            path: '$routes',
+            //  includeArrayIndex: 'string',
+            preserveNullAndEmptyArrays: true
         }}
 
     ]).exec((err,list)=>{

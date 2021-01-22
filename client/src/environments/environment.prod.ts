@@ -18,6 +18,7 @@ export const environment = {
     getPayment:apiUrl+'/payment/list',
     postPayment:apiUrl+'/payment/create',
     getOutstanding:apiUrl+'/payment/getOutstanding', // pass customer id
+    deletePayment:apiUrl+'/payment/delete',
     //deliveries
     getDeliveries:apiUrl+'/deliveries/list',
     getConsolidatedOrderList:apiUrl+'/deliveries/consolidatelist',    
@@ -74,6 +75,7 @@ export const environment = {
     getSales:apiUrl+'/sales/list',
     postSales:apiUrl+'/sales/create',
     updateSales:apiUrl+'/sales/update',
+    deleteSales:apiUrl+'/sales/delete',
     getPurchase:apiUrl+'/purchase/list',
     postPurchase:apiUrl+'/purchase/create',
     getExpense:apiUrl+'/expense/list',

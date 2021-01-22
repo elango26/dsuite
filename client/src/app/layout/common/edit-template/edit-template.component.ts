@@ -26,6 +26,7 @@ export class EditTemplateComponent implements OnInit {
   productList: Product[];
   filteredOptions: Observable<Product[]>;
   transaction_desc: TransactionDesc[]=[];
+  del_transaction_desc: TransactionDesc[]=[];
   discount_desc: DiscountTransaction[]=[];
   availableDiscounts: any[];
   sale_type: string = DEFAULT_RATE_TYPE;
@@ -115,6 +116,7 @@ export class EditTemplateComponent implements OnInit {
   }
 
   _remove(n:number):void{
+    console.log(this.transaction_desc);
     // this.transaction_desc.splice(n,1);
     // this.dataSource = new MatTableDataSource(this.transaction_desc);
     let row = this.transaction_desc[n];
@@ -131,6 +133,9 @@ export class EditTemplateComponent implements OnInit {
           t.is_delete = "YES"
       })
     }
+    if(row._id){
+      this.del_transaction_desc.push(row);
+    }    
     this.transaction_desc = this.transaction_desc.filter(trans => trans.is_delete == "NO");
     this.discount_desc = this.discount_desc.filter(d => d.is_delete == "NO");
     this.dataSource = new MatTableDataSource(this.transaction_desc); 
@@ -275,7 +280,7 @@ export class EditTemplateComponent implements OnInit {
       customer_id: this.data.customer_id,
       sale_date: this.data.sale_date,
       total_amount: this.getTotalCost(),
-      details: this.transaction_desc,
+      details: this.transaction_desc.concat(this.del_transaction_desc),
       payment_type: this.default_payment_type,
       discounts: this.discount_desc
     }

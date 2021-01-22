@@ -43,6 +43,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
           <td mat-cell *matCellDef="let row" > <p class="display-inline">
             <mat-icon class="print" (click)="editSales(row)">edit</mat-icon>
+            <mat-icon class="print" (click)="deleteSales(row)">delete_forever</mat-icon>
             <mat-icon class="print" (click)="print(row.sale_id)">print</mat-icon>
             </p>
           </td>
