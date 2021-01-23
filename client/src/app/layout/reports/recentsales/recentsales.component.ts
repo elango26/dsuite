@@ -7,6 +7,7 @@ import { PrinterService } from 'src/app/services/printer.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { GenericResp } from 'src/app/interfaces/genericResp';
+import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
 
 @Component({
   selector: 'app-recentsales',
@@ -23,6 +24,7 @@ export class RecentsalesComponent implements OnInit {
   custFormMaxDate = new Date();
 
   public salesList: any;
+  confirmBox: string = "YES";
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -80,15 +82,24 @@ export class RecentsalesComponent implements OnInit {
   }
 
   deleteSales(row:any){
-    let data = {};
-    this.commonService.putMethod(environment.urls.deleteSales+'/'+row._id,data).subscribe((data:GenericResp) =>{  
-      if(data.code == 200){
-        this.snackBar.open("Deleted successfully!!", "Success", {
-          duration: 1000,
+    const dialogRef = this.dialog.open(ConfirmPopComponent, {
+      width: '250px',
+      data: {confirm:this.confirmBox}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result == 'YES'){
+        let data = {};
+        this.commonService.putMethod(environment.urls.deleteSales+'/'+row._id,data).subscribe((data:GenericResp) =>{  
+          if(data.code == 200){
+            this.snackBar.open("Deleted successfully!!", "Success", {
+              duration: 1000,
+            });
+          }
+          this.loadRecentSales();
         });
       }
-      this.loadRecentSales();
-    });
+    });    
   }
 
   backToReport(e){

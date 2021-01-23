@@ -116,7 +116,7 @@ export class EditTemplateComponent implements OnInit {
   }
 
   _remove(n:number):void{
-    console.log(this.transaction_desc);
+    //console.log(this.transaction_desc);
     // this.transaction_desc.splice(n,1);
     // this.dataSource = new MatTableDataSource(this.transaction_desc);
     let row = this.transaction_desc[n];
@@ -212,7 +212,7 @@ export class EditTemplateComponent implements OnInit {
                 (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.customer_id))
               })
     }
-    console.log(matching);
+    //console.log(matching);
     if(matching.length > 0){
       //_did = matching[0]._id;
       switch(matching[0].discount_type){
@@ -274,7 +274,7 @@ export class EditTemplateComponent implements OnInit {
   }
 
   _saveOrder(type:string):void{  
-    console.log(this.transaction_desc);
+    //console.log(this.transaction_desc);
     
     let data: Sales = {
       customer_id: this.data.customer_id,

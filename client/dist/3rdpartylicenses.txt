@@ -277,8 +277,6 @@ MIT
 
 @angular/material/icon
 
-@angular/material/paginator
-
 @angular/material/table
 
 @angular/flex-layout
@@ -511,6 +509,10 @@ THE SOFTWARE.
 >>>>>>> Initial commit
 
 
+@angular/material/autocomplete
+
+@angular/material/paginator
+
 @angular/material/checkbox
 
 @angular/material/tabs
@@ -518,8 +520,6 @@ THE SOFTWARE.
 @angular/material/expansion
 
 @angular/material/chips
-
-@angular/material/autocomplete
 
 tslib
 Apache-2.0

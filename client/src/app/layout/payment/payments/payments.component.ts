@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar, MatDialogRef } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { MAT_DIALOG_DATA } from '@angular/material';
 //import {MatGridListModule} from '@angular/material/grid-list';
 import { CommonService } from 'src/app/services/common.service';
@@ -13,6 +13,7 @@ import { startWith, map } from 'rxjs/operators';
 import { AbstractControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { GenericResp } from 'src/app/interfaces/genericResp';
+import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
 
 export function ValidateUrl(control: AbstractControl) {
   if (control.value && !control.value.customerName) {
@@ -47,10 +48,11 @@ export class PaymentsComponent implements OnInit {
   maxToDate: Date = new Date();
   pDate: Date = new Date();
   searKey: string = "";
+  confirmBox: string = "YES";
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public commonService: CommonService, public snackBar:MatSnackBar,
+  constructor(private dialog: MatDialog,public commonService: CommonService, public snackBar:MatSnackBar,
     public dialogRef:MatDialogRef<PaymentsComponent>,private datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
     if(form_value.customer){
@@ -85,15 +87,24 @@ export class PaymentsComponent implements OnInit {
   }
 
   editPayment(p:any){
-    let data = {};
-    this.commonService.putMethod(environment.urls.deletePayment+'/'+p._id,data).subscribe((data:GenericResp) =>{  
-      if(data.code == 200){
-        this.snackBar.open("Deleted successfully!!", "Success", {
-          duration: 1000,
+    const dialogRef = this.dialog.open(ConfirmPopComponent, {
+      width: '250px',
+      data: {confirm:this.confirmBox}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result == 'YES'){
+        let data = {};
+        this.commonService.putMethod(environment.urls.deletePayment+'/'+p._id,data).subscribe((data:GenericResp) =>{  
+          if(data.code == 200){
+            this.snackBar.open("Deleted successfully!!", "Success", {
+              duration: 1000,
+            });
+          }
+          this.loadPayments(); 
         });
       }
-      this.loadPayments(); 
-    });
+    });    
     //this.form.controls['customerName'].setValue(this.currentCustomer);
   }
 
