@@ -248,6 +248,8 @@ router.get('/sales_report',(req,res,next)=>{
     var orderMatchArr = [
       { $eq: ['$customer_id', '$$cust_id'] },
       { $eq: ['$local_date',req.query.sale_date]},
+      { $eq: ['$is_active', 'YES']},
+      { $eq: ['$is_delete', 'NO']},
       //{ $eq: ['$is_delivered', 'YES']},
     ];
     
@@ -394,12 +396,30 @@ router.get('/lead_report',(req,res,next)=>{
   arr.push(dat3);
   
   customer.aggregate([
-      {"$lookup":{
-        from: 'sales',
-        localField: '_id',
-        foreignField: 'customer_id',
-        as: 'sales'
-      }},
+    {"$lookup":{
+      from: 'sales',
+      as: 'sales',
+      let: { cust_id: '$_id' },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                { $eq: ['$customer_id', '$$cust_id'] },
+                { $eq: ['$is_active','YES']},
+                { $eq: ['$is_delete','NO']}
+              ]
+            }
+          }
+        }
+      ]
+    }},
+      // {"$lookup":{
+      //   from: 'sales',
+      //   localField: '_id',
+      //   foreignField: 'customer_id',
+      //   as: 'sales'
+      // }},
       {"$unwind":{
         path: '$sales',
         //includeArrayIndex: '<<string>>',
@@ -433,13 +453,31 @@ router.get('/lead_report',(req,res,next)=>{
       }}     
   ]).exec((err,result) => {
       if(!err){
-        customer.aggregate([              
+        customer.aggregate([   
           {"$lookup":{
             from: 'payments',
-            localField: '_id',
-            foreignField: 'customer_id',
-            as: 'payments'
+            as: 'payments',
+            let: { cust_id: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$customer_id', '$$cust_id'] },
+                      { $eq: ['$is_active','YES']},
+                      { $eq: ['$is_delete','NO']}
+                    ]
+                  }
+                }
+              }
+            ]
           }},           
+          // {"$lookup":{
+          //   from: 'payments',
+          //   localField: '_id',
+          //   foreignField: 'customer_id',
+          //   as: 'payments'
+          // }},           
           {"$unwind":{
             path: '$payments',
             //includeArrayIndex: '<<string>>',
