@@ -1,0 +1,35 @@
+table {
+    width: 100%;
+}
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 80px;
+}
+.example-margin {
+    margin: 15px;
+}
+.visible-md {
+    display: none;
+}
+
+.no-margin{
+    margin-bottom : 0 !important;
+}
+
+@media screen and (max-width: 992px) {
+.visible-md {
+    display: block;
+}
+
+.toggle {
+    .mat-form-field {
+    display:none;
+    }
+}
+}

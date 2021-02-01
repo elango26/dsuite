@@ -54,6 +54,7 @@ export class SalesComponent implements OnInit {
   default_payment_type:string;
 
   @ViewChild("productName") prodField: ElementRef;
+  @ViewChild("quantity") quanField: ElementRef;
   @ViewChild("customerName") custField: ElementRef;
   constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router, private route: ActivatedRoute, 
     public printerService: PrinterService, public dialog: MatDialog, private datePipe: DatePipe) { 
@@ -218,7 +219,9 @@ export class SalesComponent implements OnInit {
       //console.log(this.transaction_desc.length);
       this._callFilter();
       this.prodField.nativeElement.focus();
-    }    
+    } else if(typeof this.form.value.productName == 'object'){
+      this.quanField.nativeElement.focus();
+    }
   }
 
   _calculateDiscounts(vars:any):string{

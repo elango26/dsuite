@@ -12,9 +12,10 @@ import {
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatButtonModule} from '@angular/material/button';
 import { AppMaterialModule } from '../../app-material/app-material.module';
+import { ViewPaymentComponent } from './view-payment/view-payment.component';
 
 @NgModule({
-  declarations: [PaymentsComponent],
+  declarations: [PaymentsComponent, ViewPaymentComponent],
   imports: [
     CommonModule,
     AppMaterialModule,

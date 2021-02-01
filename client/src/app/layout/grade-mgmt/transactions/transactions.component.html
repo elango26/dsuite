@@ -56,7 +56,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Delivered </th>
           <td mat-cell *matCellDef="let row; let i=index" >
             <mat-form-field class="input-number">
-              <input matInput type="number" tabindex="{{i+1}}" name="deliver{{i}}" [(ngModel)]="row.c_deliver" size="10"/>
+              <input matInput type="number" tabindex="{{i+1}}" name="deliver{{i}}" [(ngModel)]="row.c_deliver" size="10" (click)="$event.target.select()"/>
             </mat-form-field>
           </td>
           <td mat-footer-cell *matFooterCellDef> <strong>{{getTotal('deliver')}}</strong> </td>
@@ -66,7 +66,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Received </th>
           <td mat-cell *matCellDef="let row; let i=index" >
             <mat-form-field class="input-number">
-              <input matInput type="number" tabindex="{{i+1+dataSource.data.length}}" name="receive{{i}}" [(ngModel)]="row.c_receive" size="10"/>
+              <input matInput type="number" tabindex="{{i+1+dataSource.data.length}}" name="receive{{i}}" [(ngModel)]="row.c_receive" size="10" (click)="$event.target.select()"/>
             </mat-form-field>
           </td>
           <td mat-footer-cell *matFooterCellDef> <strong>{{getTotal('receive')}}</strong> </td>

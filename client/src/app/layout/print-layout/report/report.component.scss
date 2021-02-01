@@ -24,5 +24,11 @@ table{
 }
 
 table {
-    font-family: monospace;
+    font-family: monospace;    
 }
+
+.dotted tbody tr:nth-child(even){
+    background-color:#f2f2f2 !important;
+}
+
+//tr:nth-child(even) {background-color: #f2f2f2;}
