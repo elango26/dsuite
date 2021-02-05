@@ -85,10 +85,10 @@ export class ProdtableComponent implements OnInit {
     });
   }
 
-  loadExistingOrder(cust:any,reqDate:any){
+  async loadExistingOrder(cust:any,reqDate:any){
     //console.log(this.datePipe.transform(reqDate,"yyyy-MM-dd"));
     let query = '?id='+cust._id+'&searchDate='+this.datePipe.transform(reqDate,"yyyy-MM-dd")+"&delivered=NO";
-    this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
+    await this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
       if(data.length > 0){
         this.isEdit = true;
         this.edit_details = data[0].details;
