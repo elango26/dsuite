@@ -53,6 +53,7 @@ export class ProdtableComponent implements OnInit {
           this.isEdit = form_value.isEdit;
           this.edit_details = form_value.edit_details;
           this.order_details = form_value.order_details;
+          this.loadProduct();
           break;
         default:
           this.delDate = new Date();
@@ -64,7 +65,8 @@ export class ProdtableComponent implements OnInit {
     this.category = CATEGORY;
     this.subcategory = SUBCATEGORY;
     this.brand = BRANDS;
-    this.loadProduct();  
+    //commented due to late load issue
+    //this.loadProduct();
     this.loadDiscounts();  
     let formC = {};
     formC["name"] = new FormControl("");
@@ -85,15 +87,16 @@ export class ProdtableComponent implements OnInit {
     });
   }
 
-  async loadExistingOrder(cust:any,reqDate:any){
+  loadExistingOrder(cust:any,reqDate:any){
     //console.log(this.datePipe.transform(reqDate,"yyyy-MM-dd"));
     let query = '?id='+cust._id+'&searchDate='+this.datePipe.transform(reqDate,"yyyy-MM-dd")+"&delivered=NO";
-    await this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
+    this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
       if(data.length > 0){
         this.isEdit = true;
         this.edit_details = data[0].details;
         this.order_details = data[0];
       }
+      this.loadProduct();
     });
   }
 
@@ -173,9 +176,9 @@ export class ProdtableComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onSubmit(){    
+  onSubmit(){
     // console.log("Click Sbmit");
-    // console.log(this.form.status);
+    //console.log(this.form.status);
     // console.log(this.form.value);
     if(this.form.status == "VALID"){
       for (let key in this.form.value) {
@@ -246,6 +249,10 @@ export class ProdtableComponent implements OnInit {
         });
       }
       this.dialogRef.close();
+    } else {
+      this.snackBar.open("Please check the input given!!", "Error", {
+        duration: 1000,
+      });
     }  
   } 
 
