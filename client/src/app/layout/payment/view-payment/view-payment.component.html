@@ -13,12 +13,17 @@
               </button>
         </mat-form-field>
         <mat-form-field fxFlex class="">
-            <mat-select name="selRoute" [(ngModel)]="selRoute" (selectionChange)="addEvent()" placeholder="Route" >
+            <mat-select name="selRoute" [(ngModel)]="selRoute" (selectionChange)="filterOpts()" placeholder="Route" >
                 <mat-option *ngFor="let r of routes" [value]="r.key">{{r.value}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field fxFlex class="">
-          <input matInput disabled [max]="maxToDate" [matDatepicker]="picker" placeholder="Choose a date" name="delDate" (dateInput)="addEvent()" [(ngModel)]="delDate">
+          <mat-select name="selRoute" [(ngModel)]="selUser" (selectionChange)="filterOpts()" placeholder="User" >
+              <mat-option *ngFor="let r of usersList" [value]="r.key">{{r.value}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+        <mat-form-field fxFlex class="">
+          <input matInput disabled [max]="maxToDate" [matDatepicker]="picker" placeholder="Choose a date" name="delDate" (dateInput)="loadPayments()" [(ngModel)]="delDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker disabled="false" #picker></mat-datepicker>
         </mat-form-field>
@@ -45,22 +50,29 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Area Name </th>
                 <td mat-cell *matCellDef="let row" [style.color]="row.areaName"> {{row.areaName}} </td>
             </ng-container> -->
-
+            <ng-container matColumnDef="customer">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer </th>
+              <td mat-cell *matCellDef="let row"> {{row.customer[0].customerName}} </td>
+              <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
             <ng-container matColumnDef="type">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
                 <td mat-cell *matCellDef="let row"> {{row.payment_type}} </td>
+                <td mat-footer-cell *matFooterCellDef> Total </td>
             </ng-container>
-            <ng-container matColumnDef="date" *ngIf="dedicatedCustomer">
+            <!-- <ng-container matColumnDef="date" *ngIf="dedicatedCustomer">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
               <td mat-cell *matCellDef="let row"> {{row.localdate}} </td>
-            </ng-container>
-            <ng-container matColumnDef="customer" *ngIf="!dedicatedCustomer">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer </th>
-                <td mat-cell *matCellDef="let row"> {{row.customer[0].customerName}} </td>
-            </ng-container>
+            </ng-container> -->            
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
                 <td mat-cell *matCellDef="let row" > {{row.amount | currency:'INR'}} </td>
+                <td mat-footer-cell *matFooterCellDef> {{getTotalCost()|currency:'INR'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="createdBy">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Created By </th>
+              <td mat-cell *matCellDef="let row"> {{row.createdUser[0].username}} </td>
+              <td mat-footer-cell *matFooterCellDef>  </td>
             </ng-container>
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
@@ -72,6 +84,7 @@
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
         </table>
     
         <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
