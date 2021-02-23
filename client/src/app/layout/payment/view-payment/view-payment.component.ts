@@ -6,6 +6,9 @@ import { environment } from 'src/environments/environment';
 import { Payment } from 'src/app/interfaces/payments';
 import { BootstrapService } from 'src/app/services/bootstrap.service';
 import { User } from 'src/app/interfaces/user';
+import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
+import { GenericResp } from 'src/app/interfaces/genericResp';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-view-payment',
@@ -23,11 +26,13 @@ export class ViewPaymentComponent implements OnInit {
   pDate: Date = new Date();
   searKey: string = "";
   confirmBox: string = "YES";
-  delDate: Date;
+  delDate: Date = new Date();
   selRoute: string = "all";
   selUser: string = "all";
   routes:any;
   usersList:any;
+  form:FormGroup;
+  controls:FormArray;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
@@ -64,12 +69,14 @@ export class ViewPaymentComponent implements OnInit {
   }
 
   getTotalCost(){
-    return (this.tempPayment.map(t => t.amount).reduce((acc, value) => acc + value, 0));
+    if(this.tempPayment && this.tempPayment.length > 0)
+      return (this.tempPayment.map(t => t.amount).reduce((acc, value) => acc + value, 0));
+    return 0;
   }
 
   filterOpts(){
     //console.log(this.selUser);
-    this.tempPayment = this.payments;
+    this.tempPayment = this.payments.map( obj => ({...obj, isEdit:false}));
     if(this.selUser != 'all'){
       this.tempPayment = this.tempPayment.filter(val => val.createdBy == this.selUser);
     } 
@@ -93,21 +100,28 @@ export class ViewPaymentComponent implements OnInit {
   }
 
   loadTable(payments:any){
+    const toGrp = payments.map(row => {
+      return new FormGroup({
+        _id: new FormControl(row._id,Validators.required),
+        amount: new FormControl(row.amount,Validators.required)
+      },{updateOn: "blur"});
+    });
+    this.controls = new FormArray(toGrp);
     this.dataSource = new MatTableDataSource(payments);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;      
-      // this.dataSource.filterPredicate = (data, filter: string) => {
-      //   return data.payment_type == filter;
-      // };
-      this.dataSource.filterPredicate = (data, filter: string)  => {
-        const accumulator = (currentTerm, key) => {
-          return key === 'customer' ? currentTerm + data.customer[0].customerName : currentTerm + data[key];
-        };
-        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-        // Transform the filter by converting it to lowercase and removing whitespace.
-        const transformedFilter = filter.trim().toLowerCase();
-        return dataStr.indexOf(transformedFilter) !== -1;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;      
+    // this.dataSource.filterPredicate = (data, filter: string) => {
+    //   return data.payment_type == filter;
+    // };
+    this.dataSource.filterPredicate = (data, filter: string)  => {
+      const accumulator = (currentTerm, key) => {
+        return key === 'customer' ? currentTerm + data.customer[0].customerName : currentTerm + data[key];
       };
+      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+      // Transform the filter by converting it to lowercase and removing whitespace.
+      const transformedFilter = filter.trim().toLowerCase();
+      return dataStr.indexOf(transformedFilter) !== -1;
+    };
   }
 
   applyFilter(filterValue: string) {
@@ -123,5 +137,63 @@ export class ViewPaymentComponent implements OnInit {
     this.searKey = "";
     this.dataSource.filter = this.searKey;
   }
+
+  editPayment(p:any){
+    const dialogRef = this.dialog.open(ConfirmPopComponent, {
+      width: '250px',
+      data: {confirm:this.confirmBox}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result == 'YES'){
+        let data = {};
+        this.commonService.putMethod(environment.urls.deletePayment+'/'+p._id,data).subscribe((data:GenericResp) =>{  
+          if(data.code == 200){
+            this.snackBar.open("Deleted successfully!!", "Success", {
+              duration: 1000,
+            });
+          }
+          this.loadPayments(); 
+        });
+      }
+    });    
+    //this.form.controls['customerName'].setValue(this.currentCustomer);
+  }
+
+  getControl(index, fieldName) {
+    return this.controls.at(index).get(fieldName) as FormControl;
+  }
+
+  updateField(index:any,field:any) {
+    const payment_id = this.getControl(index, '_id');
+    const new_amount = this.getControl(index, field);
+    console.log(payment_id.value+'---'+new_amount.value);
+    if(new_amount.valid){
+      console.log(new_amount.value);
+      let data = {
+        'amount': new_amount.value
+      };
+      this.commonService.putMethod(environment.urls.updatePayment+'/'+payment_id.value,data).subscribe((data:GenericResp) =>{  
+        if(data.code == 200){
+          this.snackBar.open("Updated successfully!!", "Success", {
+            duration: 1000,
+          });
+        }
+      });
+    }
+  }
+
+  // updateField(index, field) {
+  //   const control = this.getControl(index, field);
+  //   if (control.valid) {
+  //     this.core.update(index,field,control.value);
+  //   }
+
+  //  }
+
+  // getControl(index, fieldName) {
+  //   const a  = this.controls.at(index).get(fieldName) as FormControl;
+  //   return this.controls.at(index).get(fieldName) as FormControl;
+  // }
 
 }

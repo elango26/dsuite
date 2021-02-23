@@ -59,7 +59,7 @@ router.post('/authenticate',(req,res,next)=>{
                 if(users.length > 0){
                     users[0]['token'] = jwt.sign({username: req.body.username},
                         env.parsed.JWT_KEY,
-                        { expiresIn: '24h' // expires in 24 hours
+                        { expiresIn: '30d' // 24h expires in 24 hours
                         }
                     );                    
                     _resp.message = "Validated";

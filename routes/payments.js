@@ -287,12 +287,19 @@ router.post('/create',(req,res,next)=>{
 });
 
 router.put('/update/:id',(req,res,next)=>{
-
+    let _resp = {
+        code : 201,
+        message : "Error Occurred",
+        data: []
+    };
     payment.findByIdAndUpdate(req.params.id, {$set: req.body},(err,payment)=>{
         if(err){
-            res.json(err);
+            _resp.data = err;
+            res.json(_resp);
         }else{
-            res.json({msg:'Payment updated successfully'});
+            _resp.code == 200;
+            _resp.message = "Updated Successfully!!";
+            res.json(_resp);
         }
     });
 });

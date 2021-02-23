@@ -19,6 +19,7 @@ export const environment = {
     postPayment:apiUrl+'/payment/create',
     getOutstanding:apiUrl+'/payment/getOutstanding', // pass customer id
     deletePayment:apiUrl+'/payment/delete',
+    updatePayment:apiUrl+'/payment/update',
     //deliveries
     getDeliveries:apiUrl+'/deliveries/list',
     getConsolidatedOrderList:apiUrl+'/deliveries/consolidatelist',    

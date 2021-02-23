@@ -521,6 +521,9 @@ THE SOFTWARE.
 
 @angular/material/chips
 
+ngx-take-until-destroy
+MIT
+
 tslib
 Apache-2.0
 Apache License
