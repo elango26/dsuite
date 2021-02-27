@@ -65,7 +65,7 @@
       </mat-expansion-panel>
     </mat-accordion> -->
     <mat-accordion class="example-headers-align" fxLayout="column">
-      <ng-container *ngFor="let row of deliveryList;let i = index">
+      <ng-container *ngFor="let row of (deliveryList|async);let i = index">
         <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" >            
           <mat-expansion-panel-header>
             <mat-panel-title >
@@ -82,7 +82,7 @@
               <mat-chip *ngFor="let order of row.details">{{order.products.prod_name}}: <span class="highlight-text">{{order.prod_quan}}</span> </mat-chip>                                           
           </mat-chip-list>   
           <div class="example-button-row">        
-            <button mat-stroked-button color="warn" (click)="editOrder(row)">Edit</button>      
+            <button mat-stroked-button color="warn" (click)="editOrder(i,row)">Edit</button>      
           </div> 
           <mat-action-row>
             <button mat-button color="warn" *ngIf="i!=0" (click)="prevStep()">Previous</button>

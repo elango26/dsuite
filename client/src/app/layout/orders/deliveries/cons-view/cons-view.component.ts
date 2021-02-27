@@ -29,7 +29,7 @@ export class ConsViewComponent implements OnInit {
       if(form_value.cons_data)
         this.consolidatedData = form_value.cons_data;
 
-      console.log(this.consolidatedData);
+      //console.log(this.consolidatedData);
       this.dataSource = new MatTableDataSource(this.consolidatedData);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

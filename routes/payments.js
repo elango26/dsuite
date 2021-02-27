@@ -297,7 +297,7 @@ router.put('/update/:id',(req,res,next)=>{
             _resp.data = err;
             res.json(_resp);
         }else{
-            _resp.code == 200;
+            _resp.code = 200;
             _resp.message = "Updated Successfully!!";
             res.json(_resp);
         }
@@ -315,7 +315,7 @@ router.put('/delete/:id',(req,res,next)=>{
             _resp.data = err;
             res.json(_resp);
         }else{
-            _resp.code == 200;
+            _resp.code = 200;
             _resp.message = "Successfully deleted!!";
             res.json(_resp);
         }

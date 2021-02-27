@@ -12,6 +12,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { ConsViewComponent } from './cons-view/cons-view.component';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { UserService } from 'src/app/services/user.service';
+import { BehaviorSubject } from 'rxjs';
 //import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
 
 @Component({
@@ -40,7 +41,7 @@ export class DeliveriesComponent implements OnInit {
     this.step--;
   }
 
-  deliveryList:any[];
+  deliveryList:BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   tempDeliveryList:any[];
   productList:any[];
   consolidatedList:any[];
@@ -74,21 +75,22 @@ export class DeliveriesComponent implements OnInit {
   public addEvent(){
     let q = '?order_date='+this.datePipe.transform(this.delDate,"yyyy-MM-dd")+"&route="+this.selRoute+"&search_key="+this.searKey;
     this.loadDelivers(q);
-    this.loadConsolidatedOrders(q);
+    //this.loadConsolidatedOrders(q);
   }
 
   private loadDelivers(query:string){    
     this.commonService.getMethod(environment.urls.getDeliveries+query).subscribe((data:any[])=>{
-      this.tempDeliveryList = this.deliveryList = data;
+      this.tempDeliveryList = data;
+      this.deliveryList.next(this.tempDeliveryList);
     });
   }
 
-  private loadConsolidatedOrders(query:string){
-    this.commonService.getMethod(environment.urls.getConsolidatedOrderList+query).subscribe((data:any[])=>{  
-      this.consolidatedList = data;    
-      //this.generateCosolidatedList(data);
-    });
-  }
+  // private loadConsolidatedOrders(query:string){
+  //   this.commonService.getMethod(environment.urls.getConsolidatedOrderList+query).subscribe((data:any[])=>{  
+  //     this.consolidatedList = data;    
+  //     //this.generateCosolidatedList(data);
+  //   });
+  // }
 
   // private generateCosolidatedList(consList:any[]){
   //   //console.log("Product list");
@@ -106,31 +108,34 @@ export class DeliveriesComponent implements OnInit {
   // }  
 
   public showConsolidated(){
-    let route = this.routes.filter(r=>r.key == this.selRoute)[0].value;
-    const dialogRef = this.dialog.open(ConsViewComponent, {
-      width: '90%',
-      // height:'100%',
-      data: {cons_data:this.consolidatedList,route:route,date:this.delDate},
-      //panelClass: 'custom-modalbox'
-    });
+    let q = '?order_date='+this.datePipe.transform(this.delDate,"yyyy-MM-dd")+"&route="+this.selRoute+"&search_key="+this.searKey;
+    this.commonService.getMethod(environment.urls.getConsolidatedOrderList+q).subscribe((data:any[])=>{  
+      this.consolidatedList = data;
+      let route = this.routes.filter(r=>r.key == this.selRoute)[0].value;
+      const dialogRef = this.dialog.open(ConsViewComponent, {
+        width: '90%',
+        // height:'100%',
+        data: {cons_data:this.consolidatedList,route:route,date:this.delDate},
+        //panelClass: 'custom-modalbox'
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      //reload
-      this.addEvent();
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        //reload
+        //this.addEvent();
+      });
+    });    
   }
 
   clear(){
-    this.searKey = '';
+    //this.searKey = '';
     //this.addEvent();
-    this.applyFilter('');
+    //this.applyFilter('');
   }
 
   applyFilter(filterValue: string) {
-    let dataList = this.tempDeliveryList;
+    //let dataList = this.tempDeliveryList;
     //this.deliveryList = dataList.filter((list:any)=>{
-    this.deliveryList = dataList.filter(list => list._id.customer.customerName.toLowerCase().indexOf(filterValue.toLowerCase()) > -1);
-    //console.log(temp);
+    //this.deliveryList = new BehaviorSubject(dataList.filter(list => list._id.customer.customerName.toLowerCase().indexOf(filterValue.toLowerCase()) > -1));
   }
 
   enablePlaceOrder(){
@@ -141,8 +146,10 @@ export class DeliveriesComponent implements OnInit {
     }
   }
 
-  public editOrder(o:any){
-    // console.log(o);
+  public editOrder(index:number,o:any){
+    // console.log(this.tempDeliveryList[index]);
+    // this.tempDeliveryList[index].details[0].prod_quan = 10;
+    // this.deliveryList.next(this.tempDeliveryList);
     let isEdit = false;
     if(o._id.orders){
       isEdit = true;
@@ -156,7 +163,20 @@ export class DeliveriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       //reload
-      this.addEvent();
+      //console.log(result);
+      if(result){
+        //console.log('yes');
+        if(result.details){ // assign values if details avail
+          this.tempDeliveryList[index].details = result.details;
+          this.tempDeliveryList[index]._id.orders = result.orders;
+        }else{ // if empty assign with empty default values
+          delete this.tempDeliveryList[index]._id.orders;
+          this.tempDeliveryList[index].details[0] = {};
+        }        
+        //console.log(this.tempDeliveryList);
+        this.deliveryList.next(this.tempDeliveryList);
+      }
+      //this.addEvent();
     });
   }
 

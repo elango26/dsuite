@@ -6,7 +6,7 @@
 <h1 mat-dialog-title>Consolidate View  <span>Route: {{form_value.route}} | Date: {{form_value.date | date:'fullDate'}}</span></h1>
 <mat-form-field>
   <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Milk, SM">
+  <input matInput tabindex="-1" (keyup)="applyFilter($event)" placeholder="Ex. Milk, SM">
 </mat-form-field>
 
 <div class="" mat-dialog-content>

@@ -408,9 +408,13 @@ router.get('/list',(req,res,next)=>{
 });
     
 router.post('/create',(req,res,next)=>{
+  let _resp = {
+    code : 201,
+    message : "Error Occurred",
+    data: []
+  };
     orders.countDocuments(function(err, count) {
-        if(!err){
-    
+        if(!err){    
             if(req.body.createdBy) req.body.createdBy = {_id: ObjectId(req.body.createdBy)}
             if(!req.body._id) req.body['order_id'] = common.padding(count+1,7,'SO');
 
@@ -424,48 +428,75 @@ router.post('/create',(req,res,next)=>{
                 if(err){
                     res.json(err);
                 }else{
-                    if(!req.body.details || !req.body.details.length) res.json({msg:'Please enter orders'});
+                  let resultantObj = {};
+                    //if(!req.body.details || !req.body.details.length) res.json({msg:'Please enter orders'});
                     //let count = 0;                                   
                     //inserting new transactions
-                    let newTransObj = [];
+                  let newTransObj = [];
+                  if(req.body.details && req.body.details.length > 0){
                     for (let i = 0, len = req.body.details.length; i < len; i++) {
-                        req.body.details[i].parent_id = orders._id;
-                        req.body.details[i].type = "ORDER";
-                        newTransObj.push(req.body.details[i]);
-                        // let newtransaction = new transactionDetails(req.body.details[i]);
-                        // newtransaction.save((errs,transaction)=>{
-                        //     if(errs){
-                        //         res.json(errs); 
-                        //     }
-                        //     count++
-                        //     if(count === len) res.json({msg:'Orders added successfully'});
-                        // });
+                      req.body.details[i].parent_id = orders._id;
+                      req.body.details[i].type = "ORDER";
+                      newTransObj.push(req.body.details[i]);
+                      // let newtransaction = new transactionDetails(req.body.details[i]);
+                      // newtransaction.save((errs,transaction)=>{
+                      //     if(errs){
+                      //         res.json(errs); 
+                      //     }
+                      //     count++
+                      //     if(count === len) res.json({msg:'Orders added successfully'});
+                      // });
                     }
-
-                    //removing all trasaction details 
-                    if(req.body._id){
-                        const query = { parent_id : ObjectId(req.body._id) };
-                        transactionDetails.deleteMany(query).then(result => {
-                            console.log(`Deleted ${result.deletedCount} item(s).`);
-                            
-                            transactionDetails.insertMany(newTransObj).then(result => {
-                                res.json({msg:'Orders added successfully'});
-                            }).catch(err => {
-                                res.json(err);
-                            });
-                        })
-                        .catch(err => console.error(`Delete failed with error: ${err}`));
-                    } else {
-                        transactionDetails.insertMany(newTransObj).then(result => {
-                            res.json({msg:'Orders added successfully'});
-                        }).catch(err => {
-                            res.json(err);
-                        });
-                    }                    
+                  }
+                  //removing all trasaction details 
+                  if(req.body._id){
+                    const query = { parent_id : ObjectId(req.body._id) };
+                    transactionDetails.deleteMany(query).then(result => {
+                        console.log(`Deleted ${result.deletedCount} item(s).`);
+                        if(newTransObj.length > 0){
+                          transactionDetails.insertMany(newTransObj).then(result => {
+                            resultantObj = {
+                              'orders':orders,
+                              'details': result
+                            }
+                            _resp.code = 200;
+                            _resp.message = "Orders added successfully";
+                            _resp.data = resultantObj;
+                            res.json(_resp);
+                          }).catch(err => {
+                            _resp.message = "Failure";
+                            _resp.data = err;
+                            res.json(_resp);
+                          });
+                        } else {
+                          _resp.code = 200;
+                          _resp.message = "Orders deleted successfully!!";
+                          _resp.data = {};
+                          res.json(_resp);
+                        }
+                    }).catch(err => console.error(`Delete failed with error: ${err}`));
+                  } else {
+                    transactionDetails.insertMany(newTransObj).then(result => {
+                      resultantObj = {
+                        'orders':orders,
+                        'details': result
+                      }
+                      _resp.code = 200;
+                      _resp.message = "Orders added successfully";
+                      _resp.data = resultantObj;
+                      res.json(_resp);
+                    }).catch(err => {
+                      _resp.message = "Failure";
+                      _resp.data = err;
+                      res.json(_resp);
+                    });
+                  }                    
                 }
             });
         }else{
-            res.json({msg:'Error in count:: Order'});
+          _resp.message = "Failure";
+          _resp.data = err;
+          res.json(_resp);
         }
     });
 });

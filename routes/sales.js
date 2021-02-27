@@ -152,7 +152,7 @@ router.put('/delete/:id',(req,res,next)=>{
     sales.findByIdAndUpdate(req.params.id, {$set: {'is_delete':'YES'}},(err,sales)=>{
         if(!err){
             transactionDetails.updateMany({parent_id:ObjectId(req.params.id)},{$set:{'is_delete':'YES'}});                
-            _resp.code == 200;
+            _resp.code = 200;
             _resp.message = "Successfully deleted!!";
             res.json(_resp);               
         }else{

@@ -37,17 +37,17 @@ export function LoaderEnabled(): MethodDecorator {
     descriptor.value = function () {
 
       LoaderService.showLoader();
-      console.log('**InjectedCode-begin--LOADERON', propertyKey);
+      //console.log('**InjectedCode-begin--LOADERON', propertyKey);
 
       return original.apply(this, arguments)
         .pipe(
           map((res) => {
-            console.log('**InjectedCode-map--LOADEROFF', propertyKey);
+            //console.log('**InjectedCode-map--LOADEROFF', propertyKey);
             LoaderService.hideLoader();
             return res;
           }),
           catchError((err) => {
-            console.log('**InjectedCode-err--LOADEROFF', propertyKey);
+            //console.log('**InjectedCode-err--LOADEROFF', propertyKey);
             LoaderService.hideLoader();
             throw err;
           })

@@ -9,6 +9,7 @@ import { User } from 'src/app/interfaces/user';
 import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-view-payment',
@@ -18,7 +19,8 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 export class ViewPaymentComponent implements OnInit {
   enableSearch:boolean = false;
   displayedColumns = ['customer','type','amount','createdBy','actions'];
-  dataSource: MatTableDataSource<Payment>;
+  dataSource: any;
+  //dataSource: MatTableDataSource<Payment[]>;
   payments: Payment[];
   tempPayment: Payment[];
   dedicatedCustomer:boolean=false;
@@ -33,6 +35,7 @@ export class ViewPaymentComponent implements OnInit {
   usersList:any;
   form:FormGroup;
   controls:FormArray;
+  list$: BehaviorSubject<Payment[]>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
@@ -75,14 +78,20 @@ export class ViewPaymentComponent implements OnInit {
   }
 
   filterOpts(){
-    //console.log(this.selUser);
     this.tempPayment = this.payments.map( obj => ({...obj, isEdit:false}));
+    
     if(this.selUser != 'all'){
       this.tempPayment = this.tempPayment.filter(val => val.createdBy == this.selUser);
     } 
 
     if(this.selRoute !='all'){
       this.tempPayment = this.tempPayment.filter(val => val.customer[0].route == this.selRoute);
+    }
+
+    if(this.searKey != ''){
+      this.tempPayment = this.tempPayment.filter(pay => {
+        return pay.customer[0].customerName.toLowerCase().indexOf(this.searKey.toLowerCase()) > -1
+      });
     }
     
     this.loadTable(this.tempPayment);
@@ -107,21 +116,24 @@ export class ViewPaymentComponent implements OnInit {
       },{updateOn: "blur"});
     });
     this.controls = new FormArray(toGrp);
-    this.dataSource = new MatTableDataSource(payments);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;      
+    this.list$ = new BehaviorSubject(payments);
+    //this.dataSource = new MatTableDataSource(payments);
+    //this.dataSource.data = payments;
+    this.dataSource = this.list$;
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;      
     // this.dataSource.filterPredicate = (data, filter: string) => {
     //   return data.payment_type == filter;
     // };
-    this.dataSource.filterPredicate = (data, filter: string)  => {
-      const accumulator = (currentTerm, key) => {
-        return key === 'customer' ? currentTerm + data.customer[0].customerName : currentTerm + data[key];
-      };
-      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-      // Transform the filter by converting it to lowercase and removing whitespace.
-      const transformedFilter = filter.trim().toLowerCase();
-      return dataStr.indexOf(transformedFilter) !== -1;
-    };
+    // this.dataSource.filterPredicate = (data, filter: string)  => {
+    //   const accumulator = (currentTerm, key) => {
+    //     return key === 'customer' ? currentTerm + data.customer[0].customerName : currentTerm + data[key];
+    //   };
+    //   const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+    //   // Transform the filter by converting it to lowercase and removing whitespace.
+    //   const transformedFilter = filter.trim().toLowerCase();
+    //   return dataStr.indexOf(transformedFilter) !== -1;
+    // };
   }
 
   applyFilter(filterValue: string) {
@@ -135,7 +147,8 @@ export class ViewPaymentComponent implements OnInit {
 
   clear(){
     this.searKey = "";
-    this.dataSource.filter = this.searKey;
+    //this.dataSource.filter = this.searKey;
+    this.filterOpts();
   }
 
   editPayment(p:any){
@@ -167,16 +180,34 @@ export class ViewPaymentComponent implements OnInit {
   updateField(index:any,field:any) {
     const payment_id = this.getControl(index, '_id');
     const new_amount = this.getControl(index, field);
-    console.log(payment_id.value+'---'+new_amount.value);
-    if(new_amount.valid){
-      console.log(new_amount.value);
-      let data = {
-        'amount': new_amount.value
-      };
-      this.commonService.putMethod(environment.urls.updatePayment+'/'+payment_id.value,data).subscribe((data:GenericResp) =>{  
-        if(data.code == 200){
-          this.snackBar.open("Updated successfully!!", "Success", {
-            duration: 1000,
+    const old_value = this.tempPayment[index]['amount'];
+    //console.log(payment_id.value+'---'+new_amount.value+'--'+old_value);
+    if(new_amount.valid && old_value != new_amount.value){
+      //console.log(new_amount.value);
+      const dialogRef = this.dialog.open(ConfirmPopComponent, {
+        width: '250px',
+        data: {confirm:this.confirmBox,label:'Do you want to update the amount?'}
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result && result == 'YES'){
+          let data = {
+            'amount': new_amount.value
+          };
+          this.commonService.putMethod(environment.urls.updatePayment+'/'+payment_id.value,data).subscribe((data:GenericResp) =>{  
+            //console.log(data);
+            if(data.code == 200){
+              this.snackBar.open("Updated successfully!!", "Success", {
+                duration: 1000,
+              });
+              // this.controls.at(index).patchValue({
+              //   'amount': new_amount.value
+              // });
+              //console.log(new_amount.value);
+              this.tempPayment[index]['amount']=new_amount.value;
+              //console.log(this.tempPayment);
+              this.list$.next(this.tempPayment);
+            }
           });
         }
       });

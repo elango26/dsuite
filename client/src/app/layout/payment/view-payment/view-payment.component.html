@@ -7,7 +7,7 @@
       <section class="example-section" [ngClass]="{'toggle':enableSearch}" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
         <span class="no-margin"><mat-icon (click)="enableSearch = !enableSearch">search</mat-icon></span>
         <mat-form-field fxFlex class="">
-            <input matInput name="searKey" [(ngModel)]="searKey" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            <input matInput name="searKey" [(ngModel)]="searKey" (keyup)="filterOpts()" placeholder="Filter">
             <button mat-icon-button matSuffix (click)="clear()">
               <mat-icon>{{searKey?'clear':''}}</mat-icon>
               </button>
@@ -75,12 +75,13 @@
                     </ng-template>
                     <ng-template editMode>
                       <mat-form-field class="example-full-width">
-                        <input matInput [formControl]="getControl(i, 'amount')" />
+                        <input matInput type="number" [formControl]="getControl(i, 'amount')" />
                         <!-- <mat-error *ngIf="getControl(row, 'amount').hasError('required')">
                           Field is <strong>required</strong>
                         </mat-error> -->
                       </mat-form-field>
-                      <input [formControl]="getControl(i, 'amount')" />
+                      <p>{{row.amount}}</p>
+                      <!-- <input [formControl]="getControl(i, 'amount')" /> -->
                     </ng-template>
                   </editable>
                 </td>

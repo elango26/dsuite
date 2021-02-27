@@ -11,6 +11,7 @@ import { CATEGORY, SUBCATEGORY, BRANDS, DEFAULT_RATE_TYPE, V_CATEGORY } from '..
 import { TransactionDesc } from 'src/app/interfaces/transaction';
 import { Customer } from 'src/app/interfaces/customer';
 import { OrdersRoutingModule } from '../../orders/orders-routing.module';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 @Component({
   selector: 'app-prodtable',
@@ -36,6 +37,7 @@ export class ProdtableComponent implements OnInit {
   selectedCategory:string;
   availableDiscounts: any[];
   orderby:any[];
+  products: Product[];
   constructor(private datePipe: DatePipe, private commonService: CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<ProdtableComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
@@ -50,10 +52,11 @@ export class ProdtableComponent implements OnInit {
           break;
         case 'delivery':
           this.delDate = new Date(form_value.order_date);
-          this.isEdit = form_value.isEdit;
-          this.edit_details = form_value.edit_details;
-          this.order_details = form_value.order_details;
-          this.loadProduct();
+          // this.isEdit = form_value.isEdit;
+          // this.edit_details = form_value.edit_details;
+          // this.order_details = form_value.order_details;
+          // this.loadProduct();
+          this.loadExistingOrder(this.customer,this.delDate);
           break;
         default:
           this.delDate = new Date();
@@ -123,7 +126,8 @@ export class ProdtableComponent implements OnInit {
 
   loadProduct(){
     let fieldsCtrls = {};
-    this.commonService.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {      
+    this.commonService.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {  
+      this.products = data;    
       let tempArr = [];
       for(let val of data){
         if(tempArr[val.category] == undefined )
@@ -166,7 +170,7 @@ export class ProdtableComponent implements OnInit {
       // }
       // console.log(tempArr1);
       // this.strucProductList = tempArr1;
-      console.log(tempArr);
+      // console.log(tempArr);
       this.strucProductList = tempArr;
       this.orderby = V_CATEGORY;
     });
@@ -232,23 +236,37 @@ export class ProdtableComponent implements OnInit {
         }        
         
         //console.log(data);
-        this.commonService.postMethod(this.url,data).subscribe(resp =>{    
-          this.transaction_desc = [];
-          this.form.reset();  
-          this.snackBar.open("Saved successfully!!", "Success", {
-            duration: 500,
-          });
+        this.commonService.postMethod(this.url,data).subscribe((resp:GenericResp) =>{
+          if(resp.code == 200){
+            this.transaction_desc = [];
+            this.form.reset();  
+            if(resp.data.details){
+              resp.data.details.map(det => {
+                det['products'] = this.products.filter(p=>p._id == det.prod_id)[0];
+              })
+            }
+            this.dialogRef.close(resp.data);
+            this.snackBar.open("Saved successfully!!", "Success", {
+              duration: 500,
+            });
+          }else{
+            this.snackBar.open(resp.message, "Error", {
+              duration: 600,
+            });
+            this.dialogRef.close();
+          }          
         },error =>{
           this.snackBar.open(error, "Error", {
             duration: 600,
           });
+          this.dialogRef.close();
         });
       } else {
         this.snackBar.open("Please enter order", "Error", {
           duration: 1000,
         });
-      }
-      this.dialogRef.close();
+        //this.dialogRef.close();
+      }      
     } else {
       this.snackBar.open("Please check the input given!!", "Error", {
         duration: 1000,
