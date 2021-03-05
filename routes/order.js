@@ -320,6 +320,12 @@ router.post('/placeOrders',(req,res,next)=>{
                     res.json(_resp);
                   });                 
                 }
+              }).catch((err)=>{
+                // console.log(err.message);
+                _resp.code = 201;
+                _resp.data = err.message;
+                _resp.message = "Error occurred!!";
+                res.json(_resp);
               });
             }
           }, function(err){
