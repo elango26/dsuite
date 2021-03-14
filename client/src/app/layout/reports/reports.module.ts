@@ -17,9 +17,10 @@ import { AppMaterialModule } from '../../app-material/app-material.module';
 import { RecentPurchaseComponent } from './recent-purchase/recent-purchase.component';
 import { RecentdamagesComponent } from './recentdamages/recentdamages.component';
 import { EditTemplateComponent } from '../common/edit-template/edit-template.component';
+import { SalesViewComponent, RoundPipe } from './sales-view/sales-view.component';
 
 @NgModule({
-  declarations: [RecentsalesComponent, RecentPurchaseComponent, RecentdamagesComponent, EditTemplateComponent],
+  declarations: [RecentsalesComponent, RecentPurchaseComponent, RecentdamagesComponent, EditTemplateComponent, SalesViewComponent, RoundPipe],
   imports: [
     CommonModule,
     ReportsRoutingModule,

@@ -43,6 +43,7 @@ export class DeliveriesComponent implements OnInit {
 
   deliveryList:BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   tempDeliveryList:any[];
+  searDeliveryList:any[];
   productList:any[];
   consolidatedList:any[];
   enableSearch:boolean = false;
@@ -73,15 +74,17 @@ export class DeliveriesComponent implements OnInit {
   }
 
   public addEvent(){
-    let q = '?order_date='+this.datePipe.transform(this.delDate,"yyyy-MM-dd")+"&route="+this.selRoute+"&search_key="+this.searKey;
+    let q = '?order_date='+this.datePipe.transform(this.delDate,"yyyy-MM-dd")+"&route="+this.selRoute;
+    //let q = '?order_date='+this.datePipe.transform(this.delDate,"yyyy-MM-dd")+"&route="+this.selRoute+"&search_key="+this.searKey;
     this.loadDelivers(q);
     //this.loadConsolidatedOrders(q);
   }
 
   private loadDelivers(query:string){    
     this.commonService.getMethod(environment.urls.getDeliveries+query).subscribe((data:any[])=>{
-      this.tempDeliveryList = data;
-      this.deliveryList.next(this.tempDeliveryList);
+      this.searDeliveryList = data;
+      this.applyFilter();
+      //this.deliveryList.next(this.tempDeliveryList);
     });
   }
 
@@ -127,12 +130,17 @@ export class DeliveriesComponent implements OnInit {
   }
 
   clear(){
-    //this.searKey = '';
+    this.searKey = '';
     //this.addEvent();
-    //this.applyFilter('');
+    this.applyFilter();
   }
 
-  applyFilter(filterValue: string) {
+  applyFilter() {
+    this.tempDeliveryList = this.searDeliveryList;
+    if(this.searKey != ''){
+      this.tempDeliveryList = this.searDeliveryList.filter(val => val._id.customer.customerName.toLowerCase().indexOf(this.searKey.toLowerCase())>-1);
+    }
+    this.deliveryList.next(this.tempDeliveryList);
     //let dataList = this.tempDeliveryList;
     //this.deliveryList = dataList.filter((list:any)=>{
     //this.deliveryList = new BehaviorSubject(dataList.filter(list => list._id.customer.customerName.toLowerCase().indexOf(filterValue.toLowerCase()) > -1));

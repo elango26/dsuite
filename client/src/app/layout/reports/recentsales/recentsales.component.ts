@@ -16,7 +16,7 @@ import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-po
 })
 export class RecentsalesComponent implements OnInit {
 
-  displayedColumns = [ 'sno','date', 'customerName', 'amount','actions'];
+  displayedColumns = [ 'sno','date', 'customerName', 'paymentType','amount','actions'];
   dataSource: MatTableDataSource<any>;
   editView:boolean = false;
   editData: any;

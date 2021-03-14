@@ -228,6 +228,83 @@ router.delete('/delete/:id',(req,res,next)=>{
     });
 });
 
-
+router.get('/consolidatelist',(req,res,next)=>{
+    //console.log(req);
+    var consMatchArr = {
+      'is_active':'YES',
+      'is_delete':'NO',
+      //'is_delivered':'NO',
+      'local_date':req.query.sale_date,
+      //'customers.route': ObjectId(req.query.route)
+    };
+  
+    if(req.query.route && req.query.route != 'all'){
+      consMatchArr['customers.route']=ObjectId(req.query.route);
+    }
+  
+    sales.aggregate([
+      {"$lookup":{
+        from: 'customers',
+        localField: 'customer_id',
+        foreignField: '_id',
+        as: 'customers'
+      }},
+      {"$unwind":{
+        path: '$customers',
+        //includeArrayIndex: 'string',
+        preserveNullAndEmptyArrays: true
+      }},
+      {"$addFields":{
+        'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } }
+      }},
+      {"$match":consMatchArr},
+      {"$lookup":{
+        from: 'transactiondetails',
+        as: 'details',
+        let: { parent_id: '$_id' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ['$parent_id', '$$parent_id'] },
+                  { $eq: ['$is_active','YES']},
+                  { $eq: ['$is_delete','NO']}
+                ]
+              }
+            }
+          }
+        ]
+      }},
+      {"$unwind":{
+        path: '$details',
+        //includeArrayIndex: '<<string>>',
+        preserveNullAndEmptyArrays: true
+      }},
+      {"$group":{
+        _id: '$details.prod_id',
+        count: {
+          $sum : '$details.prod_quan'
+        }
+      }},
+      {"$lookup":{
+        from: 'products',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'products'
+      }},
+      {"$unwind":{
+        path: '$products',
+        //includeArrayIndex: '<<string>>',
+        preserveNullAndEmptyArrays: true
+      }}
+    ]).exec((err,list) => {
+      if(err){
+        res.json(err);
+    }else{
+        res.json(list);
+    }
+    });
+});
 
 module.exports = router;

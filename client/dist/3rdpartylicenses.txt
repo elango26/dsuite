@@ -509,19 +509,37 @@ THE SOFTWARE.
 >>>>>>> Initial commit
 
 
-@angular/material/autocomplete
+@angular/material/tabs
 
 @angular/material/paginator
 
 @angular/material/checkbox
-
-@angular/material/tabs
 
 @angular/material/expansion
 
 @angular/material/chips
 
 ngx-take-until-destroy
+MIT
+
+@angular/material/autocomplete
+
+@ngx-translate/core
+MIT
+
+@angular/core
+MIT
+
+@angular/common
+MIT
+
+@angular/animations
+MIT
+
+@angular/router
+MIT
+
+@angular/platform-browser
 MIT
 
 tslib
@@ -583,12 +601,6 @@ If the Work includes a "NOTICE" text file as part of its distribution, then any 
 END OF TERMS AND CONDITIONS
 
 
-@angular/core
-MIT
-
-@angular/common
-MIT
-
 hammerjs
 MIT
 The MIT License (MIT)
@@ -614,19 +626,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-@angular/platform-browser
-MIT
-
-@angular/router
-MIT
-
-@angular/animations
-MIT
-
 @ngx-translate/http-loader
-MIT
-
-@ngx-translate/core
 MIT
 
 core-js
@@ -652,9 +652,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-web-animations-js
-Apache-2.0
-
 zone.js
 MIT
 The MIT License
@@ -679,6 +676,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+
+web-animations-js
+Apache-2.0
 
 @angular/material/toolbar
 

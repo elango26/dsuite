@@ -29,6 +29,7 @@ export const environment = {
     getRecentSales:apiUrl+'/reports/sales',
     getRecentPurchase:apiUrl+'/reports/purchase',
     getReportProductList:apiUrl+'/reports/reportProductList',
+    getConsolidatedSaleList:apiUrl+'/sales/consolidatelist',
 
     //Leads
     getLeads:apiUrl+'/leads/list',

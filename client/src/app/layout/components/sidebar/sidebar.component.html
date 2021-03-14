@@ -22,19 +22,22 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/orders/deliveries']">
             <mat-icon class="sidenav-icon">local_shipping</mat-icon> {{ 'Deliveries' | translate }}
         </a> 
-        <div class="nested-menu" *ngIf="userDetail.role=='ADMIN'">
+        <div class="nested-menu">
             <a mat-list-item (click)="addExpandClass('reports')" >
                 <mat-icon class="sidenav-icon">bar_chart</mat-icon> {{ 'Reports' | translate }}
             </a>
             <ul class="nested submenu" [class.expand]="showMenu === 'reports'">
                 <li>
-                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentsales']"><span>{{ 'Recent Sales' | translate }}</span></a>
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/sales']"><span>{{ 'Sales' | translate }}</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentpurchase']"><span>{{ 'Recent Purchase' | translate }}</span></a>
+                    <a *ngIf="userDetail.role=='ADMIN'" href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentsales']"><span>{{ 'Recent Sales' | translate }}</span></a>
+                </li>
+                <li>
+                    <a *ngIf="userDetail.role=='ADMIN'"href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentpurchase']"><span>{{ 'Recent Purchase' | translate }}</span></a>
                 </li> 
                 <li>
-                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentdamages']"><span>{{ 'Recent Damages' | translate }}</span></a>
+                    <a *ngIf="userDetail.role=='ADMIN'" href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/reports/recentdamages']"><span>{{ 'Recent Damages' | translate }}</span></a>
                 </li>                
             </ul>
         </div>        

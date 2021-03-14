@@ -32,7 +32,8 @@ export class CustomersComponent implements OnInit {
 
   //@ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) set matPaginator(paginator: MatPaginator) {
-    this.dataSource.paginator = paginator;
+    if(paginator)
+      this.dataSource.paginator = paginator;
   }
   @ViewChild(MatSort) sort: MatSort;
 
