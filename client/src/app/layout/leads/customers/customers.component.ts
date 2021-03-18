@@ -29,11 +29,18 @@ export class CustomersComponent implements OnInit {
   routes:any;
   selRoute: string = "all";
   searKey:string = "";
-
-  //@ViewChild(MatPaginator) paginator: MatPaginator;
+  pageIndex:any = 0;
+  // tempIndex:any = 0;
+  
   @ViewChild(MatPaginator) set matPaginator(paginator: MatPaginator) {
-    if(paginator)
+    // console.log('paginator called');
+    if(paginator){
+      if(this.pageIndex != 0){
+        paginator.pageIndex = this.pageIndex;
+        this.pageIndex = 0;
+      }
       this.dataSource.paginator = paginator;
+    }
   }
   @ViewChild(MatSort) sort: MatSort;
 
@@ -42,9 +49,13 @@ export class CustomersComponent implements OnInit {
     //this.customerList = [];
   }
 
+  // ngAfterViewInit() {
+  //   console.log('after all');
+  // }
+
   ngOnInit() {
     this.loadLeads();
-    
+    //this.paginator.pageIndex = 1;
     // this.commonService.getMethod('http://localhost:3000/api/test/productList').subscribe((data:any)=>{
     //   console.log(data);
 
@@ -92,7 +103,7 @@ export class CustomersComponent implements OnInit {
   }
 
   openPaymentModal(customer:Leads){
-    console.log(customer);
+    //console.log(customer);
     const dialogRef = this.dialog.open(PaymentsComponent, {
       width: 'auto',
       height:'auto',
@@ -106,13 +117,19 @@ export class CustomersComponent implements OnInit {
   }
 
   viewCustomerPage(row){
+    //console.log(this.dataSource.paginator);
     this.showLeadsPage = false;
+    this.pageIndex = this.dataSource.paginator.pageIndex;
     this.rowData = row;
   }
 
   resetLeadsPage(e){
-    console.log(e);
+    //console.log('reset called'+e);
+    //this.paginator.pageIndex = e;
+    this.pageIndex = e;
     this.showLeadsPage = true;
+    //console.log(this.paginatorR);
+    //this.dataSource.paginator = this.paginator;
   }
 
   callPrintModal(){

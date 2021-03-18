@@ -13,6 +13,7 @@ export class CustomersViewComponent implements OnInit {
 
     @Output() backToLead = new EventEmitter<boolean>();
     @Input() data:any;
+    @Input() pageIndex:any;
     displayedColumns = ['date', 'amount'];
     transactions:MatTableDataSource<any>;
     leadName:string;
@@ -62,7 +63,7 @@ export class CustomersViewComponent implements OnInit {
     }
 
     backToLeadPage(){
-        this.backToLead.emit(true);
+        this.backToLead.emit(this.pageIndex);
     }
 
     backToTransaction(){
