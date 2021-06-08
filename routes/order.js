@@ -107,8 +107,21 @@ function calculateTransactionDetails(rate_type_arr,list){
         }          
       }
     }
+    // round off calculation
+    let round_off_val = 0,round_off_sym='+';
+    if(total_amount > 0){
+      let roundoff = total_amount % 1;
+      if(roundoff >= 0.5){       
+        round_off_val=(1-roundoff);
+        round_off_sym='+';
+      }else{
+        round_off_val=-roundoff;
+        round_off_sym='';   
+      }
+    }
     return {
-        totalAmount: total_amount,
+        roundOff: {val:round_off_val,sym:round_off_sym},
+        totalAmount: total_amount+round_off_val,
         newDetails: transObjArr,
         discountArr: discountArr,
         oldDetails: list.details
@@ -184,6 +197,7 @@ router.post('/placeOrders',(req,res,next)=>{
                 customer_id: list[key].customer_id,
                 sale_date: list[key].order_date,
                 total_amount: transDetails.totalAmount,
+                roundOff:transDetails.roundOff,
                 payment_type: 'CREDIT',
                 created_by: list[key].createdBy
               }

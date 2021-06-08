@@ -13,6 +13,7 @@ import { PrinterService } from 'src/app/services/printer.service';
 import { Router } from '@angular/router';
 import { DEFAULT_RATE_TYPE, PAYMENT_TYPE } from '../../../constants/contants';
 import { DatePipe } from '@angular/common';
+import { gross_amount } from 'src/app/interfaces/sales';
 
 @Component({
   selector: 'app-edit-template',
@@ -33,6 +34,8 @@ export class EditTemplateComponent implements OnInit {
   sale_type_arr: any[];
   default_payment_type:string;
   payment_types: any[];
+  roundoff_det: any = {val:0,sym:'+'};
+  gross_amt:gross_amount;
   @Input() data : any;
   @Output() closeEditPage = new EventEmitter<boolean>();
   @ViewChild("productName") prodField: ElementRef;
@@ -50,6 +53,7 @@ export class EditTemplateComponent implements OnInit {
     this.loadProduct();
     this.loadData();
     this.loadDiscounts();
+    this.getTotalCost(); // load init values
     this.payment_types = PAYMENT_TYPE.map(val => {
       return {
         key: val,
@@ -106,9 +110,28 @@ export class EditTemplateComponent implements OnInit {
     return prod ? prod.prod_name : undefined;
   }
 
-  getTotalCost():number {
+  getTotalCost():void {
     let discounts = this.getTotalDiscount();
-    return this.transaction_desc.filter((t)=> t.is_delete == 'NO').map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.filter((t)=> t.is_delete == 'NO').map(t => t.prod_tax).reduce((acc, value) => acc + value, 0) - discounts;
+    let actual_amt =  this.transaction_desc.filter((t)=> t.is_delete == 'NO').map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.filter((t)=> t.is_delete == 'NO').map(t => t.prod_tax).reduce((acc, value) => acc + value, 0) - discounts;
+    let roundoff = actual_amt % 1;
+    if(roundoff >= 0.5){
+      this.roundoff_det = {
+        val:(1-roundoff),
+        sym: '+'
+      }
+    }else{
+      this.roundoff_det = {
+        val:-roundoff,
+        sym: ''
+      }      
+    }
+    this.gross_amt = {
+      discount: discounts,
+      roundoff_sym: this.roundoff_det.sym,
+      roundoff_val: this.roundoff_det.val,
+      total: actual_amt + this.roundoff_det.val
+    }
+    //return actual_amt + this.roundoff_det.val;
   }
 
   loadReportPage(){
@@ -138,6 +161,7 @@ export class EditTemplateComponent implements OnInit {
     }    
     this.transaction_desc = this.transaction_desc.filter(trans => trans.is_delete == "NO");
     this.discount_desc = this.discount_desc.filter(d => d.is_delete == "NO");
+    this.getTotalCost();
     this.dataSource = new MatTableDataSource(this.transaction_desc); 
   }
 
@@ -184,7 +208,7 @@ export class EditTemplateComponent implements OnInit {
         is_delete: 'NO'
       }
       this.transaction_desc.push(trans_desc);
-
+      this.getTotalCost();
       this.form.reset();      
       this.dataSource = new MatTableDataSource(this.transaction_desc);      
       this._callFilter();
@@ -279,7 +303,8 @@ export class EditTemplateComponent implements OnInit {
     let data: Sales = {
       customer_id: this.data.customer_id,
       sale_date: this.data.sale_date,
-      total_amount: this.getTotalCost(),
+      total_amount: this.gross_amt.total, //this.getTotalCost(),
+      roundOff: this.roundoff_det,
       details: this.transaction_desc.concat(this.del_transaction_desc),
       payment_type: this.default_payment_type,
       discounts: this.discount_desc

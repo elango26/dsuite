@@ -6,6 +6,7 @@ export interface Product {
     category: string,
     sub_category: string,
     vendor_id: string,
+    leads_view:string,
     is_active?: string;
     is_delete?: string;
     createdAt?: string;

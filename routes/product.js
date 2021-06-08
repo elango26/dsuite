@@ -105,14 +105,26 @@ router.post('/create',(req,res,next)=>{
 });
 
 router.put('/update/:id',(req,res,next)=>{
-
-    product.findByIdAndUpdate(req.params.id, {$set: req.body},(err,product)=>{
+    //console.log(req);
+    let newProduct = new product(req.body);    
+    if(req.body._id)
+        newProduct.isNew = false;
+    
+    newProduct.save((err,product)=>{
         if(err){
             res.json(err);
         }else{
-            res.json({msg:'product updated successfully'});
+            res.json({msg:'product added successfully',data:product});
         }
     });
+
+    // product.findByIdAndUpdate(req.params.id, {$set: req.body},(err,product)=>{
+    //     if(err){
+    //         res.json(err);
+    //     }else{
+    //         res.json({msg:'product updated successfully'});
+    //     }
+    // });
 });
 
 router.delete('/delete/:id',(req,res,next)=>{

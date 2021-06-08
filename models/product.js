@@ -43,6 +43,12 @@ const productSchema = mongoose.Schema({
         type: Schema.ObjectId,
         ref:'Vendor'
     },
+    leads_view : {
+        type : String,
+        require : true,
+        enum: ['YES','NO'],
+        default: 'NO'
+    },
     is_active : {
         type : String,
         require : true,

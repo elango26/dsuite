@@ -127,6 +127,7 @@ export class ProdtableComponent implements OnInit {
   loadProduct(){
     let fieldsCtrls = {};
     this.commonService.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {  
+      data = data.filter(d=>d.leads_view == 'YES');
       this.products = data;    
       let tempArr = [];
       for(let val of data){

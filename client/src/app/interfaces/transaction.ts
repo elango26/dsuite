@@ -22,6 +22,7 @@ export interface Sales {
     payment_type:string;
     details: ProdDescription[];
     discounts?: DiscountTransaction[];
+    roundOff:any;
 }
 
 export interface Purchase {

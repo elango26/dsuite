@@ -593,4 +593,218 @@ router.get('/lead_report',(req,res,next)=>{
   })
 });
 
+// router.get('/getSalesTransactions',(req,res,next)=>{
+//   var _resp = {
+//     code : 201,
+//     message : "Error!!",
+//     data: []
+//   };
+
+//   customer.aggregate([
+//     {"$match":{
+//       _id: ObjectId(req.query.customer_id)
+//       //_id: ObjectId('5fa2cbb1a9f5d65772c24de2')
+//       //_id: ObjectId('6072e46335442275006b77b8')
+//     }},
+//     {"$lookup":{
+//       from: 'sales',
+//       let: {customer_id: '$_id'},
+//       as: 'sales',
+//       pipeline: [
+//         {
+//           $addFields: {
+//             s_date: { "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } }
+//           }
+//         },
+//         {
+//           $match: {
+//             $expr: {
+//               $and: [
+//                 { $eq: ['$customer_id', '$$customer_id'] },
+//                 { $eq: ['$is_active','YES']},
+//                 { $eq: ['$is_delete','NO']},
+//                 { $eq: ['$payment_type','CREDIT']}
+//               ]
+//             }
+//           }
+//         }
+//       ]
+//     }},
+//     {"$unwind":{
+//       path: '$sales',
+//       includeArrayIndex: 'index',
+//       //preserveNullAndEmptyArrays: boolean
+//     }},
+//     {"$group":{
+//       _id: '$_id',
+//       customer : { $first: "$customerName" },
+//       total_payments: {
+//         $sum: {
+//             $cond:[
+//                 {"$and":[
+//                     {"$lt": [ "$sales.s_date", req.query.fromDate ]},
+//                     //{"$eq": [ "$trans.createdDate", req.query.q_date]}
+//                 ]},
+//             '$sales.total_amount',
+//             false
+//             ]
+//         } 
+//       },
+//       items: {
+//         //$push: {date: "$sales.s_date",index: "$index"}
+//         $push: {
+//           $cond:[
+//             {"$and":[
+//               {"$gte": [ "$sales.s_date", req.query.fromDate ]},
+//               //{"$eq": [ "$trans.createdDate", req.query.q_date]}
+//             ]},
+//             {date: "$sales.s_date",index: "$index"},
+//             false
+//             //"$$REMOVE"
+//           ]
+//         }
+//       },
+//       values: { 
+//         //$push: "$sales.total_amount" 
+//         $push: {
+//           $cond:[
+//             {"$and":[
+//               {"$gte": [ "$sales.s_date", req.query.fromDate ]},
+//               //{"$eq": [ "$trans.createdDate", req.query.q_date]}
+//             ]},
+//             //{amount: "$sales.total_amount",index: "$index"},
+//             "$sales.total_amount",
+//             false
+//             //"$$REMOVE"
+//           ]
+//         }
+//       }
+//     }},
+//     {"$addFields":{
+//       result: {
+//         $map: {
+//             input: "$items",
+//             as: "item",
+//             in: { 
+//               date: "$$item.date", 
+//               //credit: {$add: [1, "$$item.index"]},
+//               credit: { $sum: { $slice: [ "$values", "$$item.index",1 ] } } ,
+//               tot_amount: { $sum: { $slice: [ "$values", { $add: [1, "$$item.index"] } ] } }
+//             }
+//         }
+//       }
+//     }},
+//     {"$project":{
+//       items:0,
+//       values:0
+//     }}
+//   ]).exec((res,err)=>{
+//     if(!err){
+//       _resp.code = 200;
+//       _resp.data = res;
+//       res.json(_resp);
+//     }
+//   });
+// });
+
+// router.get('/getCustTransactions_old',(req,res,next)=>{
+//   var _resp = {
+//     code : 201,
+//     message : "Error!!",
+//     data: []
+//   };
+
+//   customer.aggregate([
+//     {"$match":{
+//       _id: ObjectId('5fa2cbb1a9f5d65772c24de2')
+//     }},
+//     {"$lookup":{
+//       from: 'sales',
+//       let: {customer_id: '$_id'},
+//       as: 'sales',
+//       pipeline: [
+//         {
+//           $addFields: {
+//             s_date: { "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } }
+//           }
+//         },
+//         {
+//           $match: {
+//             $expr: {
+//               $and: [
+//                 { $eq: ['$customer_id', '$$customer_id'] },
+//                 { $eq: ['$is_active','YES']},
+//                 { $eq: ['$is_delete','NO']},
+//                 { $eq: ['$payment_type','CREDIT']}
+//               ]
+//             }
+//           }
+//         }
+//       ]
+//     }},
+//     {"$lookup":{
+//       from: 'payments',
+//       as: 'payments',
+//       let: {customer_id: '$_id'},
+//       pipeline: [
+//         {
+//           $addFields: {
+//             s_date: { "$dateToString": { format: "%Y-%m-%d", date: "$createdAt", timezone: "+05:30" } }
+//           }
+//         },
+//         {
+//           $match: {
+//             $expr: {
+//               $and: [
+//                 { $eq: ['$customer_id', '$$customer_id'] },
+//                 { $eq: ['$is_active','YES']},
+//                 { $eq: ['$is_delete','NO']}
+//               ]
+//             }
+//           }
+//         }
+//       ]
+//     }},
+//     {"$project":{ 
+//       customerName:1,
+//       trans: { 
+//         $concatArrays: ["$sales", "$payments"]
+//       } 
+//     }},
+//     {"$unwind":{
+//       path: '$trans',
+//       includeArrayIndex: 'index',
+//       //preserveNullAndEmptyArrays: true
+//     }},
+//     {"$group":{
+//       _id: '$_id',
+//       customer : { $first: "$customerName" },
+//       items: {
+//         $push: {date: "$trans.s_date",index: "$index"}
+//       },
+//       credit: { $push: "$trans.total_amount" },
+//       debit:  { $push: "$trans.amount" }
+//     }},
+//     {"$addFields":{
+//       result: {
+//         $map: {
+//             input: "$items",
+//             as: "item",
+//             in: { 
+//               date: "$$item.date", 
+//               //credit: {$add: [1, "$$item.index"]},
+//               debit:{ $sum: { $slice: [ "$debit", "$$item.index",1 ] } } ,
+//               credit: { $sum: { $slice: [ "$credit", "$$item.index",1 ] } } ,
+//               tot_cr: { $sum: { $slice: [ "$credit", { $add: [1, "$$item.index"] } ] } },
+//               tot_dr: { $sum: { $slice: [ "$debit", { $add: [1, "$$item.index"] } ] } }
+//             }
+//         }
+//       }
+//     }}
+//   ]).exec((res,err)=>{
+//     if(!err){
+//       res.json(res);
+//     }
+//   });
+// });
 module.exports = router;

@@ -68,6 +68,10 @@
               <td colspan="5" align="center"><span class="span-text">Discounts</span></td>
               <td class="right-align"><span class="span-text">-{{getDiscountAmt(inv.sales.discount)|currency:'INR'}}</span></td>
           </tr>
+          <tr *ngIf="inv.sales.roundOff">
+            <td colspan="5" align="center"><span class="span-text">Round Off</span></td>
+            <td class="right-align"><span class="span-text">{{inv.sales.roundOff.sym}}{{inv.sales.roundOff.val|currency:'INR'}}</span></td>
+          </tr>
         </tbody>
         <tfoot>
             <tr>

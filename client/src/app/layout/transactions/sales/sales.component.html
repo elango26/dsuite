@@ -53,14 +53,14 @@
       <ng-container matColumnDef="productName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
           <td mat-cell *matCellDef="let row"> {{row.prod_name}} </td>
-          <td mat-footer-cell *matFooterCellDef> <span class="span-text">Discounts</span> </td>
+          <td mat-footer-cell *matFooterCellDef> <span class="span-text"> Round off </span> <br> <span class="span-text">Discounts</span> </td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="quantity">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity</th>
             <td mat-cell *matCellDef="let row"> {{row.prod_quan | number : '1.2-2'}} </td>
-            <td mat-footer-cell *matFooterCellDef> <span class="span-text">-{{getTotalDiscount()|currency:'INR'}}</span></td>
+            <td mat-footer-cell *matFooterCellDef> <span class="span-text"> {{gross_amt.roundoff_sym}} {{gross_amt.roundoff_val|currency:'INR'}} </span> <br> <span class="span-text">- {{gross_amt.discount|currency:'INR'}}</span></td>
         </ng-container>
 
         <!-- Name Column -->
@@ -81,7 +81,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
         <td mat-cell *matCellDef="let row"> {{row.sub_amount|currency:'INR'}}</td>
         <!-- <td mat-footer-cell *matFooterCellDef> Discounts </td> -->
-        <td mat-footer-cell *matFooterCellDef> {{getTotalCost()|currency:'INR'}} </td>
+        <td mat-footer-cell *matFooterCellDef class="align-right"> {{gross_amt.total|currency:'INR'}} </td>
       </ng-container>   
       
       <ng-container matColumnDef="action">

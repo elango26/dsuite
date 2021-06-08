@@ -153,6 +153,17 @@ export class ProductsComponent implements OnInit {
         "validation": {
           "required": true
         }
+      },{
+        "order": 10,
+        "type": "select",
+        "inputType": "dropdown",
+        "name": "leads_view",
+        "value":"",
+        "placeholder": "Leads view",
+        "validation": {
+          "required": true
+        },
+        "options": [{key:'YES',value:'YES'},{key:'NO',value:'NO'}]
       }
     ];
   }
@@ -180,17 +191,19 @@ export class ProductsComponent implements OnInit {
     this.product_form_details.map(inp => {
       inp.value = row[inp.name];
     });
-    this.product_form_details.push({
-      "order": 0,
-      "type": "input",
-      "inputType": "hidden",
-      "name": "_id",
-      "value": row._id,
-      "placeholder": "_ID",
-        "validation": {
-          "required": true
-        }
-    });
+    this.product_form_details.push(
+      {
+        "order": 0,
+        "type": "input",
+        "inputType": "hidden",
+        "name": "_id",
+        "value": row._id,
+        "placeholder": "_ID",
+          "validation": {
+            "required": true
+          }
+      }
+    );
     const dialogRef = this.dialog.open(CommonModalComponent, {
       width: '600px',
       data: {formData:this.product_form_details.sort((a, b) => a.order - b.order),formTitle:"Products",url:environment.urls.updateProduct,method:'PUT'}

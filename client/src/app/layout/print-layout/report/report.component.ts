@@ -29,7 +29,7 @@ export class ReportComponent implements OnInit {
 
   ngOnInit() { 
     console.log(this.data);
-    this.products = this.commonService.getProductList();    
+    this.products = this.commonService.getProductList().filter(p=>p.leads_view=='YES');    
     this.reportDate = this.data.date;
     this.route = this.data.data.route;
     this.loadHeaders();

@@ -18,6 +18,7 @@ import { SalesReportPopComponent } from '../../common/sales-report-pop/sales-rep
 import { keyValuesToMap } from '@angular/flex-layout/extended/typings/style/style-transforms';
 import { DatePipe } from '@angular/common';
 import { NG_DIRECTIVE_DEF } from '@angular/core/src/render3/fields';
+import { gross_amount } from 'src/app/interfaces/sales';
 
 export function objValidator(obj:any): ValidatorFn {
   return (control: AbstractControl): { [key: string]: boolean } | null => {
@@ -52,6 +53,8 @@ export class SalesComponent implements OnInit {
   availableDiscounts: any[];
   payment_types: any[]=[];
   default_payment_type:string;
+  roundoff_det: any = {val:0,sym:'+'};
+  gross_amt:gross_amount;
 
   @ViewChild("productName") prodField: ElementRef;
   @ViewChild("quantity") quanField: ElementRef;
@@ -74,6 +77,7 @@ export class SalesComponent implements OnInit {
     this.loadProduct();
     this.loadCustomers();
     this.loadDiscounts(); 
+    this.getTotalCost(); // load init values
     this.default_payment_type = DEFAULT_PAYMENT_TYPE;
     PAYMENT_TYPE.forEach(t=>{
       if(t != 'CREDIT'){
@@ -213,6 +217,7 @@ export class SalesComponent implements OnInit {
         sub_amount : (rate.price * this.form.value.quantity)
       }
       this.transaction_desc.push(trans_desc);
+      this.getTotalCost();
 
       this.form.reset();      
       this.dataSource = new MatTableDataSource(this.transaction_desc);      
@@ -311,23 +316,48 @@ export class SalesComponent implements OnInit {
       this.discount_desc = this.discount_desc.filter(dis=>dis.discount_id != row.discount_id);
       this.transaction_desc = this.transaction_desc.filter(t=>t.discount_id != row.discount_id);
     }
+    this.getTotalCost();
     this.dataSource = new MatTableDataSource(this.transaction_desc);
   }
 
   getTotalDiscount():number{
+    console.log('discount called');
     return this.discount_desc.map(d => d.total_amount).reduce((acc, value) => acc + value, 0);
   }
 
-  getTotalCost():number {
+
+
+  getTotalCost():void {
+    console.log('total called');
     let discounts = this.getTotalDiscount();
-    return (this.transaction_desc.map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.map(t => t.prod_tax).reduce((acc, value) => acc + value, 0)) - discounts;
+    let actual_amt = (this.transaction_desc.map(t => t.sub_amount).reduce((acc, value) => acc + value, 0)+this.transaction_desc.map(t => t.prod_tax).reduce((acc, value) => acc + value, 0)) - discounts;
+    let roundoff = actual_amt % 1;
+    if(roundoff >= 0.5){
+      this.roundoff_det = {
+        val:(1-roundoff),
+        sym: '+'
+      }
+    }else{
+      this.roundoff_det = {
+        val:-roundoff,
+        sym: ''
+      }      
+    }
+    this.gross_amt = {
+      discount: discounts,
+      roundoff_sym: this.roundoff_det.sym,
+      roundoff_val: this.roundoff_det.val,
+      total: actual_amt + this.roundoff_det.val
+    }
+    //return actual_amt + this.roundoff_det.val;
   }
 
   _saveOrder(type:string):void{      
     let data: Sales = {
       customer_id: this.custForm.value.customerName._id,
       sale_date: this.custForm.value.curDate,
-      total_amount: this.getTotalCost(),
+      total_amount: this.gross_amt.total, //this.getTotalCost(),
+      roundOff: this.roundoff_det,
       payment_type: this.default_payment_type,
       details: this.transaction_desc,
       discounts: this.discount_desc
@@ -372,6 +402,7 @@ export class SalesComponent implements OnInit {
       });
     });   
     this.form.reset();
+    this.getTotalCost();
     //reset form
     this.custForm = new FormGroup({
       'customerName': new FormControl('',Validators.required),

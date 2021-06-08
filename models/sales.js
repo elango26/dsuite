@@ -23,6 +23,10 @@ const salesSchema = mongoose.Schema({
         type : String,
         require : true
     },
+    roundOff : {
+        type: JSON,
+        require: true
+    },
     is_active : {
         type : String,
         require : true,
