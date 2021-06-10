@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <label>Customer: <b><i>{{customer.customerName}}</i></b></label>
+  <label><span>Customer:</span> <b><i> {{customer.customerName}}</i></b></label>
   <mat-form-field class="example-margin date-col">
     <input matInput [min]="delDate" [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="delDate" disabled>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

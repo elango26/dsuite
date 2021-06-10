@@ -77,3 +77,15 @@
         line-height: 2.9em;;
     }
 }
+
+.modal-header {
+    label {
+        display: inline-block;
+        width: 40%;
+    }
+
+    span {
+        font-size: 0.7em;
+        text-transform: uppercase;
+    }
+}
