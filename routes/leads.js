@@ -407,7 +407,8 @@ router.get('/lead_report',(req,res,next)=>{
               $and: [
                 { $eq: ['$customer_id', '$$cust_id'] },
                 { $eq: ['$is_active','YES']},
-                { $eq: ['$is_delete','NO']}
+                { $eq: ['$is_delete','NO']},
+                { $eq: ['$payment_type','CREDIT']}
               ]
             }
           }
