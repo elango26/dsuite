@@ -1,7 +1,7 @@
 import { Directive, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidatorFn } 
     from '@angular/forms';
-import { MatTableDataSource,MatSnackBar, MatDialog } from '@angular/material';
+import { MatTableDataSource,MatSnackBar, MatDialog, MatAutocompleteTrigger } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { Product } from 'src/app/interfaces/product';
@@ -59,6 +59,8 @@ export class SalesComponent implements OnInit {
   @ViewChild("productName") prodField: ElementRef;
   @ViewChild("quantity") quanField: ElementRef;
   @ViewChild("customerName") custField: ElementRef;
+  @ViewChild('typehead', {read:MatAutocompleteTrigger})  autoTrigger: MatAutocompleteTrigger;
+
   constructor(private commonService: CommonService, public snackBar: MatSnackBar,private router: Router, private route: ActivatedRoute, 
     public printerService: PrinterService, public dialog: MatDialog, private datePipe: DatePipe) { 
     this.form = new FormGroup({
@@ -94,6 +96,24 @@ export class SalesComponent implements OnInit {
     // }
     this.onChanges();
     this.custField.nativeElement.focus();
+  }
+
+  ngAfterViewInit()
+  {
+    this.autoTrigger.panelClosingActions.subscribe( x =>{
+      if (this.autoTrigger.activeOption)
+      {
+        //console.log(this.autoTrigger.activeOption.value);
+        this.form.patchValue({'productName':this.autoTrigger.activeOption.value});
+        this.form.patchValue({'quantity':1});
+        this.quanField.nativeElement.focus();
+        this.quanField.nativeElement.select();
+      }
+    } )
+  }
+
+  clear(key:string,name:string){
+    this[key].patchValue({[name]:''});
   }
 
   onChanges() : void{
@@ -156,7 +176,12 @@ export class SalesComponent implements OnInit {
 
   private _filter(value: string): Product[] {
     let filterValue = (typeof value == 'string')?value.toLowerCase():"";
-    return this.productList.filter(option => option.prod_name.toLowerCase().includes(filterValue));
+    return this.productList.filter(option => option.prod_name.toLowerCase().includes(filterValue) || option.barcode == filterValue);
+    //bar code scanning
+    //let filterValue;
+    // if(typeof value == 'string'){
+    //   filterValue = value.toLowerCase();
+    // }
   }
 
   private _custFilter(value: string): Customer[] {
@@ -166,7 +191,7 @@ export class SalesComponent implements OnInit {
 
   onSubmit(){
     console.log('submit');
-    if(this.form.status == "VALID"){
+    if(this.form.status == "VALID" && this.form.value.quantity > 0){
       let product = this.form.value.productName;
       if(this.sale_type_arr){
         let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id)[0]; //find customer rate type
@@ -226,6 +251,9 @@ export class SalesComponent implements OnInit {
       this.prodField.nativeElement.focus();
     } else if(typeof this.form.value.productName == 'object'){
       this.quanField.nativeElement.focus();
+      this.form.patchValue({'quantity':1});
+      this.quanField.nativeElement.select();
+      //while changing abv code check method ngAfterViewInit
     }
   }
 
@@ -249,7 +277,7 @@ export class SalesComponent implements OnInit {
                 (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.cus_form.value.customerName._id))
               })
     }
-    console.log(matching);
+    //console.log(matching);
     if(matching.length > 0){
       //_did = matching[0]._id;
       switch(matching[0].discount_type){

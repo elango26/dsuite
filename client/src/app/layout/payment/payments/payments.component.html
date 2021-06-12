@@ -12,7 +12,7 @@
                 <!-- <button mat-icon-button matSuffix (click)="clear()">
                     <mat-icon>clear</mat-icon>
                     </button> -->
-                <mat-autocomplete #customer="matAutocomplete" [displayWith]="displayCustomerFn">
+                <mat-autocomplete autoActiveFirstOption #customer="matAutocomplete" [displayWith]="displayCustomerFn">
                   <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
                     {{customer.customerName}}
                   </mat-option>

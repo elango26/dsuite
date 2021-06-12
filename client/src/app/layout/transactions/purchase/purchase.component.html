@@ -7,7 +7,7 @@
           <section class="example-section">
               <mat-form-field class="example-margin customer-col">
                   <input type="text" autofocus placeholder="Vendor Name" aria-label="Number" matInput formControlName="vendorName" [matAutocomplete]="vendor">
-                  <mat-autocomplete #vendor="matAutocomplete" [displayWith]="displayVendorFn">
+                  <mat-autocomplete autoActiveFirstOption #vendor="matAutocomplete" [displayWith]="displayVendorFn">
                     <mat-option *ngFor="let vendor of vendorFilteredOptions | async"  [value]="vendor">
                       {{vendor.vendorName}}
                     </mat-option>
@@ -27,7 +27,7 @@
       <section class="example-section">
           <mat-form-field class="example-margin prod-col">
               <input type="text" #productName placeholder="Product Name / Code" aria-label="Number" matInput formControlName="productName" [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                 <mat-option *ngFor="let option of filteredOptions | async"  [value]="option">
                   {{option.prod_name}}
                 </mat-option>

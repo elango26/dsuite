@@ -164,6 +164,17 @@ export class ProductsComponent implements OnInit {
           "required": true
         },
         "options": [{key:'YES',value:'YES'},{key:'NO',value:'NO'}]
+      },
+      {
+        "order": 11,
+        "type": "input",
+        "inputType": "number",
+        "name": "barcode",
+        "value": "",
+        "placeholder": "Bar Code",
+        "validation": {
+          "required": false
+        }
       }
     ];
   }

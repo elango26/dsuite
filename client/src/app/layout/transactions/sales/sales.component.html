@@ -7,7 +7,10 @@
           <section class="example-section">
               <mat-form-field class="example-margin customer-col">
                   <input type="text" #customerName placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
-                  <mat-autocomplete (optionSelected)='loadCustomerRateType($event.option.value)' #customer="matAutocomplete" [displayWith]="displayCustomerFn">
+                  <button mat-icon-button matSuffix (click)="clear('custForm','customerName')">
+                    <mat-icon>{{custForm.value.customerName?'clear':''}}</mat-icon>
+                  </button>
+                  <mat-autocomplete autoActiveFirstOption (optionSelected)='loadCustomerRateType($event.option.value)' #customer="matAutocomplete" [displayWith]="displayCustomerFn">
                     <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
                       {{customer.customerName}}-{{customer.routes.areaName}}-{{customer.customer_id|slice:-3}}
                     </mat-option>
@@ -26,8 +29,11 @@
     <form [formGroup]="form" (keyup.enter)="onSubmit()">
       <section class="example-section">
           <mat-form-field class="example-margin prod-col">
-              <input type="text" #productName placeholder="Product Name / Code" aria-label="Number" matInput formControlName="productName" [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <input type="text" #typehead #productName placeholder="Product Name / Code" aria-label="Number" matInput formControlName="productName" [matAutocomplete]="auto">
+              <!-- <button mat-icon-button matSuffix (click)="clear('form','productName')"> -->
+                <mat-icon mat-icon-button matSuffix (click)="clear('form','productName')">{{form.value.productName?'clear':''}}</mat-icon>
+              <!-- </button> -->
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                 <mat-option *ngFor="let option of filteredOptions | async"  [value]="option">
                   {{option.prod_name}}
                 </mat-option>

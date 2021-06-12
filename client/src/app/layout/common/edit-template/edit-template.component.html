@@ -8,7 +8,7 @@
       <section class="example-section">
           <mat-form-field class="example-margin prod-col">
               <input type="text" #productName placeholder="Product Name / Code" aria-label="Number" matInput formControlName="productName" [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                 <mat-option *ngFor="let option of filteredOptions | async"  [value]="option">
                   {{option.prod_name}}
                 </mat-option>

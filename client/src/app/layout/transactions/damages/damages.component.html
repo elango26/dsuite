@@ -7,7 +7,7 @@
           <section class="example-section">
               <mat-form-field class="example-margin customer-col">
                   <input type="text" autofocus placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
-                  <mat-autocomplete (optionSelected)='loadCustomerRateType($event.option.value)' #customer="matAutocomplete" [displayWith]="displayCustomerFn">
+                  <mat-autocomplete autoActiveFirstOption (optionSelected)='loadCustomerRateType($event.option.value)' #customer="matAutocomplete" [displayWith]="displayCustomerFn">
                     <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
                       {{customer.customerName}}-{{customer.routes.areaName}}-{{customer.customer_id|slice:-3}}
                     </mat-option>
@@ -27,7 +27,7 @@
       <section class="example-section">
           <mat-form-field class="example-margin prod-col">
               <input type="text" #productName placeholder="Product Name / Code" aria-label="Number" matInput formControlName="productName" [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                 <mat-option *ngFor="let option of filteredOptions | async"  [value]="option">
                   {{option.prod_name}}
                 </mat-option>
