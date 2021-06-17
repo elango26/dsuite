@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { Customer } from 'src/app/interfaces/customer';
-import { Route } from 'src/app/interfaces/route';
+import { RouteObj } from 'src/app/interfaces/route';
 import { CommonService } from 'src/app/services/common.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
@@ -37,7 +37,7 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit() {
     this.loadCustomer();
-    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:Route[]) => {
+    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:RouteObj[]) => {
       for(let val of data){
         let keyarr = {key:val._id,value:val.areaName};
         this.routes.push(keyarr);

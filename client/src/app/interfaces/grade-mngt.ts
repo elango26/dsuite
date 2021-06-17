@@ -1,4 +1,4 @@
-import { Route } from "./route";
+import { RouteObj } from "./route";
 
 export interface GradeMngt {
     emptyName:string;
@@ -43,7 +43,7 @@ export interface CustomerGradeTrans {
     city: string;
     pincode: number;
     route: string;
-    routes: Route;
+    routes: RouteObj;
     index: number;
     is_active?: string;
     is_delete?: string;

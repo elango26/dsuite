@@ -1,5 +1,5 @@
 import { User } from "./user";
-import { Route } from "@angular/compiler/src/core";
+import { RouteObj } from "./route";
 
 export interface Customer {
     customer_id:string;
@@ -13,7 +13,7 @@ export interface Customer {
     city: string;
     pincode: number;
     route: string;
-    routes: Route;
+    routes: RouteObj;
     index: number;
     is_active?: string;
     is_delete?: string;

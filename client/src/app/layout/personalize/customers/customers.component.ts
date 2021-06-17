@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Customer } from 'src/app/interfaces/customer';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { MatSnackBar } from '@angular/material';
-import { Route } from 'src/app/interfaces/route';
+import { RouteObj } from 'src/app/interfaces/route';
 
 /**
  * @title Drag&Drop custom placeholer
@@ -27,7 +27,7 @@ export class CustomersComponent {
 
   ngOnInit() {
     this.loadCustomer(environment.urls.customerSort);
-    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:Route[]) => {
+    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:RouteObj[]) => {
       for(let val of data){
         //this.selectedRoute = val._id;
         let keyarr = {key:val._id,value:val.areaName};

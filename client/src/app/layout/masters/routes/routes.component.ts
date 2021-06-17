@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { Route } from 'src/app/interfaces/route';
+import { RouteObj } from 'src/app/interfaces/route';
 
 import { CommonModalComponent } from './../common-modal/common-modal.component';
 
@@ -15,9 +15,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class RoutesComponent implements OnInit {
   displayedColumns = ['areaName'];
-  dataSource: MatTableDataSource<Route>;
+  dataSource: MatTableDataSource<RouteObj>;
 
-  routes: Route[];
+  routes: RouteObj[];
   route_form_details : any;
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -30,7 +30,7 @@ export class RoutesComponent implements OnInit {
   }
 
   loadRoute(){
-    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:Route[]) => {
+    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:RouteObj[]) => {
       this.routes = data;
       this.dataSource = new MatTableDataSource(this.routes);
       this.dataSource.paginator = this.paginator;

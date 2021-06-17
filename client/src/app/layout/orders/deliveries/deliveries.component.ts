@@ -6,7 +6,7 @@ import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { Product } from 'src/app/interfaces/product';
 import { BootstrapService } from 'src/app/services/bootstrap.service';
-import { Route } from 'src/app/interfaces/route';
+//import { RouteObj } from 'src/app/interfaces/route';
 import { PrinterService } from 'src/app/services/printer.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { ConsViewComponent } from './cons-view/cons-view.component';

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { Route } from 'src/app/interfaces/route';
+//import { RouteObj } from 'src/app/interfaces/route';
 import { Vendor } from 'src/app/interfaces/vendor';
 import { Product } from 'src/app/interfaces/product';
 import { CATEGORY, SUBCATEGORY, BRANDS, MEASURE_UNIT } from 'src/app/constants/contants';

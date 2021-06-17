@@ -1,4 +1,4 @@
-export interface Route {
+export interface RouteObj {
     _id?:string;
     route_id:string;
     areaName:string;

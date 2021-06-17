@@ -9,7 +9,7 @@ import { Customer } from 'src/app/interfaces/customer';
 import { CustomModalComponent } from './../custom-modal/custom-modal.component';
 import { environment } from 'src/environments/environment';
 import { RateMappingComponent } from '../rate-mapping/rate-mapping.component';
-import { Route } from 'src/app/interfaces/route';
+import { RouteObj } from 'src/app/interfaces/route';
 
 @Component({
   selector: 'app-customer-mapping',
@@ -35,7 +35,7 @@ export class CustomerMappingComponent implements OnInit {
   ngOnInit() {
     this.load();
     this.form_details = [];
-    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:Route[]) => {
+    this.commonService.getMethod(environment.urls.getRoute).subscribe((data:RouteObj[]) => {
       for(let val of data){
         let keyarr = {key:val._id,value:val.areaName};
         this.routes.push(keyarr);

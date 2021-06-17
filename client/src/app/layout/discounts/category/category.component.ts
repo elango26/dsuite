@@ -70,7 +70,7 @@ export class CategoryComponent implements OnInit {
   prepareJson():any{
     this.products = this.commonService.getProductList();
     this.customers = this.commonService.getCustomerList();
-    let custom_arr = this.customers.map(obj=>{return{key:obj.customer_id,value:obj.customerName +'-'+obj.routes[0].areaName}});
+    let custom_arr = this.customers.map(obj=>{return{key:obj.customer_id,value:obj.customerName +'-'+obj.routes.areaName}});
     custom_arr.unshift({key:'all',value:'All'});
     let form_details = [{
       "order": 1,
@@ -164,7 +164,7 @@ export class CategoryComponent implements OnInit {
       "name": "from_date",
       "value":"",
       "placeholder": "From Date",
-      "min_date": new Date(),
+      //"min_date": new Date(),
       "validation": {
         "required": true
       }
