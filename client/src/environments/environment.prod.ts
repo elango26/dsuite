@@ -20,6 +20,7 @@ export const environment = {
     getOutstanding:apiUrl+'/payment/getOutstanding', // pass customer id
     deletePayment:apiUrl+'/payment/delete',
     updatePayment:apiUrl+'/payment/update',
+    getDetailPayment:apiUrl+'/payment/detailed-payment',
     //deliveries
     getDeliveries:apiUrl+'/deliveries/list',
     getConsolidatedOrderList:apiUrl+'/deliveries/consolidatelist',    
@@ -98,6 +99,7 @@ export const environment = {
     discountList:apiUrl+'/discount/list',
     discountCreate:apiUrl+'/discount/create',
     discountUpdate:apiUrl+'/discount/update',
+    discountTrans:apiUrl+'/discount/getDiscountTrans',
 
 
     //printer

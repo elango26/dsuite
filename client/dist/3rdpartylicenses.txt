@@ -256,10 +256,10 @@ THE SOFTWARE.
 
 @angular/material/button
 
-@angular/material/form-field
-
 @angular/forms
 MIT
+
+@angular/material/form-field
 
 @angular/material/snack-bar
 
