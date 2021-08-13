@@ -16,7 +16,10 @@
                 </li>
                 <li *ngIf="userDetail.role=='ADMIN'">
                     <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/payment/view']"><span>{{ 'View' | translate }}</span></a>
-                </li>                
+                </li>
+                <li *ngIf="userDetail.role=='ADMIN'">
+                    <a href="javascript:void(0)" [routerLinkActive]="'active'" [routerLink]="['/layout/payment/detail-view']"><span>{{ 'Detailed View' | translate }}</span></a>
+                </li>
             </ul>
         </div>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/layout/orders/deliveries']">

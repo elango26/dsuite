@@ -45,6 +45,7 @@ export class CommonService {
     let cur_date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     let q = "?isactive=YES&cur_date="+cur_date;
     this.getMethod(environment.urls.discountList+q).subscribe((data:any[]) => {
+      console.log(data);
       this.discounts = data;
     });
   }

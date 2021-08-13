@@ -163,7 +163,7 @@ router.get('/getTransactions',(req,res,next)=>{
           sale_date : {$gte: limit}
         }},
         {"$addFields":{
-            localDate: {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
+            localDate: {$dateToString:{format:'%Y-%m-%d',date:'$sale_date',timezone:'+05:30'}}
         }},
         {"$group":{
             _id: {date:'$localDate',customer:'$customer_id'},

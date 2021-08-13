@@ -16,6 +16,85 @@ var genResp = function() {
     };
 }
 
+router.get('/detailed-payment',(req,res,next)=>{
+    //console.log(req.query)
+    let _resp = genResp();
+    customer.aggregate([
+        {"$lookup":{
+            from: 'routes',
+            localField: 'route',
+            foreignField: '_id',
+            as: 'routes'
+          }},
+        {"$unwind":{
+            path: '$routes',
+            //includeArrayIndex: 'string',
+            preserveNullAndEmptyArrays: true
+          }},
+        {"$lookup":{
+            from: 'payments',
+            let: {'cust_id':'$_id'},
+            as: 'payments',
+            pipeline:[{
+                $addFields:{
+                    'createdDate' : {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
+                }},
+                {$match:{
+                    $expr:{
+                        $and:[
+                            {$eq:['$customer_id','$$cust_id']},
+                            {$eq:['$is_active','YES']},
+                            {$eq:['$is_delete','NO']},
+                            {$lte:['$createdDate',req.query.tdate]},
+                            {$gte:['$createdDate',req.query.fdate]}
+                        ]
+                    }
+                }
+            }]
+          }},
+        {"$unwind":{
+            path: '$payments',
+            //includeArrayIndex: 'string',
+            preserveNullAndEmptyArrays: true
+          }},
+        {"$lookup":{
+            from: 'users',
+            localField: 'payments.createdBy',
+            foreignField: '_id',
+            as: 'payments.users'
+          }},
+        {"$unwind":{
+            path: '$payments.users',
+            //includeArrayIndex: 'string',
+            preserveNullAndEmptyArrays: true
+          }},
+        {"$group":{
+            _id: {'route':'$routes._id','pdate':'$payments.createdDate'},
+            'routename':{
+              $addToSet: '$routes.areaName'
+            },
+            amount: {
+              $sum: '$payments.amount'
+            },
+            paymentss:{
+              $push: '$payments'
+            }
+          }}
+    ]).exec((err,list) => {
+        if(err){
+            _resp.code = 201;
+            _resp.message = "Error!";
+            _resp.data = err;
+            res.json(_resp);
+        } else {
+            _resp.code = 200;
+            _resp.message = "Success!!";
+            _resp.data = list;
+            res.json(_resp);
+        }
+    });
+});
+
 router.get('/getOutstanding',(req,res,next)=>{
     let _resp = genResp();
     customer.aggregate([

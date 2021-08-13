@@ -1,13 +1,13 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-header class="align-flex-center">
       <mat-card-title class="invoice-title">Sales Invoice</mat-card-title>
   </mat-card-header>
-  <mat-card-content>      
+  <mat-card-content class="content-font-size">      
         <form [formGroup]="custForm">
           <section class="example-section">
               <mat-form-field class="example-margin customer-col">
                   <input type="text" #customerName placeholder="Customer Name" aria-label="Number" matInput formControlName="customerName" [matAutocomplete]="customer">
-                  <button mat-icon-button matSuffix (click)="clear('custForm','customerName')">
+                  <button tabindex="-1" mat-icon-button matSuffix (click)="clear('custForm','customerName')">
                     <mat-icon>{{custForm.value.customerName?'clear':''}}</mat-icon>
                   </button>
                   <mat-autocomplete autoActiveFirstOption (optionSelected)='loadCustomerRateType($event.option.value)' #customer="matAutocomplete" [displayWith]="displayCustomerFn">
@@ -17,8 +17,8 @@
                   </mat-autocomplete>
               </mat-form-field>
               <mat-form-field class="example-margin date-col">
-                <input matInput disabled [max]="custFormMaxDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="curDate">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <input tabindex="-1" matInput disabled [max]="custFormMaxDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="curDate">
+                <mat-datepicker-toggle tabindex="-1" matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker disabled="false" #picker></mat-datepicker>
               </mat-form-field>
           </section>

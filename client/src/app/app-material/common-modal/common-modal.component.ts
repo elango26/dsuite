@@ -29,7 +29,7 @@ export class CommonModalComponent {
         if(f.validation.required)
           validation.push(Validators.required);
 
-        if(f.type == 'date')
+        if(f.type == 'date' && f.validation.required)
           validation.push(DateValidator.dateVaidator);
         //if (f.inputType != 'dropdown') {
         fieldsCtrls[f.name] = new FormControl(f.value || '', validation);

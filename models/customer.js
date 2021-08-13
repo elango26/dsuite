@@ -47,6 +47,11 @@ const customerSchema = mongoose.Schema({
         type: Schema.ObjectId,
         ref:'Routes'
     },
+    common_ratetype : {
+        type : String,
+        require : true,
+        default: 'Retail'
+    },
     is_active : {
         type : String,
         require : true,

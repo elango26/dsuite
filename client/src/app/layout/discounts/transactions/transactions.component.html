@@ -1,3 +1,73 @@
-<p>
-  transactions works!
-</p>
+<div >
+  <mat-card >
+    <mat-card-header>
+        <mat-card-title>Discount Transactions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <section class="example-section" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+        <!-- <span class="no-margin"><mat-icon (click)="enableSearch = !enableSearch">search</mat-icon></span> -->
+        <mat-form-field fxFlex class="">
+            <input matInput name="searKey" [(ngModel)]="searKey" (keyup)="filterOpts()" placeholder="Filter">
+            <button mat-icon-button matSuffix (click)="clear()">
+              <mat-icon>{{searKey?'clear':''}}</mat-icon>
+              </button>
+        </mat-form-field>
+        <!-- <mat-form-field fxFlex class="">
+            <mat-select name="selRoute" [(ngModel)]="selRoute" (selectionChange)="filterOpts()" placeholder="Route" >
+                <mat-option *ngFor="let r of routes" [value]="r.key">{{r.value}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex class="">
+          <mat-select name="selRoute" [(ngModel)]="selUser" (selectionChange)="filterOpts()" placeholder="User" >
+              <mat-option *ngFor="let r of usersList" [value]="r.key">{{r.value}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field fxFlex class="">
+          <input matInput disabled [max]="maxToDate" [matDatepicker]="picker" placeholder="Choose a date" name="saleDate" (dateInput)="loadDiscTrans()" [(ngModel)]="saleDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #picker></mat-datepicker>
+        </mat-form-field>
+      </section> 
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef> Sno </th>
+          <td mat-cell *matCellDef="let element; let i=index"> {{i+1}} </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <!-- <ng-container matColumnDef="customer">
+          <th mat-header-cell *matHeaderCellDef> Customer </th>
+          <td mat-cell *matCellDef="let element"> {{element.route}} </td>
+        </ng-container> -->
+        <ng-container matColumnDef="saleId">
+          <th mat-header-cell *matHeaderCellDef> Sale Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.sale_id}} </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="discountname">
+          <th mat-header-cell *matHeaderCellDef> Discount Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.discounts.discount_name}}</td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="prodName">
+          <th mat-header-cell *matHeaderCellDef> Product </th>
+          <td mat-cell *matCellDef="let element"> {{element.products?element.products.prod_name:''}} </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="count">
+          <th mat-header-cell *matHeaderCellDef> Count </th>
+          <td mat-cell *matCellDef="let element"> {{element.prod_count}} </td>
+          <td mat-footer-cell *matFooterCellDef> Total </td>
+        </ng-container>
+        <ng-container matColumnDef="totalAmount">
+          <th mat-header-cell *matHeaderCellDef> Amount </th>
+          <td mat-cell *matCellDef="let element"> {{element.total_amount}}</td>
+          <td mat-footer-cell *matFooterCellDef > {{totalAmount|currency:'INR'}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

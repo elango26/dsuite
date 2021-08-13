@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { RoutesComponent } from '../routes/routes.component';
 import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
 import { GenericResp } from 'src/app/interfaces/genericResp';
+import { RATE_TYPE } from 'src/app/constants/contants';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class CustomersComponent implements OnInit {
   routes=[];
   confirmBox: string = "YES";
   selRoute: string = "all";
+  available_ratetype=[];
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -44,6 +46,9 @@ export class CustomersComponent implements OnInit {
       }
       //this.routes.push({key:'all',value:'All'});
     });
+
+    this.available_ratetype = RATE_TYPE.rate_type.map(function(arr) { return {'key':arr,'value':arr}});
+    //console.log(this.available_ratetype);
   }
 
   loadCustomer(){
@@ -247,6 +252,17 @@ export class CustomersComponent implements OnInit {
         "required": true
       },
       "options": this.routes
+    }, {
+      "order": 11,
+      "type": "select",
+      "inputType": "dropdown",
+      "name": "common_ratetype",
+      "value":"",
+      "placeholder": "Rate Type",
+      "validation": {
+        "required": true
+      },
+      "options": this.available_ratetype
     }];
   }
 }

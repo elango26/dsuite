@@ -1,4 +1,4 @@
-import { Directive, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Directive, Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidatorFn } 
     from '@angular/forms';
 import { MatTableDataSource,MatSnackBar, MatDialog, MatAutocompleteTrigger } from '@angular/material';
@@ -55,6 +55,7 @@ export class SalesComponent implements OnInit {
   default_payment_type:string;
   roundoff_det: any = {val:0,sym:'+'};
   gross_amt:gross_amount;
+  common_rate_type:string = '';
 
   @ViewChild("productName") prodField: ElementRef;
   @ViewChild("quantity") quanField: ElementRef;
@@ -96,6 +97,24 @@ export class SalesComponent implements OnInit {
     // }
     this.onChanges();
     this.custField.nativeElement.focus();
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    let validKeycodes = [120,121];
+    if(validKeycodes.indexOf(event.keyCode) > -1 ){
+      event.preventDefault();
+      if(this.transaction_desc.length > 0){
+        let type = event.keyCode == 120 ? 'print':'save';        
+        this._saveOrder(type);      
+      }
+    }
+
+    //reset
+    if(event.keyCode == 27){
+      event.preventDefault();
+      this.resetForm();
+    }
   }
 
   ngAfterViewInit()
@@ -149,6 +168,8 @@ export class SalesComponent implements OnInit {
 
   //load customer rate type for all products
   public loadCustomerRateType(cust:Customer){
+    //assign global rate_type here
+    this.common_rate_type = cust.common_ratetype?cust.common_ratetype:DEFAULT_RATE_TYPE;
     this.commonService.getMethod(environment.urls.getRateTypeByCustomer+'/'+cust._id).subscribe((data:any) => {
       this.sale_type_arr = data;
     });
@@ -190,13 +211,16 @@ export class SalesComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log('submit');
+    // console.log('submit');
     if(this.form.status == "VALID" && this.form.value.quantity > 0){
       let product = this.form.value.productName;
       if(this.sale_type_arr){
         let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id)[0]; //find customer rate type
-        if(customer_rate_type)
+        if(customer_rate_type){
           this.sale_type = customer_rate_type.type;
+        } else { //take common rate_type for this customer
+          this.sale_type = this.common_rate_type;
+        }          
       }
       let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
 
@@ -262,7 +286,7 @@ export class SalesComponent implements OnInit {
     let sys_date = this.datePipe.transform(new Date(),'yyyy-MM-dd');
     let sale_date = this.datePipe.transform(this.custForm.value.curDate,'yyyy-MM-dd');
   
-    if( sys_date != sale_date || !this.availableDiscounts){         
+    if( sys_date != sale_date || !this.availableDiscounts){   //if sale date is diff or discount not loaded     
       this.commonService.getSearchDiscountList(sale_date).subscribe((data:any[]) => {
         this.availableDiscounts = data;
       }); 
@@ -271,11 +295,7 @@ export class SalesComponent implements OnInit {
     discounts = this.availableDiscounts;
     let matching = [];
     if(discounts && discounts.length > 0){
-      matching = discounts.filter(dis => {
-        return dis.buy_prod_id == vars.product._id && 
-                vars.form.value.quantity >= dis.buy_count &&
-                (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.cus_form.value.customerName._id))
-              })
+      matching = discounts.filter(function(dis) { return dis.buy_prod_id == vars.product._id && vars.form.value.quantity > dis.buy_count && (dis.applicable_customer.indexOf('all') > -1 || dis.applicable_customer.indexOf(vars.cus_form.value.customerName.customer_id) > -1)});
     }
     //console.log(matching);
     if(matching.length > 0){
@@ -292,19 +312,19 @@ export class SalesComponent implements OnInit {
 
             let free_product = matching[0].free_product[0];
             let rate = this.commonService.getProductPrice(free_product._id,vars.sale_type);
-            let trans_desc:TransactionDesc = {
-              rate_type: 'Discount',
-              prod_name:free_product.prod_name,
-              prod_id : free_product._id,
-              product_id: free_product.product_id,
-              prod_quan : free_count,
-              prod_rate_per_unit : rate.price,
-              discount_id: matching[0]._id,
-              tax: 0,
-              prod_tax : 0,
-              sub_amount : rate.price * free_count
-            }
-            this.transaction_desc.push(trans_desc);
+            // let trans_desc:TransactionDesc = {
+            //   rate_type: 'Discount',
+            //   prod_name:free_product.prod_name,
+            //   prod_id : free_product._id,
+            //   product_id: free_product.product_id,
+            //   prod_quan : free_count,
+            //   prod_rate_per_unit : rate.price,
+            //   discount_id: matching[0]._id,
+            //   tax: 0,
+            //   prod_tax : 0,
+            //   sub_amount : rate.price * free_count
+            // }
+            // this.transaction_desc.push(trans_desc);
 
             let exist = this.discount_desc.filter(d=> d.discount_id == _did);
             if(this.discount_desc.length >0 && exist.length >0){
@@ -323,7 +343,7 @@ export class SalesComponent implements OnInit {
               }
               this.discount_desc.push(discount_desc);
             }
-            console.log(this.discount_desc);
+            //console.log(this.discount_desc);
           }
           break;
         case 'Price':
@@ -461,6 +481,12 @@ export class SalesComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.transaction_desc);
     this.default_payment_type = DEFAULT_PAYMENT_TYPE;
     this.custForm.setValue({'customerName':'','curDate':new Date()});
+    this.gross_amt = {
+      discount: 0,
+      roundoff_sym: '',
+      roundoff_val: 0,
+      total: 0
+    };
     // this.custForm = new FormGroup({
     //   'customerName': new FormControl('',[Validators.required,objValidator('customerName')]),
     //   'curDate': new FormControl(new Date(),Validators.required)

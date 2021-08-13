@@ -38,6 +38,7 @@ export class ProdtableComponent implements OnInit {
   availableDiscounts: any[];
   orderby:any[];
   products: Product[];
+  common_rate_type:string = '';
   constructor(private datePipe: DatePipe, private commonService: CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<ProdtableComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
@@ -85,6 +86,7 @@ export class ProdtableComponent implements OnInit {
 
   public loadCustomerRateType(cust:Customer){
     console.log("customer rate type loaded");
+    this.common_rate_type = cust.common_ratetype?cust.common_ratetype:DEFAULT_RATE_TYPE;
     this.commonService.getMethod(environment.urls.getRateTypeByCustomer+'/'+cust._id).subscribe((data:any) => {
       this.sale_type_arr = data;
     });
@@ -191,14 +193,15 @@ export class ProdtableComponent implements OnInit {
         if(quan > 0){          
           let product = this.productList[key];  
           let rate_type = this.sale_type_arr.filter(key => key.prod_id == product.id);
-          let rate_type_iden = (rate_type.length > 0)?rate_type[0].type:DEFAULT_RATE_TYPE;
-          let vars = {
-            quantity: quan,
-            customer_id: this.customer._id,
-            product_id: product.id,
-            sale_type: rate_type_iden
-          };
-          let _did = this._calculateDiscounts(vars);
+          let rate_type_iden = (rate_type.length > 0)?rate_type[0].type:this.common_rate_type;
+          // let vars = {
+          //   quantity: quan,
+          //   customer_id: this.customer._id,
+          //   product_id: product.id,
+          //   sale_type: rate_type_iden
+          // };
+          //let _did = '';
+          //let _did = this._calculateDiscounts(vars);
           let trans_desc:TransactionDesc = {
             rate_type: rate_type_iden,
             prod_name: product.name,
@@ -209,7 +212,7 @@ export class ProdtableComponent implements OnInit {
             tax: 0,
             prod_tax : 0,
             sub_amount : 0,
-            discount_id : _did,
+            //discount_id : _did,
             is_delivered: false
           }
           this.transaction_desc.push(trans_desc);
@@ -301,20 +304,20 @@ export class ProdtableComponent implements OnInit {
 
             let free_product = matching[0].free_product[0];
             let rate = this.commonService.getProductPrice(free_product._id,vars.sale_type);
-            let trans_desc:TransactionDesc = {
-              rate_type: 'Discount',
-              prod_name: free_product.prod_name,
-              prod_id : free_product._id,
-              product_id: free_product.product_id,
-              prod_quan : free_count,
-              prod_rate_per_unit : 0,
-              tax: 0,
-              prod_tax : 0,
-              sub_amount : 0,
-              discount_id : _did,
-              is_delivered: false
-            }
-            this.transaction_desc.push(trans_desc);
+            // let trans_desc:TransactionDesc = {
+            //   rate_type: 'Discount',
+            //   prod_name: free_product.prod_name,
+            //   prod_id : free_product._id,
+            //   product_id: free_product.product_id,
+            //   prod_quan : free_count,
+            //   prod_rate_per_unit : 0,
+            //   tax: 0,
+            //   prod_tax : 0,
+            //   sub_amount : 0,
+            //   discount_id : _did,
+            //   is_delivered: false
+            // }
+            // this.transaction_desc.push(trans_desc);
           }
           break;
         case 'Price':

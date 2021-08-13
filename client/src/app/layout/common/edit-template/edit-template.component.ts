@@ -29,6 +29,7 @@ export class EditTemplateComponent implements OnInit {
   transaction_desc: TransactionDesc[]=[];
   del_transaction_desc: TransactionDesc[]=[];
   discount_desc: DiscountTransaction[]=[];
+  del_discount_desc: DiscountTransaction[]=[];
   availableDiscounts: any[];
   sale_type: string = DEFAULT_RATE_TYPE;
   sale_type_arr: any[];
@@ -36,6 +37,7 @@ export class EditTemplateComponent implements OnInit {
   payment_types: any[];
   roundoff_det: any = {val:0,sym:'+'};
   gross_amt:gross_amount;
+  common_rate_type:string = '';
   @Input() data : any;
   @Output() closeEditPage = new EventEmitter<boolean>();
   @ViewChild("productName") prodField: ElementRef;
@@ -66,7 +68,12 @@ export class EditTemplateComponent implements OnInit {
   }
 
   //load customer rate type for all products
-  public loadCustomerRateType(cust_id){
+  public loadCustomerRateType(cust_id){    
+    if(this.data.customerDetail.length > 0 && this.data.customerDetail[0].common_ratetype){
+      this.common_rate_type = this.data.customerDetail[0].common_ratetype;
+    }else{
+      this.common_rate_type = DEFAULT_RATE_TYPE;
+    }
     this.commonService.getMethod(environment.urls.getRateTypeByCustomer+'/'+cust_id).subscribe((data:any) => {
       this.sale_type_arr = data;
     });
@@ -147,14 +154,17 @@ export class EditTemplateComponent implements OnInit {
   
     if(row.discount_id && row.discount_id != ''){
       this.discount_desc.map(d=> {
-        if(d.discount_id == row.discount_id)
-          d.is_delete = "YES"
+        if(d.discount_id == row.discount_id){          
+          d.is_delete = "YES";
+          if(d._id) //remore from db so adding here
+            this.del_discount_desc.push(d);
+        }          
       });
 
-      this.transaction_desc.map(t => {
-        if(t.discount_id == row.discount_id)
-          t.is_delete = "YES"
-      })
+      // this.transaction_desc.map(t => {
+      //   if(t.discount_id == row.discount_id)
+      //     t.is_delete = "YES"
+      // }) commented :: not required since additional entry of products is removed 6+1
     }
     if(row._id){
       this.del_transaction_desc.push(row);
@@ -171,8 +181,11 @@ export class EditTemplateComponent implements OnInit {
       let product = this.form.value.productName;
       if(this.sale_type_arr){
         let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id); //find customer rate type
-        if(customer_rate_type.length > 0 )
+        if(customer_rate_type.length > 0 ){
           this.sale_type = customer_rate_type[0].type;
+        }else{
+          this.sale_type = this.common_rate_type;
+        }          
       }
       let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
       if(rate == null){
@@ -183,31 +196,48 @@ export class EditTemplateComponent implements OnInit {
       }
 
       //replace and sum the existing product added
-      this.form.value.quantity += this.transaction_desc.filter(d=>d.prod_id == product._id).reduce((acc,val)=> {return acc+val.prod_quan},0);
-      this.transaction_desc = this.transaction_desc.filter(d=> d.prod_id != product._id);
+      
+      //this.form.value.quantity += this.transaction_desc.filter(d=>d.prod_id == product._id).reduce((acc,val)=> {return acc+val.prod_quan},0);
+      //this.transaction_desc = this.transaction_desc.filter(d=> d.prod_id != product._id);
       // discounts calculation
       let var_for_dis = {
         form: this.form,
-        customer_id: this.data.customer_id,
+        customer_id: this.data.customerDetail[0].customer_id,
         product: product,
         sale_type: this.sale_type
       }
       let discount_id = this._calculateDiscounts(var_for_dis);
       // discounts end
-      let trans_desc:TransactionDesc = {
-        rate_type: this.sale_type,
-        prod_name:product.prod_name,
-        prod_id : product._id,
-        product_id: product.product_id,
-        prod_quan : this.form.value.quantity,
-        prod_rate_per_unit : rate.price,
-        tax: rate.tax?rate.tax:0,
-        discount_id:discount_id,
-        prod_tax : rate.tax ? (rate.price * this.form.value.quantity)*rate.tax/100:0,
-        sub_amount : (rate.price * this.form.value.quantity),
-        is_delete: 'NO'
+
+      if(this.transaction_desc.filter(d=>d.prod_id == product._id).length > 0){
+        this.transaction_desc = this.transaction_desc.map(t => {
+          if(t.prod_id == product._id){
+            let quan = t.prod_quan+this.form.value.quantity;
+            let custom = {prod_quan: quan,prod_tax : rate.tax ? (rate.price * quan)*rate.tax/100:0,sub_amount : (rate.price * quan)};
+            return Object.assign({}, t, custom);
+          } else {
+            return Object.assign({}, t);
+          }
+        });
+        // if(trans_desc.length > 0)
+        //   this.transaction_desc.push(trans_desc[0]);
+      }else{
+        let trans_desc:TransactionDesc = {
+          rate_type: this.sale_type,
+          prod_name:product.prod_name,
+          prod_id : product._id,
+          product_id: product.product_id,
+          prod_quan : this.form.value.quantity,
+          prod_rate_per_unit : rate.price,
+          tax: rate.tax?rate.tax:0,
+          discount_id:discount_id,
+          prod_tax : rate.tax ? (rate.price * this.form.value.quantity)*rate.tax/100:0,
+          sub_amount : (rate.price * this.form.value.quantity),
+          is_delete: 'NO'
+        }
+        this.transaction_desc.push(trans_desc);
       }
-      this.transaction_desc.push(trans_desc);
+      
       this.getTotalCost();
       this.form.reset();      
       this.dataSource = new MatTableDataSource(this.transaction_desc);      
@@ -229,12 +259,14 @@ export class EditTemplateComponent implements OnInit {
 
     discounts = this.availableDiscounts;
     let matching = [];
+    const quan = vars.form.value.quantity + this.transaction_desc.filter(d=>d.prod_id == vars.product._id).reduce((acc,val)=> {return acc+val.prod_quan},0);
     if(discounts && discounts.length > 0){
-      matching = discounts.filter(dis => {
-        return dis.buy_prod_id == vars.product._id && 
-                vars.form.value.quantity >= dis.buy_count &&
-                (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.customer_id))
-              })
+      // matching = discounts.filter(dis => {
+      //   return dis.buy_prod_id == vars.product._id && 
+      //           vars.form.value.quantity >= dis.buy_count &&
+      //           (dis.applicable_customer.indexOf('all') >= 0 || dis.applicable_customer.indexOf(vars.customer_id))
+      //         });     
+      matching = discounts.filter(function(dis) { return dis.buy_prod_id == vars.product._id && quan > dis.buy_count && (dis.applicable_customer.indexOf('all') > -1 || dis.applicable_customer.indexOf(vars.cus_form.value.customerName.customer_id) > -1)});
     }
     //console.log(matching);
     if(matching.length > 0){
@@ -243,7 +275,7 @@ export class EditTemplateComponent implements OnInit {
         case 'P2P':
           let free_count = 0;
           let quotient = 0;
-          let purchased_quan = vars.form.value.quantity;
+          let purchased_quan = quan;
           if(matching[0].applicable_type.indexOf(vars.sale_type) >=0){
             _did = matching[0]._id;
             quotient = Math.floor(purchased_quan / matching[0].buy_count);
@@ -251,19 +283,19 @@ export class EditTemplateComponent implements OnInit {
 
             let free_product = matching[0].free_product[0];
             let rate = this.commonService.getProductPrice(free_product._id,vars.sale_type);
-            let trans_desc:TransactionDesc = {
-              rate_type: 'Discount',
-              prod_name:free_product.prod_name,
-              prod_id : free_product._id,
-              product_id: free_product.product_id,
-              prod_quan : free_count,
-              prod_rate_per_unit : rate.price,
-              discount_id: _did,
-              tax: 0,
-              prod_tax : 0,
-              sub_amount : rate.price * free_count
-            }
-            this.transaction_desc.push(trans_desc);
+            // let trans_desc:TransactionDesc = {
+            //   rate_type: 'Discount',
+            //   prod_name:free_product.prod_name,
+            //   prod_id : free_product._id,
+            //   product_id: free_product.product_id,
+            //   prod_quan : free_count,
+            //   prod_rate_per_unit : rate.price,
+            //   discount_id: _did,
+            //   tax: 0,
+            //   prod_tax : 0,
+            //   sub_amount : rate.price * free_count
+            // }
+            // this.transaction_desc.push(trans_desc);
 
             let exist = this.discount_desc.filter(d=> d.discount_id == _did);
             if(this.discount_desc.length >0 && exist.length >0){
@@ -307,7 +339,7 @@ export class EditTemplateComponent implements OnInit {
       roundOff: this.roundoff_det,
       details: this.transaction_desc.concat(this.del_transaction_desc),
       payment_type: this.default_payment_type,
-      discounts: this.discount_desc
+      discounts: this.discount_desc.concat(this.del_discount_desc),
     }
     this.transaction_desc = [];
     this.dataSource = new MatTableDataSource(this.transaction_desc);

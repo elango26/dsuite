@@ -6,6 +6,17 @@ const transactionDetails = require('../models/transactiondetails');
 const discountTransaction = require('../models/discounttransaction');
 const sales = require('../models/sales');
 const common = require('./common');
+const discount = require('../models/discount');
+
+router.get('/test',(req,res,next) => {
+  //common.getDiscounts(req,res);
+  //res.json(common.getDiscounts(req));
+  let reqt;
+  let resp = common.getRateList(reqt);
+  resp.then(async function(result) {
+    res.json(result);
+  });
+});
 
 router.get('/searchOrders',(req,res,next)=>{
     orders.aggregate([
@@ -57,11 +68,10 @@ router.get('/searchOrders',(req,res,next)=>{
     });    
 });
 
-function calculateTransactionDetails(rate_type_arr,list){
+function calculateTransactionDetails(rate_type_arr,discount_available,list){
+  //console.log(list);
     var total_amount = 0, transObjArr = [],discountArr = [];
-    if(list.details && list.details.length > 0){
-      //check for discount and add it in discount transaction
-      
+    if(list.details && list.details.length > 0){      
       for(let tkey in list.details){
         let details = rate_type_arr.filter(rate_type => rate_type.product.product_id == list.details[tkey].product_id);
         
@@ -87,19 +97,52 @@ function calculateTransactionDetails(rate_type_arr,list){
             total_amount += (transObj.prod_tax + transObj.sub_amount);
             list.details[tkey].is_delivered = true;
             transObjArr.push(transObj);
+            // console.log(discount_available);
+            // console.log(list.details[tkey].prod_id.toString());
+            // console.log(discount_available.filter(d => d.buy_prod_id.toString() == list.details[tkey].prod_id.toString()));
+            // console.log(discount_available.filter(d => d.applicable_customer.indexOf(list.customer.customer_id) > -1));
+            // console.log(discount_available.filter(d => d.applicable_type.indexOf(list.details[tkey].rate_type ) > -1));
+            // console.log(discount_available.filter(d => d.buy_count > quantity));
+            if(discount_available.length > 0){
+              //discount code
+              let discounts = discount_available.filter(function(d){ return d.buy_prod_id.toString() == list.details[tkey].prod_id.toString() && d.applicable_customer.indexOf(list.customer.customer_id) > -1 && d.applicable_type.indexOf(list.details[tkey].rate_type ) > -1 && quantity > d.buy_count});
+              console.log(discounts);
+              if(discounts.length > 0 ){
+                console.log(discounts[0].buy_prod_id.toString());
+                console.log(discounts[0].free_prod_id.toString());
+                //check for free product id and free count
+                if(discounts[0].buy_prod_id.toString() == discounts[0].free_prod_id.toString()){ //only if buy and free prods are same
+                  console.log("2");
+                  let calc_quan = Math.floor(quantity / discounts[0].buy_count);
+                  let free_count = calc_quan * discounts[0].free_count;
+                  discountArr.push({
+                    discount_id: discounts[0]._id,
+                    //prod_id: discounts[0].free_prod_id,
+                    prod_id: discounts[0].free_product[0].product_id,
+                    prod_count: free_count,
+                    total_amount: free_count * unit_rate,
+                    sale_id:'POS'+list.order_id
+                  });
+                } else {
+                  // add additional transaction and discount transaction if diff product
+                  // ..to do here
+                }
+              }
+            }
+
             //pushing existing discount values to dicount table
-            if(list.details[tkey].discount_id != '' && list.details[tkey].rate_type == 'Discount'){
-              discountArr.push({
-                discount_id: transObj.discount_id,
-                prod_id: transObj.product_id,
-                prod_count: transObj.prod_quan,
-                total_amount: transObj.sub_amount
-              });
-            }
+            // if(list.details[tkey].discount_id != '' && list.details[tkey].rate_type == 'Discount'){
+            //   discountArr.push({
+            //     discount_id: transObj.discount_id,
+            //     prod_id: transObj.product_id,
+            //     prod_count: transObj.prod_quan,
+            //     total_amount: transObj.sub_amount
+            //   });
+            // }
             //checking for new discount match
-            if(list.discounts.length > 0 && list.details[tkey].discount_id == null){
+            // if(list.discounts.length > 0 && list.details[tkey].discount_id == null){
               
-            }
+            // }
         }else{
             //remove from details where rate is not avail
             //so commented
@@ -109,6 +152,8 @@ function calculateTransactionDetails(rate_type_arr,list){
     }
     // round off calculation
     let round_off_val = 0,round_off_sym='+';
+    console.log(discountArr);
+    total_amount -= discountArr.length > 0 ? discountArr.map(d=>d.total_amount).reduce((acc,value) => acc + value,0):0;
     if(total_amount > 0){
       let roundoff = total_amount % 1;
       if(roundoff >= 0.5){       
@@ -146,6 +191,17 @@ router.post('/placeOrders',(req,res,next)=>{
             local_date: req.body.orderdate
         }},
         {"$lookup":{
+          from: 'customers',
+          localField: 'customer_id',
+          foreignField: '_id',
+          as: 'customer'          
+        }},
+        {"$unwind":{
+          path: '$customer',
+          //includeArrayIndex: 'string',
+          preserveNullAndEmptyArrays: true
+        }},
+        {"$lookup":{
             from: 'transactiondetails',
             as: 'details',
             let: { parent_id: '$_id' },
@@ -163,35 +219,41 @@ router.post('/placeOrders',(req,res,next)=>{
               }
             ]
         }},
-        {"$lookup":{
-            from: 'discounts',
-            as: 'discounts',
-            let : {'l_date': '$order_date'},
-            pipeline : [{
-              $match:{
-                $expr: {
-                $and:[
-                  {$lte:['$from_date','$$l_date']},
-                  {$gte:['$to_date','$$l_date']}
-                  ]
-                }
-              }
-            }]
-        }}
+        // {"$lookup":{
+        //     from: 'discounts',
+        //     as: 'discounts',
+        //     let : {'l_date': '$order_date'},
+        //     pipeline : [{
+        //       $match:{
+        //         $expr: {
+        //         $and:[
+        //           {$lte:['$from_date','$$l_date']},
+        //           {$gte:['$to_date','$$l_date']}
+        //           ]
+        //         }
+        //       }
+        //     }]
+        // }}
     ]).exec((err,list)=>{
       //fetch all rate details
       //write a function to fetch rates and make it as async
       if(!err){
         if(list.length > 0){
             //console.log(list); res.json(list);
-          let resp = common.getRateList();
+          var reqt = {};
+          reqt['query'] = {
+            isactive:"YES",
+            cur_date: req.body.orderdate
+          }; //parameter to passed if needed
+          let resp = common.getRateDiscountList(reqt);
           resp.then(async function(result) {
-            const rate_type_arr = result;
+            const discount_available = result[0]; // discounts available now
+            const rate_type_arr = result[1]; //rate type
             let updateOrderObj=[],updateTransObj=[],newTransObj=[],newDiscountObj=[];
             var order_size = list.length;
             for(let key=0;key<list.length;key++){
-              let transDetails = calculateTransactionDetails(rate_type_arr,list[key]);
-              console.log(list[key].order_id);
+              let transDetails = calculateTransactionDetails(rate_type_arr,discount_available,list[key]);
+              //console.log(list[key].order_id);
               let saleData = {
                 sale_id: 'POS'+list[key].order_id,
                 customer_id: list[key].customer_id,
@@ -203,6 +265,7 @@ router.post('/placeOrders',(req,res,next)=>{
               }
               list[key]['newDetails'] = transDetails.newDetails;
               list[key]['discounts'] = transDetails.discountArr;
+              // res.json(list);
               let newSales = new sales(saleData);
               await new Promise((resolve,reject) => {
                 //new save with promise
@@ -219,7 +282,7 @@ router.post('/placeOrders',(req,res,next)=>{
                   console.log('save loop'+key);
                   //let transaction_size = list[key].details.length; 
                   var j = 0;
-                  for(let tkey in list[key].details){                                  
+                  for(let tkey in list[key].details){
                     if(list[key].newDetails && list[key].newDetails[tkey]){
                         list[key].newDetails[tkey]['parent_id'] = new_sales._id;
                     }
@@ -242,8 +305,11 @@ router.post('/placeOrders',(req,res,next)=>{
                   }                       
                   
                   //discounts
-                  if(list[key].discounts.length > 0)
-                    newDiscountObj.push(list[key].discounts);
+                  if(list[key].discounts.length > 0){
+                    console.log("count coming");
+                    //list[key].discounts['sale_id']=new_sales.sale_id;
+                    newDiscountObj = newDiscountObj.concat(list[key].discounts);
+                  }
                 }
   
                 //update order table                              
@@ -262,6 +328,7 @@ router.post('/placeOrders',(req,res,next)=>{
                   // console.log(newDiscountObj);
                   //try{
                     if(newDiscountObj.length > 0){
+                      console.log("obj count");
                       promises.push(new Promise((resolve,reject)=>{
                         discountTransaction.insertMany(newDiscountObj,{ordered:false}).then(sucess=>{
                           resolve(sucess);

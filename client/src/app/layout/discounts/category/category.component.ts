@@ -164,7 +164,7 @@ export class CategoryComponent implements OnInit {
       "name": "from_date",
       "value":"",
       "placeholder": "From Date",
-      //"min_date": new Date(),
+      "min_date": new Date(),
       "validation": {
         "required": true
       }
@@ -177,7 +177,7 @@ export class CategoryComponent implements OnInit {
       "placeholder": "To Date",
       "min_date": new Date(),
       "validation": {
-        "required": false
+        "required": true
       }
     }];
     return form_details;
@@ -198,9 +198,13 @@ export class CategoryComponent implements OnInit {
   }
 
   editDiscount(row:any){
-    console.log(row);
+    //console.log(row);
     let form_detail = this.prepareJson();
     form_detail.map(inp => {
+      if(inp.name == 'from_date'){
+        inp.min_date = row[inp.name];
+        inp.validation.required = false;
+      }        
       inp.value = row[inp.name];
     });
     form_detail.push({

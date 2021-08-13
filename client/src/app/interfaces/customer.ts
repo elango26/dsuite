@@ -15,6 +15,7 @@ export interface Customer {
     route: string;
     routes: RouteObj;
     index: number;
+    common_ratetype?:string;
     is_active?: string;
     is_delete?: string;
     createdAt?: string;

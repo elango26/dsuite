@@ -200,7 +200,9 @@ export class DeliveriesComponent implements OnInit {
           this.snackBar.open(data.message, "Success", {
             duration: 1000,
           });
-          this.addEvent();
+          //redirect to dashboard
+          this.router.navigate(['/layout/dashboard'],{ skipLocationChange: true });
+          //this.addEvent(); // commentted due to unwanted load time in deliveries page
         }else{
           this.snackBar.open(data.message, "Error", {
             duration: 1000,

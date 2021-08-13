@@ -57,4 +57,5 @@ export interface DiscountTransaction {
     prod_count:number;
     total_amount:number;
     is_delete?:string;
+    _id?:string;
 }

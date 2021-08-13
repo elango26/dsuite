@@ -26,3 +26,9 @@ body {
         padding : 0.28em !important;
     }
 }
+
+@media screen and (max-width: 400px) {
+    .mat-card {
+        padding : 0.2em !important;
+    }
+}

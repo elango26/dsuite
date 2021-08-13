@@ -52,8 +52,8 @@ table {
 
 .invoice-title{
     font-weight: bold;
-    font-size: 2em;
-    padding-bottom: 1em;
+    font-size: 1.5em;
+    padding-bottom: 0.3em;
 }
 
 .pull-right{
@@ -77,4 +77,18 @@ table {
 .margin-left {
     width: 50%;
     margin-left: 50%;
+}
+
+.mat-elevation-z8 {
+    overflow: auto;
+}
+
+.align-flex-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-font-size {
+    font-size: 0.9em;
 }
