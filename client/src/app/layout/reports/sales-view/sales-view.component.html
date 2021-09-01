@@ -92,6 +92,12 @@
         [legend]="pieChartLegend">
       </canvas>
     </div>
+    <div style="display: block;">
+      <mat-radio-group name="barClause" [(ngModel)]="barClause" (change)="dataSourceCall()">
+        <mat-radio-button value="daily">Daily</mat-radio-button>
+        <mat-radio-button value="monthly">Monthly</mat-radio-button>
+      </mat-radio-group>
+    </div>
     <div style="display: block" *ngIf="chartReady">
       <canvas baseChart #baseChart="base-chart"
         [datasets]="barChartData"

@@ -81,6 +81,7 @@ export class SalesViewComponent implements OnInit {
   maxToDate: Date;
   routes:any;
   selClause:string='sum';
+  barClause:string='daily';
 
   displayedColumns: string[] = ['sno', 'category', 'product', 'grade', 'piece','litrekg'];
   dataSource: MatTableDataSource<any>;
@@ -213,11 +214,16 @@ export class SalesViewComponent implements OnInit {
       this.pieChartLabels.push(key);
       this.pieChartData.push(pieData[key].value.toFixed(2));
     }
-    
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let barData={};
     for(let i=0;i<this.resultByDate.length;i++){
-      let d=this.resultByDate[i];
-      let key = d._id.s_date +'|'+d.products.category;
+      let d=this.resultByDate[i],key='';
+      if(this.barClause == 'daily'){
+        key = d._id.s_date +'|'+d.products.category;
+      }else{
+        key = monthNames[new Date(d._id.s_date).getMonth()] +'|'+d.products.category;
+      }
+      
       switch(d.products.measure_unit){
         case 'ML':
           d['total_value'] = d.count*d.products.volume_per_unit/1000;
@@ -275,20 +281,38 @@ export class SalesViewComponent implements OnInit {
       // this.barChartData[category_loop] = {};  
       // this.barChartData[category_loop].label = cat;
       // this.barChartData[category_loop].data = [];
-      for(let i=new Date(this.saleFDate);i<=new Date(this.saleTDate);i.setDate(i.getDate() + 1)){
-        //console.log(new Date(i));
-        let loopDate = this.datePipe.transform(i,"yyyy-MM-dd");
-        if(category_loop == 0)
-          this.barChartLabels.push(loopDate);
-       
-        let key = loopDate+'|'+cat;
-        if(barData[key]){
-          // this.barChartData[category_loop].data.push(barData[key].total_value);
-          datavals.push(barData[key].total_value);
-        }else{
-          datavals.push(0); 
-          // this.barChartData[category_loop].data.push(0);
-        }     
+      if(this.barClause == 'daily'){
+        for(let i=new Date(this.saleFDate);i<=new Date(this.saleTDate);i.setDate(i.getDate() + 1)){
+          //console.log(new Date(i));
+          let loopDate = this.datePipe.transform(i,"yyyy-MM-dd");
+          if(category_loop == 0)
+            this.barChartLabels.push(loopDate);
+        
+          let key = loopDate+'|'+cat;
+          if(barData[key]){
+            // this.barChartData[category_loop].data.push(barData[key].total_value);
+            datavals.push(barData[key].total_value);
+          }else{
+            datavals.push(0); 
+            // this.barChartData[category_loop].data.push(0);
+          }     
+        }
+      }else{
+        for(let i=new Date(this.saleFDate).getMonth();i<=new Date(this.saleTDate).getMonth();i++){
+          //console.log(new Date(i));
+          let loopDate = monthNames[i];
+          if(category_loop == 0)
+            this.barChartLabels.push(loopDate);
+        
+          let key = loopDate+'|'+cat;
+          if(barData[key]){
+            // this.barChartData[category_loop].data.push(barData[key].total_value);
+            datavals.push(barData[key].total_value);
+          }else{
+            datavals.push(0); 
+            // this.barChartData[category_loop].data.push(0);
+          }     
+        }
       }
       // let temp = ;
       //this.barChartData.push({data:datavals,label:cat});
