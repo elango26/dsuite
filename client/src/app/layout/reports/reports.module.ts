@@ -18,6 +18,9 @@ import { RecentPurchaseComponent } from './recent-purchase/recent-purchase.compo
 import { RecentdamagesComponent } from './recentdamages/recentdamages.component';
 import { EditTemplateComponent } from '../common/edit-template/edit-template.component';
 import { SalesViewComponent, RoundPipe } from './sales-view/sales-view.component';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//import { NgxChartsModule }from '@swimlane/ngx-charts';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [RecentsalesComponent, RecentPurchaseComponent, RecentdamagesComponent, EditTemplateComponent, SalesViewComponent, RoundPipe],
@@ -25,6 +28,8 @@ import { SalesViewComponent, RoundPipe } from './sales-view/sales-view.component
     CommonModule,
     ReportsRoutingModule,
     AppMaterialModule,
+    ChartsModule,
+    // BrowserAnimationsModule,
     // MatTableModule,
     // MatFormFieldModule,
     // MatPaginatorModule,
