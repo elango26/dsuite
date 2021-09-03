@@ -291,7 +291,7 @@ export class SalesViewComponent implements OnInit {
           let key = loopDate+'|'+cat;
           if(barData[key]){
             // this.barChartData[category_loop].data.push(barData[key].total_value);
-            datavals.push(barData[key].total_value);
+            datavals.push(barData[key].total_value.toFixed(2));
           }else{
             datavals.push(0); 
             // this.barChartData[category_loop].data.push(0);
@@ -307,7 +307,7 @@ export class SalesViewComponent implements OnInit {
           let key = loopDate+'|'+cat;
           if(barData[key]){
             // this.barChartData[category_loop].data.push(barData[key].total_value);
-            datavals.push(barData[key].total_value);
+            datavals.push(barData[key].total_value.toFixed(2));
           }else{
             datavals.push(0); 
             // this.barChartData[category_loop].data.push(0);
@@ -357,6 +357,10 @@ export class SalesViewComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  public randomize(): void {
+    this.barChartType = this.barChartType === 'bar' ? 'line' : 'bar';
   }
 
 }
