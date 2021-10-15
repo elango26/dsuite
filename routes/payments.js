@@ -320,23 +320,43 @@ router.get('/list',(req,res,next)=>{
             "createdAt" : -1
         }},
         {"$addFields":{
-            'localdate':{ "$dateToString": { format: "%d-%m-%Y", date: "$createdAt", timezone: "+05:30" } }
+            'localdate':{ "$dateToString": { format: "%Y-%m-%d", date: "$createdAt", timezone: "+05:30" } }
         }},
         {"$match":{
             "is_delete":'NO',
-            "is_active":'YES',
-            "localdate": req.query.pdate
+            "is_active":'YES'            
         }}
     ];
 
     if(req.query.cust_id){
         aggregateArr.push({
-            "$match":{                
-                customer_id: ObjectId(req.query.cust_id)
+            "$match":{  
+                //"localdate": req.query.pdate,
+                "customer_id": ObjectId(req.query.cust_id)
+            }
+        });
+    } 
+    if(req.query.fdate){ //multiple date match
+        aggregateArr.push({
+            "$match":{  
+                $expr:{
+                    $and: [                        
+                        // {$lte:['$localdate',new Date(req.query.tdate).toISOString()]},
+                        // {$gte:['$localdate',new Date(req.query.fdate).toISOString()]}
+                        {$lte:['$localdate',req.query.tdate]},
+                        {$gte:['$localdate',req.query.fdate]}
+                    ]
+                }
+            }
+        });
+    }else if(req.query.pdate){ //single date match
+        aggregateArr.push({
+            "$match":{  
+                "localdate": req.query.pdate
             }
         });
     }
-    
+   
     payment.aggregate(aggregateArr).exec((err,list)=>{
         if(err){
             res.json(err);

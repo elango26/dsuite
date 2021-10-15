@@ -154,7 +154,7 @@ export class PaymentsComponent implements OnInit {
   }
 
   loadPayments(){
-    var url = environment.urls.getPayment+'?pdate='+this.datePipe.transform(this.pDate,"dd-MM-yyyy");
+    var url = environment.urls.getPayment+'?pdate='+this.datePipe.transform(this.pDate,"yyyy-MM-dd");
     if(this.dedicatedCustomer){
       url+="&cust_id="+this.currentCustomer._id;
     }

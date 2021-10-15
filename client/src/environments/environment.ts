@@ -38,6 +38,7 @@ export const environment = {
     searchOrder:apiUrl+'/order/searchOrders',
     postOrderSales:apiUrl+'/order/placeOrders',
     loadTransactions:apiUrl+'/leads/getTransactions',
+    loadTransactionsNew:apiUrl+'/leads/getTransactionsNew',
     //print sheet module
     leadReport:apiUrl+'/leads/lead_report',
     salesReport:apiUrl+'/leads/sales_report',

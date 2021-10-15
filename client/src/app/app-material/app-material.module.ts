@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   MatPaginatorModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
@@ -20,13 +21,13 @@ import { ConfirmPopComponent } from './confirm-pop/confirm-pop.component';
     MatPaginatorModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
     MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
     MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule, MatIconModule,
-    MatExpansionModule, MatChipsModule, MatSnackBarModule, FormModule, ReactiveFormsModule, MatTabsModule
+    MatExpansionModule, MatChipsModule, MatSnackBarModule, FormModule, ReactiveFormsModule, MatTabsModule, FlexLayoutModule
   ],
   exports: [
     MatPaginatorModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
     MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
     MatSliderModule, MatSlideToggleModule, MatTableModule, MatDialogModule, MatTooltipModule, MatIconModule,
-    MatExpansionModule, MatChipsModule, MatSnackBarModule, FormModule, ReactiveFormsModule, CommonModule, MatTabsModule
+    MatExpansionModule, MatChipsModule, MatSnackBarModule, FormModule, ReactiveFormsModule, CommonModule, MatTabsModule, FlexLayoutModule
   ],
   entryComponents: [CommonModalComponent, ConfirmPopComponent]
 })

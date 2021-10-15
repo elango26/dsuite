@@ -3,7 +3,7 @@
     <mat-card-header>
         <mat-card-title>Payments</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content>      
       <section class="example-section" [ngClass]="{'toggle':enableSearch}" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
         <span class="no-margin"><mat-icon (click)="enableSearch = !enableSearch">search</mat-icon></span>
         <mat-form-field fxFlex class="">
@@ -22,12 +22,28 @@
               <mat-option *ngFor="let r of usersList" [value]="r.key">{{r.value}}</mat-option>
           </mat-select>
       </mat-form-field>
-        <mat-form-field fxFlex class="">
-          <input matInput disabled [max]="maxToDate" [matDatepicker]="picker" placeholder="Choose a date" name="delDate" (dateInput)="loadPayments()" [(ngModel)]="delDate">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker disabled="false" #picker></mat-datepicker>
+      <form [formGroup]="form">
+        <mat-form-field >        
+        <input type="text" autofocus placeholder="Customer Name" matInput name="customerName" formControlName="customerName" [matAutocomplete]="customer" >        
+        <mat-autocomplete autoActiveFirstOption #customer="matAutocomplete" [displayWith]="displayCustomerFn">
+          <mat-option *ngFor="let customer of customerFilteredOptions | async"  [value]="customer">
+            {{customer.customerName}}
+          </mat-option>
+        </mat-autocomplete>
         </mat-form-field>
-      </section> 
+        <mat-form-field fxFlex class="">
+          <input matInput disabled [max]="maxToDate" [matDatepicker]="picker1" placeholder="Choose a date" name="fromDate" formControlName="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field fxFlex class="">
+          <input matInput disabled [max]="minToDate" [matDatepicker]="picker2" placeholder="Choose a date" name="toDate" formControlName="toDate">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #picker2></mat-datepicker>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="loadPayments()">Search</button>
+      </form>
+      </section>     
         <!-- <section class="example-section">
             <mat-form-field class="example-margin">
                 <input matInput name="searKey" [(ngModel)]="searKey" (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -60,10 +76,11 @@
                 <td mat-cell *matCellDef="let row"> {{row.payment_type}} </td>
                 <td mat-footer-cell *matFooterCellDef> Total </td>
             </ng-container>
-            <!-- <ng-container matColumnDef="date" *ngIf="dedicatedCustomer">
+            <ng-container matColumnDef="pdate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
               <td mat-cell *matCellDef="let row"> {{row.localdate}} </td>
-            </ng-container> -->            
+              <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>       
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
                 <td mat-cell *matCellDef="let row; let i = index" > 

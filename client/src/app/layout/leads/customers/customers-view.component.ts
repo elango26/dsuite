@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MatTableDataSource } from '@angular/material';
 import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { GenericResp } from 'src/app/interfaces/genericResp';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-customers-view',
@@ -20,7 +21,7 @@ export class CustomersViewComponent implements OnInit {
     invoiceData:any[];
     invoiceView:boolean = false;
 
-    constructor(public commonService: CommonService){
+    constructor(public commonService: CommonService,public datePipe:DatePipe){
 
     }
     ngOnInit(){
@@ -29,7 +30,13 @@ export class CustomersViewComponent implements OnInit {
         this.loadTransactions(this.data);        
     }
 
-    loadTransactions(row:any){
+    loadTransactions(row:any){  
+        var today = new Date();
+        var limit = new Date(today.setDate(today.getDate() - 60)); 
+        let fdate = this.datePipe.transform(limit,"yyyy-MM-dd");
+        // this.commonService.getMethod(environment.urls.loadTransactionsNew+'?customer_id='+row._id+'&fdate='+fdate).subscribe((data:any) => {
+        //     console.log(data);
+        // });
         this.commonService.getMethod(environment.urls.loadTransactions+'?customer_id='+row._id).subscribe((data:any) => {
             // var temp = [];
             // for (let row of data.data) {

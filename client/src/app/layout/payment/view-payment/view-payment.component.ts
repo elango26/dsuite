@@ -8,9 +8,17 @@ import { BootstrapService } from 'src/app/services/bootstrap.service';
 import { User } from 'src/app/interfaces/user';
 import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
 import { GenericResp } from 'src/app/interfaces/genericResp';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Customer } from 'src/app/interfaces/customer';
+import { map, startWith } from 'rxjs/operators';
 
+export function ValidateUrl(control: AbstractControl) {
+  if (control.value && !control.value.customerName) {
+    return { validUrl: true };
+  }
+  return null;
+}
 @Component({
   selector: 'app-view-payment',
   templateUrl: './view-payment.component.html',
@@ -18,22 +26,27 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ViewPaymentComponent implements OnInit {
   enableSearch:boolean = false;
-  displayedColumns = ['customer','type','amount','createdBy','actions'];
+  displayedColumns = ['customer','type','pdate','amount','createdBy','actions'];
   dataSource: any;
   //dataSource: MatTableDataSource<Payment[]>;
   payments: Payment[];
   tempPayment: Payment[];
   dedicatedCustomer:boolean=false;
+  form:FormGroup;  
+  customerList:Customer[];
+  // customerName:string = "";
+  // fromDate: Date = new Date();
+  // toDate: Date = new Date();
   maxToDate: Date = new Date();
-  pDate: Date = new Date();
+  minToDate: Date = new Date();
+  customerFilteredOptions: Observable<Customer[]>;
+  //pDate: Date = new Date();
   searKey: string = "";
-  confirmBox: string = "YES";
-  delDate: Date = new Date();
+  confirmBox: string = "YES";  
   selRoute: string = "all";
   selUser: string = "all";
   routes:any;
   usersList:any;
-  form:FormGroup;
   controls:FormArray;
   list$: BehaviorSubject<Payment[]>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -43,6 +56,11 @@ export class ViewPaymentComponent implements OnInit {
     private datePipe: DatePipe,@Inject(MAT_DIALOG_DATA) public form_value: any) { }
 
   ngOnInit() {
+    this.form = new FormGroup({
+      'fromDate': new FormControl(new Date(),Validators.required),
+      'toDate': new FormControl(new Date(),Validators.required),
+      'customerName': new FormControl('',[Validators.required,ValidateUrl])
+    });
     this.loadMasters();
     this.loadPayments(); 
   }
@@ -64,7 +82,33 @@ export class ViewPaymentComponent implements OnInit {
         }
       });
       this.usersList.push({key:'all',value:'All'});
-    });    
+    }); 
+    if(!this.commonService.customers){
+      this.commonService.getMethod(environment.urls.getCustomer).subscribe((data:Customer[]) => {
+        this.customerList = data;
+        this._callCustomerFilter();  
+      });
+    }else{
+      this.customerList = this.commonService.customers;
+      this._callCustomerFilter(); 
+    }     
+  }
+  
+  private _callCustomerFilter(){
+    this.customerFilteredOptions = this.form.get("customerName").valueChanges
+      .pipe(
+        startWith(''),
+        map(value => (value && value.length >= 1) ?this._custFilter(value):[])
+      );
+  }
+
+  private _custFilter(value: string): Customer[] {
+    let filterValue = (typeof value == 'string')?value.toLowerCase():"";
+    return this.customerList.filter(customer => customer.customerName.toLowerCase().includes(filterValue));
+  }
+
+  displayCustomerFn(cust?: Customer): string | undefined {
+    return cust ? cust.customerName : undefined;
   }
 
   addEvent(){
@@ -98,10 +142,12 @@ export class ViewPaymentComponent implements OnInit {
   }
 
   loadPayments(){
-    var url = environment.urls.getPayment+'?pdate='+this.datePipe.transform(this.delDate,"dd-MM-yyyy");
-    if(this.dedicatedCustomer){
-      //url+="&cust_id="+this.currentCustomer._id;
+    //console.log(this.form);
+    var url = environment.urls.getPayment+'?fdate='+this.datePipe.transform(this.form.value.fromDate,"yyyy-MM-dd")+'&tdate='+this.datePipe.transform(this.form.value.toDate,"yyyy-MM-dd");
+    if(this.form.value.customerName){
+      url+="&cust_id="+this.form.value.customerName._id;
     }
+    console.log(url);
     this.commonService.getMethod(url).subscribe((data:Payment[]) => {
       this.payments = data;    
       this.filterOpts();

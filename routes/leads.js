@@ -6,6 +6,14 @@ const sales = require('../models/sales');
 const customer = require('../models/customer');
 const payments = require('../models/payments');
 
+var genResp = function() {
+  return {
+      code : 201,
+      message : "Error Occurred",
+      data: []
+  };
+}
+
 router.get('/list',(req,res,next)=>{
   var customerMatchArr = [{"is_active":"YES"}];
   if(req.query.route != 'all'){
@@ -241,6 +249,164 @@ router.get('/getTransactions',(req,res,next)=>{
             });
         }
     })
+});
+
+router.get('/getTransactionsNew',(req,res,next)=>{
+  let _resp = genResp();
+  customer.aggregate([
+    {"$match":{
+      _id:ObjectId(req.query.customer_id)
+    }},
+    {"$lookup":{
+      from: 'openingbalances',
+      as: 'ob',
+      let: { cust_id: '$_id' },
+      pipeline:[
+        {$match:{
+          $expr:{
+            $and: [
+              { $eq: ['$customer_id', '$$cust_id'] },
+              { $eq: ['$is_active', 'YES']},
+              { $eq: ['$is_delete', 'NO']}
+            ]
+          }
+        }}
+      ]
+    }},
+    {"$unwind":{
+      path: '$ob',
+      //includeArrayIndex: 'string',
+      preserveNullAndEmptyArrays: false
+    }},
+    {"$group":{
+      _id: {customer_id:'$_id'},
+      ob: {
+        $sum: '$ob.amount'
+      }
+    }},
+    {"$lookup":{
+      from: 'sales',
+      as: 'sales',
+      let: { cust_id: '$_id.customer_id' },
+      pipeline:[
+        {$addFields:{
+          'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } }
+        }},
+        {$match:{
+          $expr:{
+            $and: [
+              { $eq: ['$customer_id', '$$cust_id'] },
+              { $eq: ['$is_active', 'YES']},
+              { $eq: ['$is_delete', 'NO']},
+              { $eq: ['$payment_type', 'CREDIT']},
+              //{ $eq: ['$local_date',req.query.sale_date]},
+            ]
+          }
+        }}
+      ]
+    }},
+    {"$unwind":{
+      path: '$sales',
+      //includeArrayIndex: 'string',
+      preserveNullAndEmptyArrays: false
+    }},
+    {"$group":{
+      _id: {customer_id:'$_id.customer_id'},
+      ob:{
+        $first: '$ob'
+      },
+      sales: {
+        $sum: {$cond:[
+            {"$and":[
+                //{"$eq": [ "$trans.transaction", "IN" ]},
+                {"$lt": [ "$sales.local_date", req.query.fdate]}
+            ]},
+            '$sales.total_amount',
+            false
+        ]}
+      },
+      // sales_trans: {
+      //   $sum: '$sales.total_amount'
+      // }
+      sales_trans: {
+        $push:{$cond:[
+                {"$and":[
+                    //{"$eq": [ "$trans.transaction", "IN" ]},
+                    {"$gte": [ "$sales.local_date", req.query.fdate]}
+                ]},
+                '$sales',
+                '$$REMOVE'
+            ]}
+      }
+    }},
+    {"$lookup":{
+      from: 'payments',
+      as: 'payments',
+      let: { cust_id: '$_id.customer_id' },
+      pipeline:[
+        {$addFields:{
+          'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$createdAt", timezone: "+05:30" } }
+        }},
+        {$match:{
+          $expr:{
+            $and: [
+              { $eq: ['$customer_id', '$$cust_id'] },
+              { $eq: ['$is_active', 'YES']},
+              { $eq: ['$is_delete', 'NO']},
+              //{ $eq: ['$local_date',req.query.sale_date]},
+            ]
+          }
+        }}
+      ]
+    }},
+    {"$unwind":{
+      path: '$payments',
+      //includeArrayIndex: 'string',
+      preserveNullAndEmptyArrays: false
+    }},
+    {"$group":{
+      _id: {customer_id:'$_id.customer_id'},
+      sales: {
+        $first: '$sales'
+      },
+      ob:{
+        $first: '$ob'
+      },
+      sales_trans:{
+        $first: '$sales_trans'
+      },
+      payments:{
+        $sum: {$cond:[
+            {"$and":[
+                //{"$eq": [ "$trans.transaction", "IN" ]},
+                {"$lt": [ "$payments.local_date", req.query.fdate]}
+            ]},
+            '$payments.amount',
+            false
+        ]}
+      },
+      payment_trans: {
+        $push:{$cond:[
+                {"$and":[
+                    //{"$eq": [ "$trans.transaction", "IN" ]},
+                    {"$gte": [ "$payments.local_date", req.query.fdate]}
+                ]},
+                '$payments',
+                '$$REMOVE'
+            ]}
+      }
+    }}
+  ]).exec((err,result)=>{
+    if(err){
+      _resp.data = err;
+      res.json(_resp);
+    }else{
+      _resp.code = 200;
+      _resp.message = "Data retrieved";
+      _resp.data = result;
+      res.json(_resp);
+    }
+  });
 });
 
 router.get('/sales_report',(req,res,next)=>{
