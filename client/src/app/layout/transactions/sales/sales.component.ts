@@ -119,10 +119,13 @@ export class SalesComponent implements OnInit {
 
   ngAfterViewInit()
   {
+    
     this.autoTrigger.panelClosingActions.subscribe( x =>{
+      console.log('xxxxxx',x);
+      console.log(this.autoTrigger);
       if (this.autoTrigger.activeOption)
       {
-        //console.log(this.autoTrigger.activeOption.value);
+        console.log(this.autoTrigger.activeOption.value);
         this.form.patchValue({'productName':this.autoTrigger.activeOption.value});
         this.form.patchValue({'quantity':1});
         this.quanField.nativeElement.focus();
@@ -191,7 +194,17 @@ export class SalesComponent implements OnInit {
     this.filteredOptions = this.form.get("productName").valueChanges
       .pipe(
         startWith(''),
-        map(value => (value && value.length >= 1) ? this._filter(value):[])
+        map(value => {
+          if(value && value.length >= 1){
+            if(value.length == 13){
+              this.quanField.nativeElement.focus();
+              this.autoTrigger.closePanel();
+            }
+            return this._filter(value);
+          }else{
+            return [];
+          }
+        })
       );
   }
 

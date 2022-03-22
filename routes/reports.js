@@ -12,6 +12,17 @@ router.get('/sales',(req,res,next)=>{
         message : "Something went wrong!",
         data: {}
     }
+    var consMatchArr = {};
+    // var consMatchArr = {
+    //     $expr:{
+    //         $and:[
+    //             {$eq:['$_id','$$customer_id']},     
+    //         ]
+    //     }
+    // }
+    if(req.query.route && req.query.route != 'all'){
+        consMatchArr = {"customerDetail.route": ObjectId(req.query.route)};    
+    }
     sales.aggregate([
         {"$addFields":{
             'localdate':{ "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } } 
@@ -35,13 +46,29 @@ router.get('/sales',(req,res,next)=>{
             "foreignField": "_id",
             "as": "updatedUser"
         }},
-        {    
+        {   
         "$lookup": {
-            "from": "customers",
-            "localField": "customer_id",
-            "foreignField": "_id",
-            "as": "customerDetail"
+            from: "customers",
+            localField: "customer_id",
+            foreignField: "_id",
+            as: "customerDetail"
+        }}, 
+        {
+        "$unwind":{
+            path: '$customerDetail',
+            //includeArrayIndex: 'string',
+            preserveNullAndEmptyArrays: true
         }},
+        // "$lookup": {
+        //     from: "customers",
+        //     let: {customer_id: '$customer_id'},
+        //     as: "customerDetail",
+        //     pipeline: [
+        //         {
+        //             $match: consMatchArr
+        //         }
+        //     ]
+        // }},
         {"$lookup":{
             from: 'discounttransactions',
             let: {sale_id: '$sale_id'},
@@ -60,6 +87,7 @@ router.get('/sales',(req,res,next)=>{
                 }
               ]
         }},
+        {"$match": consMatchArr },
         {
         "$sort":{
             "sale_date":-1

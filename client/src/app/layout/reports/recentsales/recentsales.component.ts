@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { ConfirmPopComponent } from 'src/app/app-material/confirm-pop/confirm-pop.component';
+import { BootstrapService } from 'src/app/services/bootstrap.service';
 
 @Component({
   selector: 'app-recentsales',
@@ -22,6 +23,8 @@ export class RecentsalesComponent implements OnInit {
   editData: any;
   selectedDate = new Date();
   custFormMaxDate = new Date();
+  routes: any;
+  selRoute: string = "all";
 
   public salesList: any;
   confirmBox: string = "YES";
@@ -29,17 +32,25 @@ export class RecentsalesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public snackBar: MatSnackBar,private commonService: CommonService, private dialog: MatDialog, private datePipe: DatePipe, public printerService:PrinterService, public router: Router, public snackbar:MatSnackBar) {
+  constructor(public snackBar: MatSnackBar,private commonService: CommonService, private dialog: MatDialog, private datePipe: DatePipe, 
+    public printerService:PrinterService, public router: Router, public snackbar:MatSnackBar, private bootstrap:BootstrapService) {
   }
 
   ngOnInit() {
+    this.routes = this.bootstrap.routes.map(function(val) {
+      return {
+        key:val._id,
+        value:val.areaName
+      }
+    });
+    this.routes.push({key:'all',value:'All'});
     this.loadRecentSales();
   }
 
   loadRecentSales(){
     console.log(this.selectedDate);
     let date = this.datePipe.transform(this.selectedDate,"yyyy-MM-dd");
-    this.commonService.getMethod(environment.urls.getRecentSales+'?date='+date).subscribe((data:GenericResp) => {
+    this.commonService.getMethod(environment.urls.getRecentSales+'?date='+date+"&route="+this.selRoute).subscribe((data:GenericResp) => {
       if(data.code == 200){
         this.salesList = data.data;
         this.dataSource = new MatTableDataSource(this.salesList);
@@ -47,7 +58,7 @@ export class RecentsalesComponent implements OnInit {
         //this.dataSource.sort = this.sort;
         this.dataSource.filterPredicate = (data, filter: string)  => {
           const accumulator = (currentTerm, key) => {
-            return key === 'customerDetail' ? currentTerm + data.customerDetail[0].customerName : currentTerm + data[key];
+            return key === 'customerDetail' ? currentTerm + data.customerDetail.customerName : currentTerm + data[key];
           };
           const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
           // Transform the filter by converting it to lowercase and removing whitespace.
@@ -100,6 +111,10 @@ export class RecentsalesComponent implements OnInit {
         });
       }
     });    
+  }
+
+  getTotalAmount() {
+    return this.salesList.reduce((acc, data) => { return acc + data.total_amount}, 0);
   }
 
   backToReport(e){

@@ -23,7 +23,7 @@ import { BehaviorSubject } from 'rxjs';
 export class DeliveriesComponent implements OnInit {
   maxToDate: Date;
   delDate: Date;
-  selRoute: string = "all";
+  selRoute: string = "monthly";
   searKey: string = "";
   step = 0;
   routes:any;

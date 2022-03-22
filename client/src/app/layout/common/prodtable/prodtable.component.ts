@@ -107,8 +107,10 @@ export class ProdtableComponent implements OnInit {
 
   public repeatOrder(){
     console.log('repeat order');
-    let prevDate = new Date();
-    prevDate.setDate(this.delDate.getDate() - 1);
+    // let prevDate = new Date();
+    // prevDate.setDate(this.delDate.getDate() - 1);
+    // commentted since day first of every month got issues
+    let prevDate = new Date(this.delDate.getTime() - 86400000);
     let query = '?id='+this.customer._id+'&searchDate='+this.datePipe.transform(prevDate,"yyyy-MM-dd")+"&delivered=YES";
     //let query = '?id='+this.customer._id+'&searchDate='+this.datePipe.transform(new Date(),"yyyy-MM-dd")+"&delivered=YES";
     this.commonService.getMethod(environment.urls.searchOrder+query).subscribe((data:any)=>{
@@ -183,6 +185,13 @@ export class ProdtableComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  resetForm(){
+    console.log("hit");
+    Object.keys(this.form.controls).forEach(key => {
+      this.form.controls[key].patchValue(0);
+    });
+  }
+
   onSubmit(){
     // console.log("Click Sbmit");
     //console.log(this.form.status);
@@ -243,7 +252,7 @@ export class ProdtableComponent implements OnInit {
         this.commonService.postMethod(this.url,data).subscribe((resp:GenericResp) =>{
           if(resp.code == 200){
             this.transaction_desc = [];
-            this.form.reset();  
+            this.form.reset();
             if(resp.data.details){
               resp.data.details.map(det => {
                 det['products'] = this.products.filter(p=>p._id == det.prod_id)[0];
