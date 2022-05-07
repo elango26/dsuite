@@ -5,6 +5,8 @@ const sales = require('../models/sales');
 //const transactionDetails = require('../models/transactiondetails');
 const customer = require('../models/customer');
 const payments = require('../models/payments');
+const obs = require('../models/openingbalance');
+var moment = require('moment');
 
 var genResp = function() {
   return {
@@ -164,31 +166,53 @@ router.get('/getTransactions',(req,res,next)=>{
         message : "Error!!",
         data: []
     };
-    var today = new Date();
-    var limit = new Date(today.setDate(today.getDate() - 10));
+    if(!req.query.customer_id && req.query.customer_id == ""){
+      _resp.message="customer id not found";
+      res.json(_resp);
+    }
+    var transactionResult = {};
+    const today = new Date();
+    const limit = moment(new Date(today.setDate(today.getDate() - 10))).format("YYYY-MM-DD");
     var salesAgg = [
-        {"$match":{
-          sale_date : {$gte: limit}
-        }},
-        {"$addFields":{
-            localDate: {$dateToString:{format:'%Y-%m-%d',date:'$sale_date',timezone:'+05:30'}}
-        }},
-        {"$group":{
-            _id: {date:'$localDate',customer:'$customer_id'},
-            debit: {
-              $sum: '$total_amount'
-            },
-            sale_ids:{
-              $push:'$sale_id'
+      {"$match":{
+        is_active: 'YES',
+        is_delete: 'NO',
+      }},
+      {"$addFields":{
+          localDate: {$dateToString:{format:'%Y-%m-%d',date:'$sale_date',timezone:'+05:30'}}
+      }},
+      {"$group":{
+          _id: {
+            customer:'$customer_id',
+            date: {
+              "$let": {
+                "vars": { 
+                  "dte": "$localDate"
+                },
+                "in": {
+                  "$switch": {
+                    "branches": [
+                      { "case": { "$lte": [ "$$dte", limit ] }, "then": "totalAmount" },
+                      { "case": { "$gt": [ "$$dte", limit ] }, "then": "$$dte" },             
+                    ],
+                    "default": "$$dte"
+                  }
+                }
+              }
             }
-        }}
+          },
+          debit: {
+            $sum: '$total_amount'
+          },
+          sale_ids:{
+            $push:'$sale_id'
+          }
+      }}
     ];
 
     if(req.query.customer_id && req.query.customer_id !=""){
         salesAgg.unshift({"$match":{
             customer_id:ObjectId(req.query.customer_id),
-            is_active: 'YES',
-            is_delete: 'NO',
             payment_type: 'CREDIT'
           }});
     }
@@ -197,9 +221,10 @@ router.get('/getTransactions',(req,res,next)=>{
             _resp.data = err;           
             res.json(_resp);
         }else{
+          transactionResult['debits'] = debits;
             var payAgg = [
                 {"$match":{
-                  createdAt: {$gte: limit},
+                  // createdAt: {$gte: limit},
                   is_active: 'YES',
                   is_delete: 'NO',
                 }},
@@ -207,7 +232,25 @@ router.get('/getTransactions',(req,res,next)=>{
                     localDate: {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
                 }},
                 {"$group":{
-                    _id: {date:'$localDate',customer:'$customer_id'},
+                    _id: {
+                      date: {
+                        "$let": {
+                          "vars": { 
+                            "dte": "$localDate"
+                          },
+                          "in": {
+                            "$switch": {
+                              "branches": [
+                                { "case": { "$lte": [ "$$dte", limit ] }, "then": "totalAmount" },
+                                { "case": { "$gt": [ "$$dte", limit ] }, "then": "$$dte" },             
+                              ],
+                              "default": "$$dte"
+                            }
+                          }
+                        }
+                      },
+                      customer:'$customer_id'
+                    },
                     credit: {
                       $sum: '$amount'
                     }
@@ -222,29 +265,47 @@ router.get('/getTransactions',(req,res,next)=>{
                 if(err){
                     _resp.data = err;                    
                     res.json(_resp);
-                }else{     
-                    var totalArray = credits.concat(debits);
-                    // totalArray.sort(function(a,b){
-                    //     var key1 = new Date(a._id.date);
-                    //     var key2 = new Date(b._id.date);
+                }else{
+                  transactionResult['credits'] = credits;
+                  let obAgg = [
+                    {"$match":{
+                      "is_delete": "NO",
+                      "is_active": "YES"
+                    }},
+                    {"$group": {
+                      "_id": "$customer_id",                            
+                      "openingbalance": { $sum: "$amount" },
+                      "openingbalance_count": { $sum: 1 },
+                    }}
+                  ];
+                  if(req.query.customer_id && req.query.customer_id !=""){
+                    obAgg.unshift({"$match":{
+                      customer_id:ObjectId(req.query.customer_id)
+                    }});
+                  }
 
-                    //     if (key1 < key2) {
-                    //         return -1;
-                    //     } else if (key1 == key2) {
-                    //         return 0;
-                    //     } else {
-                    //         return 1;
-                    //     }
-                    // });
+                  obs.aggregate(obAgg).exec((err, obResult) => {
+                    if(!err){
+                      transactionResult["openingBalance"] = obResult;
+                      // console.log(transactionResult);
+                      _resp.data = transactionResult;
+                      _resp.code = 200;
+                      _resp.message = "Data Loaded!";                   
+                      res.json(_resp);
+                    }else{
+                      _resp.data = transactionResult;
+                      _resp.code = 200;
+                      _resp.message = "Data Loaded!";                   
+                      res.json(_resp);
+                    }
+                    // var totalArray = credits.concat(debits);
 
-                    totalArray.sort(function(a,b){
-                        return new Date(a._id.date)-new Date(b._id.date);
-                    })
-                    
-                    _resp.data = totalArray.reverse();
-                    _resp.code = 200;
-                    _resp.message = "Data Loaded!";                   
-                    res.json(_resp);
+                    //   totalArray.sort(function(a,b){
+                    //     return new Date(a._id.date)-new Date(b._id.date);
+                    //   });
+
+                      // _resp.data = totalArray.reverse();
+                  })
                 }
             });
         }

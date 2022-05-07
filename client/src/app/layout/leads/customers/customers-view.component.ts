@@ -4,6 +4,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { environment } from 'src/environments/environment';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { DatePipe } from '@angular/common';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-customers-view',
@@ -15,7 +16,7 @@ export class CustomersViewComponent implements OnInit {
     @Output() backToLead = new EventEmitter<boolean>();
     @Input() data:any;
     @Input() pageIndex:any;
-    displayedColumns = ['date', 'amount'];
+    displayedColumns = ['date', 'debit', 'credit', 'outstanding'];
     transactions:MatTableDataSource<any>;
     leadName:string;
     invoiceData:any[];
@@ -25,41 +26,57 @@ export class CustomersViewComponent implements OnInit {
 
     }
     ngOnInit(){
-        console.log(this.data);
+        // console.log(this.data);
         this.leadName = this.data.customerName;
         this.loadTransactions(this.data);        
     }
 
-    loadTransactions(row:any){  
+    loadTransactions(row:any){
         var today = new Date();
-        var limit = new Date(today.setDate(today.getDate() - 60)); 
-        let fdate = this.datePipe.transform(limit,"yyyy-MM-dd");
+        var limit = new Date(today.setDate(today.getDate() - 10));
+        // let fdate = this.datePipe.transform(limit,"yyyy-MM-dd",'+0530');
         // this.commonService.getMethod(environment.urls.loadTransactionsNew+'?customer_id='+row._id+'&fdate='+fdate).subscribe((data:any) => {
         //     console.log(data);
         // });
+        var transactionList = [];
         this.commonService.getMethod(environment.urls.loadTransactions+'?customer_id='+row._id).subscribe((data:any) => {
-            // var temp = [];
-            // for (let row of data.data) {
-            //     if(!temp['customer'])
-            //         temp['customer'] = {};
-                
-            //     if(!temp['customer'][row._id.date])
-            //         temp['customer'][row._id.date] = {};                
-
-            //     if(!temp['customer'][row._id.date]['credit'])
-            //         temp['customer'][row._id.date]['credit'] = 0;
-
-            //     if(!temp['customer'][row._id.date]['debit'])
-            //         temp['customer'][row._id.date]['debit'] = 0;
-
-            //     if(row.credit){
-            //         temp['customer'][row._id.date]['credit'] += row.credit;
-            //     }else if(row.debit){
-            //         temp['customer'][row._id.date]['debit'] += row.debit;
-            //     }
-            // }
-            // console.log(temp);
-            this.transactions = new MatTableDataSource(data.data);
+            if(data.code == 200){
+                let allArray = [...data.data.credits, ...data.data.debits];
+                // console.log(allArray);
+                let outstanding = 0;
+                transactionList = _.uniqWith(allArray, (pre, cur) => {
+                    if(pre._id.date != "totalAmount" && cur._id.date != "totalAmount"){
+                        pre._id.date = this.datePipe.transform(pre._id.date,"yyyy-MM-dd",'+0530');
+                        cur._id.date = this.datePipe.transform(cur._id.date,"yyyy-MM-dd",'+0530');
+                    }
+                    if(pre._id.date == cur._id.date){
+                        cur = _.merge(cur, pre);
+                        return true;
+                    }
+                    return false;
+                });
+                const ledger = transactionList.splice(transactionList.findIndex(arr => arr._id.date == "totalAmount"),1);
+                outstanding = ledger.reduce( (acc, l) => {
+                    return acc + (l.debit - l.credit);
+                },0);
+                outstanding += data.data.openingBalance.reduce((acc, arr)=>{ return acc + arr.openingbalance},0);
+                // console.log(outstanding);
+                transactionList = _.orderBy(transactionList, 
+                    [function(o) { return o._id.date; }],['asc']);
+                // console.log(transactionList);
+                if(transactionList.length > 0){
+                    let os = outstanding;
+                    const value = transactionList.map( arr => {
+                        os = os + (arr.debit?arr.debit:0) - (arr.credit?arr.credit:0);
+                        arr['outstanding'] =  os
+                        return arr;
+                    });
+                    value.reverse();
+                    // console.log(value);
+                    this.transactions = new MatTableDataSource(value);
+                }
+            }
+            // this.transactions = new MatTableDataSource(data.data);
         });
     }
 

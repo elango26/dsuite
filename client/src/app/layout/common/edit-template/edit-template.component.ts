@@ -69,8 +69,8 @@ export class EditTemplateComponent implements OnInit {
 
   //load customer rate type for all products
   public loadCustomerRateType(cust_id){    
-    if(this.data.customerDetail.length > 0 && this.data.customerDetail[0].common_ratetype){
-      this.common_rate_type = this.data.customerDetail[0].common_ratetype;
+    if(this.data.customerDetail && this.data.customerDetail.common_ratetype){
+      this.common_rate_type = this.data.customerDetail.common_ratetype;
     }else{
       this.common_rate_type = DEFAULT_RATE_TYPE;
     }
@@ -202,7 +202,7 @@ export class EditTemplateComponent implements OnInit {
       // discounts calculation
       let var_for_dis = {
         form: this.form,
-        customer_id: this.data.customerDetail[0].customer_id,
+        customer_id: this.data.customerDetail.customer_id,
         product: product,
         sale_type: this.sale_type
       }

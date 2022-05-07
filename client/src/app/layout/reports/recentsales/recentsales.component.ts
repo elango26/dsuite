@@ -26,7 +26,7 @@ export class RecentsalesComponent implements OnInit {
   routes: any;
   selRoute: string = "all";
 
-  public salesList: any;
+  public salesList: any[];
   confirmBox: string = "YES";
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -114,7 +114,9 @@ export class RecentsalesComponent implements OnInit {
   }
 
   getTotalAmount() {
-    return this.salesList.reduce((acc, data) => { return acc + data.total_amount}, 0);
+    if(this.salesList && this.salesList.length > 0)
+      return this.salesList.reduce((acc, data) => { return acc + data.total_amount}, 0);
+    return 0;
   }
 
   backToReport(e){

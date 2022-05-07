@@ -1,6 +1,6 @@
 <mat-card>
 <mat-card-header>
-    <mat-card-title class="invoice-title"><mat-icon>edit</mat-icon>{{this.data.customerDetail.length > 0?this.data.customerDetail[0].customerName:'Counter'}}</mat-card-title>
+    <mat-card-title class="invoice-title"><mat-icon>edit</mat-icon>{{this.data.customerDetail?this.data.customerDetail.customerName:'Counter'}}</mat-card-title>
 </mat-card-header>
 <mat-card class="desc-bg">
   <mat-card-content>
