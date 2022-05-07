@@ -34,7 +34,7 @@
         "ng-recaptcha": "^5.0.0",
         "ng2-charts": "1.6.0",
         "ngx-take-until-destroy": "^5.4.0",
-        "node-sass": "4.14.1",
+        "node-sass": "7.0.0",
         "rxjs": "6.3.3",
         "web-animations-js": "2.3.1",
         "zone.js": "0.8.26"
