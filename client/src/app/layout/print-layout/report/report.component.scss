@@ -27,8 +27,11 @@ table {
     font-family: monospace;    
 }
 
-.dotted tbody tr:nth-child(even){
-    background-color:#f2f2f2 !important;
+.font-bold {
+    font-weight: bold;
 }
 
+.thick-border {
+    border: 2px solid black;
+}
 //tr:nth-child(even) {background-color: #f2f2f2;}

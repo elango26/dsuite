@@ -4,7 +4,7 @@
     <td>Date: {{reportDate | date:'mediumDate'}}</td>
   </tr>
 </table>
-<table class="dotted">  
+<table id="report-table" class="dotted">  
   <thead>
     <tr *ngFor="let row of thList;let i=index">
       <th *ngIf="i==0" [attr.rowspan]="4" class="dotted wid-name">Names {{index}}</th>      
@@ -58,4 +58,17 @@
       </ng-container>   
     </tr>
   </tbody>
+  <tfoot class="thick-border">
+    <tr>
+      <td [attr.rowspan]="2">TOTAL -grade/pieces</td>
+      <ng-container *ngFor="let cat of reportProductList">
+        <td class="dotted" [ngClass]="{'font-bold':summary[cat._id] > 0}">{{summary[cat._id]/cat.quan_per_grade | round}}</td>
+      </ng-container>
+    </tr>
+    <tr>
+      <ng-container *ngFor="let cat of reportProductList">
+        <td class="dotted" [ngClass]="{'font-bold':summary[cat._id] > 0}">{{summary[cat._id]%cat.quan_per_grade}}</td>
+      </ng-container>
+    </tr>
+  </tfoot>
 </table>

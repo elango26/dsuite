@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Pipe } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
 import { Product } from 'src/app/interfaces/product';
 import { Router } from '@angular/router';
@@ -6,6 +6,13 @@ import { environment } from 'src/environments/environment';
 import { GenericResp } from 'src/app/interfaces/genericResp';
 import { catchError } from 'rxjs/operators';
 import { V_CATEGORY } from 'src/app/constants/contants';
+
+@Pipe({name: 'round'})
+export class RoundPipe {
+  transform (input:number) {
+    return Math.floor(input);
+  }
+}
 
 @Component({
   selector: 'app-report',
@@ -17,6 +24,7 @@ export class ReportComponent implements OnInit {
   @Input() data:any;
   products: Product[];
   report: any[];
+  summary: any[];
   reportDate: Date;
   route: string;
 
@@ -28,7 +36,7 @@ export class ReportComponent implements OnInit {
   constructor(public commonService:CommonService, public router: Router) { }
 
   ngOnInit() { 
-    console.log(this.data);
+    // console.log(this.data);
     this.products = this.commonService.getProductList().filter(p=>p.leads_view=='YES');    
     this.reportDate = this.data.date;
     this.route = this.data.data.route;
@@ -40,7 +48,8 @@ export class ReportComponent implements OnInit {
     this.report = [];
     switch(this.data.type){
       case 'SALES':
-        if(this.data.data.length > 0){      
+        if(this.data.data.length > 0){
+          let summary = [];  
           for(let i=0;i<this.data.data.length;i++){
             let det = [];
             let rawdata = this.data.data;
@@ -48,9 +57,14 @@ export class ReportComponent implements OnInit {
             this.products.forEach(function(obj){
               let quantity = rawdata[i].details.filter((orders:any)=>orders.prod_id==obj._id).reduce((acc,val)=>acc+val.prod_quan,0);
               det[obj._id] = quantity > 0?quantity:0;
-            });            
+              if(!summary[obj._id])
+                summary[obj._id] = 0;
+              summary[obj._id] += quantity;
+            });   
             this.report.push(det);
-          }     
+          }
+          this.summary = summary;
+          // console.log(this.summary);
         }
         break;
       case 'LEADS':
@@ -164,6 +178,7 @@ export class ReportComponent implements OnInit {
 
     this.thList = [row1,row2,row3];
     this.reportProductList = _products;
+    // console.log(this.reportProductList);
   }
 
 }

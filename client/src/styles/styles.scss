@@ -18,6 +18,11 @@
         }
     }
 
+    #report-table tbody tr:nth-child(even) {      /* this works */
+        background-color: #dcdada !important;
+        -webkit-print-color-adjust: exact; 
+    }
+
     .cdk-overlay-container {
         display: none !important;
     }
