@@ -54,6 +54,7 @@ export const environment = {
     postVendor:apiUrl+'/vendor/create',
     deleteVendor:apiUrl+'/vendor/delete',
     getProduct:apiUrl+'/product/list',
+    prodBulkUpload:apiUrl+'/product/bulkUpload',
     postProduct:apiUrl+'/product/create',
     updateProduct:apiUrl+'/product/update',
     deleteProduct:apiUrl+'/product/delete',

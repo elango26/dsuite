@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { RATE_TYPE } from 'src/app/constants/contants';
+import { RATE_TYPE, DEFAULT_RATE_TYPE } from 'src/app/constants/contants';
 import { CommonService } from 'src/app/services/common.service';
 import { Rate } from 'src/app/interfaces/rate';
 import { Product } from 'src/app/interfaces/product';
 import { environment } from 'src/environments/environment';
 import { Customer } from 'src/app/interfaces/customer';
+import { GenericResp } from 'src/app/interfaces/genericResp';
 
 @Component({
   selector: 'app-custom-modal',
@@ -22,6 +23,7 @@ export class CustomModalComponent {
   isEdit:boolean = false;
   productList = [];
   edit_form:any;
+  default_rate: string = DEFAULT_RATE_TYPE;
   constructor(public commonService:CommonService, public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CustomModalComponent>,
     @Inject(MAT_DIALOG_DATA) public form_value: any) {
@@ -110,14 +112,15 @@ export class CustomModalComponent {
     let rateType = RATE_TYPE.rate_type.map(val => {return {key: val,value: val};});
     let rate = [];
     for (let type of rateType) {
-      rate.push(
-        {
-          type : type.key,
-          price : '',
-          tax : '',
-          title : type.value
-        }
-      );
+      let tempAttr = {
+        type : type.key,
+        price : '',
+        tax : '',
+        title : type.value
+      }
+      if(type.value != DEFAULT_RATE_TYPE)
+        tempAttr['margin_type'] = '';
+      rate.push(tempAttr);
     }
     let row = {
       prod_id : value.key,
@@ -155,11 +158,19 @@ export class CustomModalComponent {
         });
       });
     }
-    this.commonService.postMethod(this.url,this.fieldList).subscribe(data =>{
-      this.onNoClick();
-      this.snackBar.open("Saved successfully!!", "Success", {
-        duration: 500,
-      });
+    this.fieldList['defaultType'] = DEFAULT_RATE_TYPE;
+    this.commonService.postMethod(this.url,this.fieldList).subscribe((data: GenericResp) =>{
+      if(data.code == 200){
+        this.onNoClick();
+        this.snackBar.open(data.message, "Success", {
+          duration: 500,
+        });
+      } else {
+        this.snackBar.open(data.message, "Error", {
+          duration: 500,
+        });
+      }
+      
     },error =>{
       this.snackBar.open(error, "Error", {
         duration: 500,

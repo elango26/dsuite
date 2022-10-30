@@ -7,6 +7,7 @@ import { Vendor } from 'src/app/interfaces/vendor';
 import { Product } from 'src/app/interfaces/product';
 import { CATEGORY, SUBCATEGORY, BRANDS, MEASURE_UNIT } from 'src/app/constants/contants';
 import { CommonModalComponent } from './../common-modal/common-modal.component';
+import { FileuploadProcessComponent } from './FileUploadProcess/FileUploadProcess.component';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -157,6 +158,17 @@ export class ProductsComponent implements OnInit {
         "order": 10,
         "type": "select",
         "inputType": "dropdown",
+        "name": "is_retail",
+        "value":"",
+        "placeholder": "Is Retail Only?",
+        "validation": {
+          "required": true
+        },
+        "options": [{key:'YES',value:'YES'},{key:'NO',value:'NO'}]
+      },{
+        "order": 11,
+        "type": "select",
+        "inputType": "dropdown",
         "name": "leads_view",
         "value":"",
         "placeholder": "Leads view",
@@ -166,7 +178,7 @@ export class ProductsComponent implements OnInit {
         "options": [{key:'YES',value:'YES'},{key:'NO',value:'NO'}]
       },
       {
-        "order": 11,
+        "order": 12,
         "type": "input",
         "inputType": "number",
         "name": "barcode",
@@ -236,6 +248,17 @@ export class ProductsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       //reload
       this.loadProduct();
+    });
+  }
+
+  openBulkDialog(): void {
+    const dialogRef = this.dialog.open(FileuploadProcessComponent, {
+      width: '600px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // TO-DO
     });
   }
 }

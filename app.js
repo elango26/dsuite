@@ -13,6 +13,9 @@ var https = require('https');
 // assigning express to app variable
 var app = express();
 
+// set base path
+global.__basedir = __dirname;
+
 const user = require('./routes/user');
 const product = require('./routes/product');
 const route = require('./routes/route');
@@ -70,7 +73,7 @@ app.use(bodyparser.json());
 
 // static file - assigning index file directory 
 // automatically it will refer index.html file
-app.use(express.static(path.join(__dirname,'public'))); 
+app.use(express.static(path.join(__dirname,'public')));
 
 //common no middleware
 app.use('/api/auth',auth);
@@ -79,7 +82,7 @@ app.use('/api/scripts',mScripts);
 app.use('/api/route',route);
 
 //middleware
-app.use(middleware.checkToken);
+// app.use(middleware.checkToken);
 
 // adding router to app with initial path
 app.use('/api/user',user);

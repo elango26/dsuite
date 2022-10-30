@@ -55,8 +55,13 @@
               </mat-card-header>
               <mat-card-content>
                 <section class="example-section">
+                    <mat-radio-group *ngIf="default_rate != cRate.title" [(ngModel)]="cRate.margin_type" name="{{cRate.title+'margin'+i+j}}" aria-label="Select an margin option">
+                      <mat-radio-button value="P">Percentage</mat-radio-button>
+                      <mat-radio-button value="R">Rate</mat-radio-button>
+                    </mat-radio-group>
+                    <br>
                     <mat-form-field class="example-width">
-                        <input matInput [(ngModel)]="cRate.price" name="{{cRate.title+'price'+i+j}}" type="'text'"  placeholder="Price">
+                        <input matInput [(ngModel)]="cRate.price" name="{{cRate.title+'price'+i+j}}" type="'text'"  placeholder="Value">
                     </mat-form-field>
                     <br>
                     <mat-form-field class="example-width">

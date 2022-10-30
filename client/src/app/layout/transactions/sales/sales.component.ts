@@ -159,13 +159,14 @@ export class SalesComponent implements OnInit {
   }
 
   loadProduct(){
-    this.commonService.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
+    this.commonService.getMethod(environment.urls.getProduct+'?getRetailPrice=true').subscribe((data:Product[]) => {
       this.productList = data;
       this._callFilter();  
     });
   }
 
   displayFn(prod?: Product): string | undefined {
+    console.log(prod);
     return prod ? prod.prod_name : undefined;
   }
 
@@ -197,9 +198,13 @@ export class SalesComponent implements OnInit {
         map(value => {
           if(value && value.length >= 1){
             if(value.length == 13){
-              this.quanField.nativeElement.focus();
-              this.autoTrigger.closePanel();
-            }
+              let prod = this._filter(value);
+              if(prod.length > 0) {
+                this.form.controls['productName'].setValue(prod[0]);
+                this.quanField.nativeElement.focus();
+                this.autoTrigger.closePanel();
+              }       
+            } else 
             return this._filter(value);
           }else{
             return [];
@@ -211,11 +216,6 @@ export class SalesComponent implements OnInit {
   private _filter(value: string): Product[] {
     let filterValue = (typeof value == 'string')?value.toLowerCase():"";
     return this.productList.filter(option => option.prod_name.toLowerCase().includes(filterValue) || option.barcode == filterValue);
-    //bar code scanning
-    //let filterValue;
-    // if(typeof value == 'string'){
-    //   filterValue = value.toLowerCase();
-    // }
   }
 
   private _custFilter(value: string): Customer[] {
@@ -235,6 +235,7 @@ export class SalesComponent implements OnInit {
           this.sale_type = this.common_rate_type;
         }          
       }
+      
       let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
 
       if(rate == null){
@@ -242,6 +243,17 @@ export class SalesComponent implements OnInit {
           duration: 1000,
         });
         return false;
+      }
+
+      if(DEFAULT_RATE_TYPE != this.sale_type && rate){
+        let default_rate_value = this.commonService.getProductPrice(product._id,DEFAULT_RATE_TYPE);
+        if(default_rate_value == null){
+          this.snackBar.open("Default rate not found for this product!!", "Notice", {
+            duration: 1000,
+          });
+          return false;
+        }
+        rate.price = default_rate_value.price - rate.price;
       }
       //replace and sum the existing product added
       // let descs = this.transaction_desc;
@@ -500,6 +512,9 @@ export class SalesComponent implements OnInit {
       roundoff_val: 0,
       total: 0
     };
+    // reset rate array if its loaded for any other customer
+    this.sale_type_arr = undefined;
+    this.sale_type = DEFAULT_RATE_TYPE;
     // this.custForm = new FormGroup({
     //   'customerName': new FormControl('',[Validators.required,objValidator('customerName')]),
     //   'curDate': new FormControl(new Date(),Validators.required)

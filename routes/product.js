@@ -1,13 +1,21 @@
 const express = require('express');
 const router = express.Router();
-
+const multer = require('multer');
+const readXlsxFile = require('read-excel-file/node');
 const product = require('../models/product');
 const common = require('./common');
+const upload = multer({ dest: 'uploads/' })
+const path = require('path');
+const { error } = require('console');
 
 router.get('/list',(req,res,next)=>{
-    
-    product.aggregate([
+    let aggProdArr = [
         {  
+        "$match":{
+            "is_active": "YES",
+            "is_delete": "NO"
+        }},
+        {
         "$sort":{
             "index":1
         }},
@@ -32,7 +40,37 @@ router.get('/list',(req,res,next)=>{
             "foreignField": "_id",
             "as": "vendor"
         }}
-    ]).exec((err,list)=>{
+    ];
+    if(req.query.getRetailPrice){
+        aggProdArr.push({
+            "$lookup": {
+            "from": "rates",
+            "let": {"pid": "$_id"},
+            "as": "rate",
+            "pipeline": [
+                {$match:{
+                    $expr:{
+                        $and:[
+                            {$eq:['$is_active','YES']},
+                            {$lte:['$effective_date', new Date()]},
+                            {$eq:['$prod_id','$$pid']},
+                            {$eq:['$type','Retail']},
+
+                        ]
+                    }
+                }},
+                {"$sort":{
+                    "effective_date":-1
+                }}
+            ]
+        }});
+        aggProdArr.push(
+            {"$set": {
+                "rate" : { $arrayElemAt: ["$rate", 0] },
+            }}
+        );
+    }
+    product.aggregate(aggProdArr).exec((err,list)=>{
         if(err){
             res.json(err);
         }else{
@@ -135,6 +173,17 @@ router.delete('/delete/:id',(req,res,next)=>{
             res.json(result);
         }
     });
+});
+
+router.post('/bulkUpload',upload.single('file'), (req,res,next)=>{
+    const filePath = path.join(__basedir,'uploads') + '/' + req.file.filename;
+   
+    readXlsxFile(filePath).then((rows) => {
+        console.log(rows);
+        // Remove Header ROW
+        rows.shift();
+        res.json("success");
+    }).catch(error => res.json(error));
 });
 
 

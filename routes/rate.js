@@ -6,6 +6,14 @@ const rate = require('../models/rate');
 const product = require('../models/product');
 const common = require('./common');
 
+var genResp = function() {
+    return {
+        code : 201,
+        message : "Error Occurred",
+        data: []
+    };
+}
+
 router.get('/rate_list',(req,res,next)=>{    
     let resp = common.getRateList();
     resp.then(function(result) {
@@ -100,8 +108,9 @@ router.get('/products',(req,res,next)=>{
 });
     
 router.post('/create',(req,res,next)=>{
-        
+    let _resp = genResp();
     let rows = [];
+    let errFound = 0;
     req.body.rates.forEach(element => {
         element.rate.forEach(elem =>{
             if(elem.price){
@@ -111,20 +120,31 @@ router.post('/create',(req,res,next)=>{
                     effective_date: new Date(element.effective_date),
                     type : elem.type,
                     price : elem.price,
+                    margin_type : elem.margin_type?elem.margin_type:'',
                     tax : elem.tax,
                     createdBy : ObjectId(req.body.createdBy)
                 });
+                if(req.body.defaultType != elem.type && !elem.margin_type){
+                    errFound = 1;
+                }
             }
         });
     });
-
-    rate.insertMany(rows,(err,rate)=>{
-        if(err){
-            res.json(err);
-        }else{
-            res.json({msg:'rate added successfully'});
-        }
-    });
+    if(errFound){
+        _resp.message = "Margin type and price both required";
+        res.json(_resp);
+    } else {
+        rate.collection.insert(rows,(err,rate)=>{
+            if(err){
+                _resp.message = err;
+                res.json(_resp);
+            }else{
+                _resp.code = 200;
+                _resp.message = "Rate added successfully";
+                res.json(_resp);
+            }
+        });
+    }
 });
 
 router.post('/bulk_update',(req,res,next)=>{

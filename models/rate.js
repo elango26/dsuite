@@ -20,6 +20,10 @@ const rateSchema = mongoose.Schema({
         require : true,
         default: null
     },
+    margin_type: {
+        type: String,
+        require: false
+    },
     tax : {
         type : String,
         require : false,

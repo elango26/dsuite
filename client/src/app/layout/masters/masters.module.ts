@@ -15,6 +15,7 @@ import { AppMaterialModule } from './../../app-material/app-material.module';
 // import {MatChipsModule} from '@angular/material/chips';
 // import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CommonModalComponent } from './common-modal/common-modal.component';
+import { FileuploadProcessComponent } from './products/FileUploadProcess/FileUploadProcess.component';
 import { RoutesComponent } from './routes/routes.component';
 import { VendorComponent } from './vendor/vendor.component';
 import { UserComponent } from './user/user.component';
@@ -25,7 +26,7 @@ import { CustomerMappingComponent } from './customer-mapping/customer-mapping.co
 import { RateMappingComponent } from './rate-mapping/rate-mapping.component';
 
 @NgModule({
-  declarations: [CustomersComponent, CommonModalComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent, CustomModalComponent, CustomerMappingComponent, RateMappingComponent],
+  declarations: [CustomersComponent, CommonModalComponent, FileuploadProcessComponent, RoutesComponent, VendorComponent, UserComponent, RateComponent, ProductsComponent, CustomModalComponent, CustomerMappingComponent, RateMappingComponent],
   imports: [
     // CommonModule,
     // FormsModule,
@@ -53,6 +54,6 @@ import { RateMappingComponent } from './rate-mapping/rate-mapping.component';
     // MatIconModule
     AppMaterialModule
   ],
-  entryComponents: [CommonModalComponent,CustomModalComponent,RateMappingComponent]
+  entryComponents: [CommonModalComponent,FileuploadProcessComponent,CustomModalComponent,RateMappingComponent]
 })
 export class MastersModule { }
