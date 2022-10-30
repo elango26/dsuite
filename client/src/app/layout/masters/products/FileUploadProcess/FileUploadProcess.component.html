@@ -1,0 +1,9 @@
+<mat-card>
+    <mat-card-header><p>Please select a file to upload!</p></mat-card-header>
+    <mat-card-content>
+        <input type="file" (change)="selectFile($event)"/>
+    </mat-card-content>
+    <mat-card-footer>
+        <button mat-raised-button color ="default" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
+    </mat-card-footer>
+</mat-card>
