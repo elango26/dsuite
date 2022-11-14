@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts'
 import { CATEGORY } from 'src/app/constants/contants';
+import { UserService } from 'src/app/services/user.service';
 @Pipe({name: 'round'})
 export class RoundPipe {
   transform (input:number) {
@@ -82,19 +83,28 @@ export class SalesViewComponent implements OnInit {
   routes:any;
   selClause:string='sum';
   barClause:string='daily';
+  totalPvalue: number = 0;
 
   displayedColumns: string[] = ['sno', 'category', 'product', 'grade', 'piece','litrekg'];
   dataSource: MatTableDataSource<any>;
   consolidatedData: any;
   resultByDate:any;
+  session:any;
+  viewSpclRows:boolean = false;
   //enableSearch:boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(private commonService: CommonService, private printerService:PrinterService,
-    private datePipe: DatePipe, private router: Router, private bootstrap:BootstrapService) { }
+    private datePipe: DatePipe, private router: Router, private bootstrap:BootstrapService, 
+    public userService:UserService) { }
 
-  ngOnInit() {    
+  ngOnInit() {   
+    this.session = this.userService.user;
+    if(['ADMIN','SUPERADMIN'].indexOf(this.session.role) > -1){
+      this.displayedColumns.push('price');
+      this.viewSpclRows = true;
+    }
     this.routes = this.bootstrap.routes.map(function(val) {
       return {
         key:val._id,
@@ -147,6 +157,7 @@ export class SalesViewComponent implements OnInit {
     // const tdate = this.datePipe.transform(this.saleTDate,"yyyy-MM-dd")
     // const diffTime = Math.abs(new Date(tdate).getTime()-new Date(fdate).getTime());
     // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
     return data.map(d=> {
       switch(d.products.measure_unit){
         case 'ML':
@@ -166,6 +177,8 @@ export class SalesViewComponent implements OnInit {
         d['modified_count'] = d.count;
         d['modified_total_value'] = d.total_value;
       }
+      let rate = this.commonService.getProductPrice(d.products._id,'Purchase');
+      this.totalPvalue += d['purchase_value'] = d.modified_count * rate.price;
     });
   }
   
