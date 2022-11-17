@@ -157,7 +157,7 @@ export class SalesViewComponent implements OnInit {
     // const tdate = this.datePipe.transform(this.saleTDate,"yyyy-MM-dd")
     // const diffTime = Math.abs(new Date(tdate).getTime()-new Date(fdate).getTime());
     // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-
+    this.totalPvalue = 0;
     return data.map(d=> {
       switch(d.products.measure_unit){
         case 'ML':
