@@ -151,7 +151,7 @@ router.get('/list',(req,res,next)=>{
             "route": 1,
             "index": 1
         }}
-    ]).exec((err,leads)=>{
+    ]).option({ allowDiskUse: true }).exec((err,leads)=>{
         if(err){
             res.json(err);
         }else{
