@@ -138,13 +138,24 @@ router.get('/generateUserObForEachFYear', async function(req,res,next){
                         const debit = debits.length > 0 ? debits[0].t_debit : 0;
                         const ob = obs.length > 0 ? obs[0].t_ob : 0;
                         const nextFYear = parseInt(fYear)+1;
-                        outstanding = (credit + debit) - ob;
+                        outstanding = (parseInt(credit) + parseInt(ob)) - parseInt(debit);
+                        
+                        let cid;
+                        if( credits.length > 0 && credits[0]._id){
+                            cid = credits[0]._id;
+                        }else if(debits.length > 0 && debits[0]._id){
+                            cid = debits[0]._id;
+                        }else if(obs.length > 0 && obs[0]._id){
+                            cid = obs[0]._id;
+                        }
+
+                        console.log("outstanding::",cid,outstanding);
                         // TODO  credits[0]._id sometimes this wont get value
                         if (outstanding >= 1) {
                             temp.push({
                                 "updateOne": {
-                                    "filter": { "customer_id": credits[0]._id, "financial_year": nextFYear },
-                                    "update": { "$set": { "financial_year": nextFYear, "customer_id": credits[0]._id, "amount": outstanding } },
+                                    "filter": { "customer_id": cid, "financial_year": nextFYear },
+                                    "update": { "$set": { "financial_year": nextFYear, "customer_id": cid, "amount": outstanding } },
                                     "upsert": true,
                                     "setDefaultsOnInsert": true
                                 }
