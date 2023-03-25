@@ -279,9 +279,9 @@ router.post('/placeOrders',(req,res,next)=>{
                   }
                 });
               }).then((new_sales) => {
-                console.log(new_sales);
+                // console.log(new_sales);
                 if(list[key] && list[key].details.length > 0){
-                  console.log('save loop'+key);
+                  // console.log('save loop'+key);
                   //let transaction_size = list[key].details.length; 
                   var j = 0;
                   for(let tkey in list[key].details){
