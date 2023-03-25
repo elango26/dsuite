@@ -72,9 +72,10 @@ router.get('/list',(req,res,next)=>{
             as: 'orders.details',
             let: { parent_id: '$orders._id',search_date: '$orders.order_date' },
             pipeline: [
-              {$match: {
-                financial_year: fYear
-              }},
+              {$match: {$or: [
+                { financial_year: fYear },
+                { financial_year: { $exists: false } }
+              ]}},
               {
                 $match: {
                   $and: [
