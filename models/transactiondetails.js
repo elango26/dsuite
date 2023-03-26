@@ -66,6 +66,9 @@ const transactionDetailsSchema = mongoose.Schema({
         enum: ['YES','NO'],
         default: 'NO'
     }
+}, 
+{ 
+    timestamps: {} 
 });
 
 const transactionDetails = module.exports = mongoose.model('transactionDetails',transactionDetailsSchema);
