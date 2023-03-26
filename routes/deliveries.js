@@ -203,9 +203,6 @@ router.get('/consolidatelist',(req,res,next)=>{
       as: 'details',
       let: { parent_id: '$_id' },
       pipeline: [
-        {$match:{
-          financial_year: fYear
-        }},
         {
           $match: {
             $expr: {
@@ -214,7 +211,11 @@ router.get('/consolidatelist',(req,res,next)=>{
                 { $eq: ['$is_active','YES']},
                 { $eq: ['$is_delete','NO']}
               ]
-            }
+            },
+            $or: [
+                { financial_year: fYear },
+                { financial_year: { $exists: false } }
+            ]
           }
         }
       ]

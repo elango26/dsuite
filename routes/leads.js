@@ -561,12 +561,15 @@ router.get('/sales_report',(req,res,next)=>{
                 $match: {
                   $expr: {
                     $and: [
-                      { $eq: ['$financial_year', fYear] },
                       { $eq: ['$parent_id', '$$parent_id'] },
                       { $eq: ['$is_active','YES']},
                       { $eq: ['$is_delete','NO']}
                     ]
-                  }
+                  },
+                  $or: [
+                      { financial_year: fYear },
+                      { financial_year: { $exists: false } }
+                  ]
                 }
               }
             ]
