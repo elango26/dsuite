@@ -8,6 +8,81 @@ const product = require('../models/product');
 const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
+  // //customers
+  // var customerMatchArr = [{"is_active":"YES"}];
+  // if(req.query.route != 'all'){    
+  //   let routes = req.query.route;
+  //   let matArr = [];
+  //   routes.split(',').forEach(element => {
+  //     matArr.push({"route":ObjectId(element)});
+  //   });
+  //   customerMatchArr.push({"$or": matArr}); 
+  // }
+  // if(req.query.search_key != ""){
+  //   customerMatchArr.push({"customerName":RegExp(req.query.search_key, 'i')});      
+  // }
+  // customerPromise = new Promise((resolve,reject)=>{
+  //   customer.aggregate([   
+  //     {"$match":{
+  //       "$and": customerMatchArr
+  //     }}
+  //   ]).exec((err,customers) => {
+  //     if(!err){
+  //       resolve(customers);
+  //     }else{
+  //       reject(err);
+  //     }
+  //   });
+  // });
+  // //order trans prods
+  // const fYear = common.getFinancialYear(req.query.order_date);
+  // ordersPromise = new Promise((resolve,reject)=>{
+  //   orders.aggregate([
+  //     {$match:
+  //       {
+  //         $expr:{
+  //           $and:[
+  //             { $eq:[ '$financial_year', fYear]},  
+  //             { $eq:[{ $dateToString: { format: '%Y-%m-%d', date: '$order_date' } }, req.query.order_date]}
+  //           ]
+  //         }
+  //       }
+  //     },
+  //     {$lookup:{
+  //       from: 'transactiondetails',
+  //       as: 'orders.details',
+  //       let: { parent_id: '$orders._id' },
+  //       pipeline: [
+  //         {$match: {$or: [
+  //           { financial_year: fYear },
+  //           { financial_year: { $exists: false } }
+  //         ]}},
+  //         {
+  //           $match: {
+  //             $expr: {
+  //               $and: [
+  //                 { $eq: ['$parent_id', '$$parent_id'] },
+  //                 { $eq: ['$is_active','YES']},
+  //                 { $eq: ['$is_delete','NO']}
+  //               ]
+  //             }
+  //           }
+  //         }
+  //       ]
+  //     }},
+  //   ]).exec((err, ordersList) => {
+  //     if(!err){
+  //       resolve(ordersList);
+  //     }else{
+  //       reject(err);
+  //     }
+  //   });
+  // });
+
+  // Promise.all([customerPromise,ordersPromise]).then((results)=>{
+  //   res.json(results);
+  // })
+  // ___________________
     var customerMatchArr = [{"is_active":"YES"}];
     const fYear = common.getFinancialYear(req.query.order_date);
     var orderMatchArr = [
