@@ -7,7 +7,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { PrinterService } from 'src/app/services/printer.service';
 import { environment } from 'src/environments/environment';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { BaseChartDirective, Color, Label } from 'ng2-charts'
+import { BaseChartDirective } from 'ng2-charts'
 import { CATEGORY } from 'src/app/constants/contants';
 import { UserService } from 'src/app/services/user.service';
 @Pipe({name: 'round'})
@@ -37,7 +37,7 @@ export class SalesViewComponent implements OnInit {
       },
     }
   };
-  public pieChartLabels:Label[]=[];
+  public pieChartLabels:any[]=[];
   public pieChartData:number[]=[];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
@@ -60,7 +60,7 @@ export class SalesViewComponent implements OnInit {
   };
   public chartReady:boolean=false;
   // public barChartLabels: Label[] = ['2006-08-01', '2007-08-01', '2008-08-01', '2009-08-01', '2010-08-01', '2011-08-01', '2012-08-01'];
-  public barChartLabels: Label[] = [];
+  public barChartLabels: any[] = [];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   // public barChartPlugins = [pluginDataLabels];
