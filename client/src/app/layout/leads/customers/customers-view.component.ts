@@ -55,10 +55,14 @@ export class CustomersViewComponent implements OnInit {
                     }
                     return false;
                 });
-                const ledger = transactionList.splice(transactionList.findIndex(arr => arr._id.date == "totalAmount"),1);
-                outstanding = ledger.reduce( (acc, l) => {
-                    return acc + (l.debit - l.credit);
-                },0);
+                let indexOfTotalAmt = transactionList.findIndex(arr => arr._id.date == "totalAmount");
+                if(indexOfTotalAmt > -1){
+                    const ledger = transactionList.splice(indexOfTotalAmt,1);
+                    outstanding = ledger.reduce( (acc, l) => {
+                        return acc + (l.debit - l.credit);
+                    },0);
+                }
+                
                 outstanding += data.data.openingBalance.reduce((acc, arr)=>{ return acc + arr.openingbalance},0);
                 // console.log(outstanding);
                 transactionList = _.orderBy(transactionList, 

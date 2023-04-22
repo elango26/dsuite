@@ -19,10 +19,12 @@ router.get('/test',(req,res,next) => {
 });
 
 router.get('/searchOrders',(req,res,next)=>{
+  const fYear = common.getFinancialYear(req.query.searchDate);
     orders.aggregate([
         {"$match":{
           "is_delete":"NO",
-          "is_active":"YES"
+          "is_active":"YES",
+          "financial_year": fYear,
         }},
         {
             $project:{

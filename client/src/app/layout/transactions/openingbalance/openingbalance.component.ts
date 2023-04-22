@@ -11,7 +11,7 @@ import { CommonModalComponent } from '../../masters/common-modal/common-modal.co
 })
 export class OpeningbalanceComponent implements OnInit {
   
-  displayedColumns = ['customerName','route','amount','action'];
+  displayedColumns = ['customerName','route','amount','financial_year','action'];
   dataSource: MatTableDataSource<any>;
 
   balances: any[];

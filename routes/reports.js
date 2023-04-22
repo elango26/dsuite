@@ -5,6 +5,7 @@ const sales = require('../models/sales');
 const purchase = require('../models/purchase');
 const product = require('../models/product');
 const transactionDetails = require('../models/transactiondetails');
+const common = require('./common');
 
 router.get('/sales',(req,res,next)=>{
     let _resp = {
@@ -12,6 +13,7 @@ router.get('/sales',(req,res,next)=>{
         message : "Something went wrong!",
         data: {}
     }
+    const fYear = common.getFinancialYear(req.query.date);
     var consMatchArr = {};
     // var consMatchArr = {
     //     $expr:{
@@ -28,6 +30,7 @@ router.get('/sales',(req,res,next)=>{
             'localdate':{ "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } } 
         }},
         {"$match":{
+            "financial_year": fYear,
             "is_active":"YES",
             "is_delete":"NO",
             "localdate":req.query.date

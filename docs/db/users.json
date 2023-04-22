@@ -1,6 +1,31 @@
 [{
   "_id": {
-    "$oid": "5e64df4bd440121bc8333b58"
+    "$oid": "640d7545f359541a16e78b6b"
+  },
+  "is_active": "YES",
+  "is_delete": "NO",
+  "username": "deeps1",
+  "password": "deeps1",
+  "firstName": "deepan1",
+  "email": "de1.k@g.com",
+  "contactNo": "0",
+  "role": "ADMIN",
+  "user_id": "USR0000028",
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1678603589665"
+    }
+  },
+  "updatedAt": {
+    "$date": {
+      "$numberLong": "1679319475751"
+    }
+  },
+  "__v": 0,
+  "financial_year": 2023
+},{
+  "_id": {
+    "$oid": "640d76c18e06eed94faaae9a"
   },
   "is_active": "YES",
   "is_delete": "NO",
@@ -11,66 +36,5 @@
   "contactNo": "9940039192",
   "contactNo1": "",
   "email": "admin@dsuite.com",
-  "role": "ADMIN",
-  "createdBy": {
-    "$oid": "507f191e810c19729de860ea"
-  },
-  "user_id": "USR0000001",
-  "createdAt": {
-    "$date": "2020-03-08T12:04:27.681Z"
-  },
-  "updatedAt": {
-    "$date": "2020-03-08T12:04:27.681Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5e64e692d440121bc8333b5c"
-  },
-  "is_active": "YES",
-  "is_delete": "NO",
-  "username": "mkdeepan",
-  "password": "Mar@123",
-  "firstName": "Deepan",
-  "lastName": "K",
-  "contactNo": "9940039192",
-  "contactNo1": "",
-  "email": "mkdeepan@gmail.com",
-  "role": "USER",
-  "createdBy": {
-    "$oid": "5e64df4bd440121bc8333b58"
-  },
-  "user_id": "USR0000002",
-  "createdAt": {
-    "$date": "2020-03-08T12:35:30.039Z"
-  },
-  "updatedAt": {
-    "$date": "2020-03-08T12:35:30.039Z"
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5e7dd45e2bd9e01110534906"
-  },
-  "is_active": "YES",
-  "is_delete": "NO",
-  "username": "akash",
-  "password": "akash",
-  "firstName": "Akash",
-  "lastName": "A",
-  "contactNo": "0",
-  "contactNo1": "",
-  "email": "a@a.com",
-  "role": "USER",
-  "createdBy": {
-    "$oid": "5e64df4bd440121bc8333b58"
-  },
-  "user_id": "USR0000003",
-  "createdAt": {
-    "$date": "2020-03-27T10:24:30.130Z"
-  },
-  "updatedAt": {
-    "$date": "2020-03-27T10:24:30.130Z"
-  },
-  "__v": 0
+  "role": "ADMIN"
 }]

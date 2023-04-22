@@ -6,6 +6,15 @@ let common = {};
 common.firstmethod = function(){
     console.log('first method');
 }
+
+common.getFinancialYear = (date = new Date()) => {
+    let fYear = new Date(date);
+    if([0,1,2].indexOf(fYear.getMonth()) > -1){
+        return fYear.getFullYear();
+    } else {
+        return fYear.getFullYear() + 1;
+    }
+}
 common.padding = function(n,width,prefix){
     n = n + ''; 
     return n.length >= width ? prefix+n :  

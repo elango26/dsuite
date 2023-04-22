@@ -38,11 +38,24 @@ const damageSchema = mongoose.Schema({
     updatedBy : {
         type: Schema.ObjectId,
         ref:'User'
+    },
+    financial_year: {
+        type: Number
     }
 }, 
 { 
     timestamps: {} 
 });
 
+// dedicated date with respect to on day change
+damageSchema.path('damage_date').set(function(value) {
+    let fYear = new Date(value);
+    if([0,1,2].indexOf(fYear.getMonth()) > -1){
+        this.financial_year = fYear.getFullYear();
+    } else {
+        this.financial_year = fYear.getFullYear() + 1;
+    }
+    return value;
+});
 
 const Damage = module.exports = mongoose.model('Damage',damageSchema);

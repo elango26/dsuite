@@ -233,9 +233,11 @@ router.delete('/delete/:id',(req,res,next)=>{
 
 router.get('/consolidatelist',(req,res,next)=>{
     //console.log(req);
+    const fYear = common.getFinancialYear(req.query.Fdate);
     var consMatchArr = {
         $expr:{
             $and:[
+                {$gte:['$financial_year',fYear]},
                 {$eq:['$is_active','YES']},
                 {$eq:['$is_delete','NO']},
                 {$lte:['$local_date',req.query.Tdate]},
@@ -281,6 +283,7 @@ router.get('/consolidatelist',(req,res,next)=>{
               $match: {
                 $expr: {
                   $and: [
+                    { $gte: ['$financial_year', fYear] },
                     { $eq: ['$parent_id', '$$parent_id'] },
                     { $eq: ['$is_active','YES']},
                     { $eq: ['$is_delete','NO']}

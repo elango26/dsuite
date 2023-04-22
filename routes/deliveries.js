@@ -5,9 +5,11 @@ const orders = require('../models/order');
 const transactionDetails = require('../models/transactiondetails');
 const customer = require('../models/customer');
 const product = require('../models/product');
+const common = require('./common');
 
 router.get('/list',(req,res,next)=>{
     var customerMatchArr = [{"is_active":"YES"}];
+    const fYear = common.getFinancialYear(req.query.order_date);
     var orderMatchArr = [
       { $eq: ['$customer_id', '$$cust_id'] },
       { $eq: ['$local_date',req.query.order_date]},
@@ -42,13 +44,16 @@ router.get('/list',(req,res,next)=>{
                     'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
                 }
               },
-                {
-                    $match: {
-                    $expr: {
-                        $and: orderMatchArr
-                    }
-                    }
+              {$match: {
+                financial_year: fYear
+              }},
+              {
+                $match: {
+                $expr: {
+                    $and: orderMatchArr
                 }
+                }
+              }
             ]
           }},
         {"$unwind":{
@@ -67,6 +72,9 @@ router.get('/list',(req,res,next)=>{
             as: 'orders.details',
             let: { parent_id: '$orders._id',search_date: '$orders.order_date' },
             pipeline: [
+              {$match: {
+                financial_year: fYear
+              }},
               {
                 $match: {
                   $and: [
@@ -156,6 +164,7 @@ router.get('/list',(req,res,next)=>{
 });
 
 router.get('/consolidatelist',(req,res,next)=>{
+  const fYear = common.getFinancialYear(req.query.order_date);
   var consMatchArr = {
     'is_active':'YES',
     'is_delete':'NO',
@@ -169,6 +178,10 @@ router.get('/consolidatelist',(req,res,next)=>{
   }
 
   orders.aggregate([
+    {"$match":{
+      financial_year: fYear
+    }},
+    // customer required due to split up route wise
     {"$lookup":{
       from: 'customers',
       localField: 'customer_id',
@@ -189,6 +202,9 @@ router.get('/consolidatelist',(req,res,next)=>{
       as: 'details',
       let: { parent_id: '$_id' },
       pipeline: [
+        {$match:{
+          financial_year: fYear
+        }},
         {
           $match: {
             $expr: {
