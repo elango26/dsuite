@@ -109,6 +109,7 @@ router.post('/create',(req,res,next)=>{
                     let count = 0;
                     for (let i = 0, len = req.body.details.length; i < len; i++) {
                         req.body.details[i].parent_id = purchase._id;
+                        req.body.details[i].parent_date = purchase.purchase_date;
                         req.body.details[i].type = "PURCHASE";
                         let newtransaction = new transactionDetails(req.body.details[i]);
                         newtransaction.save((errs,transaction)=>{
@@ -138,6 +139,7 @@ router.put('/update/:id',(req,res,next)=>{
             let count = 0;
             for (let i = 0, len = req.body.details.length; i < len; i++) {
                 req.body.details[i].parent_id = purchase._id;
+                req.body.details[i].parent_date = purchase.purchase_date;
                 req.body.details[i].type = "PURCHASE";
                 let newtransaction = new transactionDetails(req.body.details[i]);
                 newtransaction.save((errs,transaction)=>{

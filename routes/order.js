@@ -285,6 +285,7 @@ router.post('/placeOrders',(req,res,next)=>{
                   for(let tkey in list[key].details){
                     if(list[key].newDetails && list[key].newDetails[tkey]){
                         list[key].newDetails[tkey]['parent_id'] = new_sales._id;
+                        list[key].newDetails[tkey]['parent_date'] = new_sales.sale_date;
                     }
                     //update trasaction table
                     console.log('takey'+tkey);
@@ -523,6 +524,7 @@ router.post('/create',(req,res,next)=>{
                   if(req.body.details && req.body.details.length > 0){
                     for (let i = 0, len = req.body.details.length; i < len; i++) {
                       req.body.details[i].parent_id = orders._id;
+                      req.body.details[i].parent_date = orders.order_date;
                       req.body.details[i].type = "ORDER";
                       newTransObj.push(req.body.details[i]);
                       // let newtransaction = new transactionDetails(req.body.details[i]);
@@ -599,6 +601,7 @@ router.put('/update/:id',(req,res,next)=>{
             let count = 0;
             for (let i = 0, len = req.body.details.length; i < len; i++) {
                 req.body.details[i].parent_id = orders._id;
+                req.body.details[i].parent_date = orders.order_date;
                 req.body.details[i].type = "ORDER";
                 let newtransaction = new transactionDetails(req.body.details[i]);
                 newtransaction.save((errs,transaction)=>{

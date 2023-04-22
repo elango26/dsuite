@@ -6,6 +6,10 @@ const transactionDetailsSchema = mongoose.Schema({
     parent_id : {
         type: Schema.ObjectId
     },
+    parent_date : {
+        type: Date, 
+        require : true
+    },
     prod_id : {
         type: Schema.ObjectId,
         ref:'Product'

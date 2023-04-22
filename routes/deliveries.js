@@ -65,17 +65,27 @@ router.get('/list',(req,res,next)=>{
         {"$lookup":{
             from: 'transactiondetails',
             as: 'orders.details',
-            let: { parent_id: '$orders._id' },
+            let: { parent_id: '$orders._id',search_date: '$orders.order_date' },
             pipeline: [
               {
                 $match: {
-                  $expr: {
-                    $and: [
-                      { $eq: ['$parent_id', '$$parent_id'] },
-                      { $eq: ['$is_active','YES']},
-                      { $eq: ['$is_delete','NO']}
-                    ]
-                  }
+                  $and: [
+                    { $expr: { $eq: ["$parent_id", "$$parent_id"] } },
+                    { $expr: { $eq: ["$parent_date", "$$search_date"] } },
+                    { is_active: "YES" },
+                    { is_delete: "NO" }
+                  ]
+                  // parent_id: '{{$$parent_id}}',
+                  // 'parent_id':'$$parent_id',
+                  // '$parent_date': '$$search_date'
+                  // $expr: {
+                  //   $and: [
+                  //     { $eq: ['$parent_id', '$$parent_id'] },
+                  //     { $eq: ['$is_active','YES']},
+                  //     { $eq: ['$is_delete','NO']},
+                  //     { $eq: [{$dateToString: {format: "%Y-%m-%d", date: "$parent_date", timezone: "+05:30"}}, '$$search_date']}
+                  //   ]
+                  // }
                 }
               }
             ]
