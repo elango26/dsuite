@@ -189,6 +189,7 @@ router.get('/updateAllTransactionsWithDateDamage',(req,res,next)=>{
 });
 
 router.get('/updateAllCollectionsWithFYear',(req,res,next)=>{
+    const restrictModelNames = new Map([["Sales","sale_date"],["Orders","order_date"],["Damage","damage_date"],["Purchase","purchase_date"],["transactionDetails","parent_date"]]);
     const modelNames = mongoose.modelNames();
     modelNames.forEach((model) => {
         const mySchema = mongoose.model(model);
@@ -208,13 +209,20 @@ router.get('/updateAllCollectionsWithFYear',(req,res,next)=>{
             endDate.setUTCFullYear(year);
             console.log("start and end date", startDate +"--"+ endDate);
             // add query contraints to check for ist times
-            const query = { createdAt: { $gte: startDate, $lte: endDate } };
+            var paramName = 'createdAt';
+            var query = { createdAt: { $gte: startDate, $lte: endDate } };
+            if(restrictModelNames.has(model)){
+                paramName = restrictModelNames.get(model);
+                query = {};
+                query[paramName] = { $gte: startDate, $lte: endDate };
+            }
+            console.log(query);
 
             // Update the matched documents
             const update = { $set: { financial_year: year } };
             const options = { multi: true };
 
-            if (mySchema.schema.paths.hasOwnProperty('createdAt')) {
+            if (mySchema.schema.paths.hasOwnProperty(paramName)) {
                 mySchema.updateMany(query, update, options, function(err, result) {
                     if (err) {
                     // Handle error
