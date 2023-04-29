@@ -195,18 +195,20 @@ router.get('/updateAllCollectionsWithFYear',(req,res,next)=>{
         const mySchema = mongoose.model(model);
         console.log("started for the model::", model);
         // search between each fyear and update all 
-        [2021,2022,2023].forEach((year) => {
+        [2021,2022,2023,2024].forEach((year) => {
             // Match documents with a specific date
-            const startDate = new Date();
-            startDate.setHours(0,0,0,0);
-            startDate.setDate(1);
-            startDate.setMonth(3);
+            let startDate = new Date();
             startDate.setUTCFullYear(year - 1);
-            const endDate = new Date();
-            endDate.setHours(23,59,59,999);
-            endDate.setDate(31);
-            endDate.setMonth(2);
+            startDate.setMonth(3);
+            startDate.setDate(1);
+            startDate.setHours(0,0,0,0);
+
+            let endDate = new Date();
             endDate.setUTCFullYear(year);
+            endDate.setMonth(2);
+            endDate.setDate(31);
+            endDate.setHours(23,59,59,999);
+ 
             console.log("start and end date", startDate +"--"+ endDate);
             // add query contraints to check for ist times
             var paramName = 'createdAt';
