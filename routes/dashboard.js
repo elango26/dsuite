@@ -160,9 +160,7 @@ router.get("/totalCredits",(req,res,next)=>{
     let user_id = req.query.user_id;
     let date = req.query.date;
     const fYear = common.getFinancialYear(date);
-    let user_match = {
-        "financial_year": fYear
-    };
+    let user_match = {};
     if(user_id && user_id != ''){
         user_match['user_id'] = user_id;
     }
@@ -176,6 +174,9 @@ router.get("/totalCredits",(req,res,next)=>{
                 pipeline:[
                     {$addFields:{
                        createdDate : {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
+                    }},
+                    {"$match":{
+                        "financial_year": fYear
                     }},
                     {$match:{
                         $expr:{
@@ -224,6 +225,9 @@ router.get("/totalCredits",(req,res,next)=>{
                 pipeline:[
                     {$addFields:{
                         saleDate : {$dateToString:{format:'%Y-%m-%d',date:'$sale_date',timezone:'+05:30'}}
+                    }},
+                    {"$match":{
+                        "financial_year": fYear
                     }},
                     {$match:{
                         $expr:{
