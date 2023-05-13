@@ -8,6 +8,7 @@ const orders = require('../models/order');
 const transactionDetails = require('../models/transactiondetails');
 const discountTransaction = require('../models/discounttransaction');
 const common = require('./common');
+const mongoose = require('mongoose');
 
 function calculateTransactionDetails(rate_type_arr,list){
   var total_amount = 0, transObjArr = [],discountArr = [];
@@ -690,4 +691,10 @@ router.get('/list',(req,res,next)=>{
     })
 });
 
+router.get('/getDate',(req,res,next)=>{
+  // const date = req.query.date;
+  // res.json(common.getFinancialYear(date));
+  const modelNames = mongoose.modelNames();
+  res.json(modelNames);
+})
 module.exports = router;

@@ -37,13 +37,14 @@ const dashboard = require('./routes/dashboard');
 const ob = require('./routes/openingbalance');
 const mtMngTrans = require('./routes/emptyTransaction');
 const auth = require('./routes/auth');
+const mScripts = require('./routes/manualScripts');
 const test = require('./routes/test');
 
 // connect to mongodb
 mongoose.connect('mongodb://localhost:27017/dsuite');
 
 // on mongodb connection
-mongoose.connection.on('connected',()=>{    
+mongoose.connection.on('connected',()=>{
     console.log('Connected to mongodb database @ 27017');
 });
 
@@ -74,6 +75,7 @@ app.use(express.static(path.join(__dirname,'public')));
 //common no middleware
 app.use('/api/auth',auth);
 app.use('/api/test',test);
+app.use('/api/scripts',mScripts);
 app.use('/api/route',route);
 
 //middleware

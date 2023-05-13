@@ -45,10 +45,15 @@ const emptyTransSchema = mongoose.Schema({
     updatedBy : {
         type: Schema.ObjectId,
         ref:'User'
+    },
+    financial_year: {
+        type: Number
     }
 },
 { 
     timestamps: {} 
 });
+
+// disabled auto setter for financial_year since we using bulkWrite
 
 module.exports = mongoose.model('EmptyTransaction',emptyTransSchema);

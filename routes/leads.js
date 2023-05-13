@@ -7,6 +7,7 @@ const customer = require('../models/customer');
 const payments = require('../models/payments');
 const obs = require('../models/openingbalance');
 var moment = require('moment');
+const common = require('./common');
 
 var genResp = function() {
   return {
@@ -17,6 +18,8 @@ var genResp = function() {
 }
 
 router.get('/list',(req,res,next)=>{
+  // it fetch current data #so date should current
+  const fYear = common.getFinancialYear(new Date());
   var customerMatchArr = [{"is_active":"YES"}];
   if(req.query.route != 'all'){
     customerMatchArr.push({"route":ObjectId(req.query.route)}); 
@@ -51,18 +54,20 @@ router.get('/list',(req,res,next)=>{
             "from": "sales",
             "let": {"cus_id":"$_id"},
             "as": "sales",
-            "pipeline" : [{
-              $match:{
-                $expr: {
-                $and:[
-                  {$eq:['$customer_id','$$cus_id']},
-                  {$eq:['$is_active','YES']},
-                  {$eq:['$is_delete','NO']},
-                  {$eq:['$payment_type','CREDIT']}
-                  ]
+            "pipeline" : [
+              {$match:{financial_year: fYear}},
+              {
+                $match:{
+                  $expr: {
+                  $and:[
+                    {$eq:['$customer_id','$$cus_id']},
+                    {$eq:['$is_active','YES']},
+                    {$eq:['$is_delete','NO']},
+                    {$eq:['$payment_type','CREDIT']}
+                    ]
+                  }
                 }
-              }
-            }]
+              }]
         }},
         { "$unwind": {
             path: '$sales',
@@ -89,6 +94,7 @@ router.get('/list',(req,res,next)=>{
             "let": {"customer_id":"$_id"},
             "as": "payments",
             "pipeline":[
+              {$match:{financial_year: fYear}},
               {
                 $match: {
                   $expr: {
@@ -121,12 +127,25 @@ router.get('/list',(req,res,next)=>{
             $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$customer", 0 ] }, "$$ROOT" ] } }
         },
         { $project: { customer: 0, payments: 0 } },
-        {    
+        {
         "$lookup": {
             "from": "openingbalances",
-            "localField": "_id",
-            "foreignField": "customer_id",
-            "as": "obs"
+            "as": "obs",
+            "let": {"customer_id":"$_id"},
+            "pipeline":[
+              {$match:{financial_year: fYear}},
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$customer_id', '$$customer_id'] },
+                      { $eq: ['$is_active', 'YES']},
+                      { $eq: ['$is_delete', 'NO']}
+                    ]
+                  }
+                }
+              }
+            ]
         }},
         { "$unwind": {
             path: '$obs',
@@ -172,11 +191,13 @@ router.get('/getTransactions',(req,res,next)=>{
     }
     var transactionResult = {};
     const today = new Date();
+    const fYear = common.getFinancialYear(today);
     const limit = moment(new Date(today.setDate(today.getDate() - 10))).format("YYYY-MM-DD");
     var salesAgg = [
       {"$match":{
         is_active: 'YES',
         is_delete: 'NO',
+        financial_year: fYear
       }},
       {"$addFields":{
           localDate: {$dateToString:{format:'%Y-%m-%d',date:'$sale_date',timezone:'+05:30'}}
@@ -227,6 +248,7 @@ router.get('/getTransactions',(req,res,next)=>{
                   // createdAt: {$gte: limit},
                   is_active: 'YES',
                   is_delete: 'NO',
+                  financial_year: fYear
                 }},
                 {"$addFields":{
                     localDate: {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
@@ -270,7 +292,8 @@ router.get('/getTransactions',(req,res,next)=>{
                   let obAgg = [
                     {"$match":{
                       "is_delete": "NO",
-                      "is_active": "YES"
+                      "is_active": "YES",
+                      "financial_year": fYear
                     }},
                     {"$group": {
                       "_id": "$customer_id",                            
@@ -312,6 +335,7 @@ router.get('/getTransactions',(req,res,next)=>{
     })
 });
 
+// seems like not used
 router.get('/getTransactionsNew',(req,res,next)=>{
   let _resp = genResp();
   customer.aggregate([
@@ -471,8 +495,10 @@ router.get('/getTransactionsNew',(req,res,next)=>{
 });
 
 router.get('/sales_report',(req,res,next)=>{
+  const fYear = common.getFinancialYear(req.query.sale_date);
     var customerMatchArr = [{"is_active":"YES"}];
     var orderMatchArr = [
+      { $eq: ['$financial_year', fYear] },
       { $eq: ['$customer_id', '$$cust_id'] },
       { $eq: ['$local_date',req.query.sale_date]},
       { $eq: ['$is_active', 'YES']},
@@ -503,16 +529,16 @@ router.get('/sales_report',(req,res,next)=>{
             pipeline: [
               {
                 $addFields:{
-                    'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } }
+                  'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$sale_date", timezone: "+05:30" } }
                 }
               },
-                {
-                    $match: {
-                    $expr: {
-                        $and: orderMatchArr
-                    }
-                    }
+              {
+                $match: {
+                  $expr: {
+                    $and: orderMatchArr
+                  }
                 }
+              }
             ]
           }},
         {"$unwind":{
@@ -539,7 +565,11 @@ router.get('/sales_report',(req,res,next)=>{
                       { $eq: ['$is_active','YES']},
                       { $eq: ['$is_delete','NO']}
                     ]
-                  }
+                  },
+                  $or: [
+                      { financial_year: fYear },
+                      { financial_year: { $exists: false } }
+                  ]
                 }
               }
             ]
@@ -612,16 +642,14 @@ router.get('/lead_report',(req,res,next)=>{
     message : "Error!!",
     data: []
   };
-  var arr = [];
+  
   let dat1 = new Date();
   dat1.setDate(dat1.getDate() - 8);
-  arr.push(dat1);
   let dat2 = new Date();
   dat2.setDate(dat2.getDate() - 1);
-  arr.push(dat2);
   let dat3 = new Date();
-  arr.push(dat3);
-  
+  const fYear = common.getFinancialYear(dat1); //considering last max date
+
   customer.aggregate([
     {"$lookup":{
       from: 'sales',
@@ -632,6 +660,7 @@ router.get('/lead_report',(req,res,next)=>{
           $match: {
             $expr: {
               $and: [
+                { $gte: ['$financial_year', fYear] },
                 { $eq: ['$customer_id', '$$cust_id'] },
                 { $eq: ['$is_active','YES']},
                 { $eq: ['$is_delete','NO']},
@@ -691,6 +720,7 @@ router.get('/lead_report',(req,res,next)=>{
                 $match: {
                   $expr: {
                     $and: [
+                      { $gte: ['$financial_year', fYear] },
                       { $eq: ['$customer_id', '$$cust_id'] },
                       { $eq: ['$is_active','YES']},
                       { $eq: ['$is_delete','NO']}
@@ -748,6 +778,7 @@ router.get('/lead_report',(req,res,next)=>{
                   {$match:{
                     $expr:{
                       $and:[
+                       {$eq:['$financial_year',fYear]}, //since we need only one financial year data next data is populated in 'to condition date' 
                        {$eq:['$customer_id','$$cust_id']},
                        {$eq:['$is_active','YES']},
                        {$eq:['$is_delete','NO']}

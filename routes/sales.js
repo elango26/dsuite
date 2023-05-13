@@ -106,7 +106,7 @@ router.post('/create',(req,res,next)=>{
                             req.body.discounts[key].sale_id = sales.sale_id;                            
                         }   
                         let insertDisc = discountTransaction.insertMany(req.body.discounts);
-                        console.log(insertDisc+'success');
+                        // console.log(insertDisc+'success');
                     }
                     if(!req.body.details || !req.body.details.length) res.json({msg:'sales updated successfully'});
                     let count = 0;
@@ -131,6 +131,18 @@ router.post('/create',(req,res,next)=>{
                         });
                     }
                     //discount table
+                    // update ob collection
+                    // a rare piece of execution when sale done in prev year
+                    if(sales.payment_type == 'CREDIT'){
+                        const currentFYear = common.getFinancialYear();
+                        let salesFYear = common.getFinancialYear(sales.sale_date);
+                        while(salesFYear < currentFYear)
+                        {
+                            common.generateUserObForEachYear(sales.customer_id,salesFYear);
+                            salesFYear++;
+                            // console.log(salesFYear);
+                        }
+                    }
                 }
             });
         }else{
@@ -233,9 +245,11 @@ router.delete('/delete/:id',(req,res,next)=>{
 
 router.get('/consolidatelist',(req,res,next)=>{
     //console.log(req);
+    const fYear = common.getFinancialYear(req.query.Fdate);
     var consMatchArr = {
         $expr:{
             $and:[
+                {$gte:['$financial_year',fYear]},
                 {$eq:['$is_active','YES']},
                 {$eq:['$is_delete','NO']},
                 {$lte:['$local_date',req.query.Tdate]},
@@ -281,11 +295,16 @@ router.get('/consolidatelist',(req,res,next)=>{
               $match: {
                 $expr: {
                   $and: [
+                    // { $gte: ['$financial_year', fYear] },
                     { $eq: ['$parent_id', '$$parent_id'] },
                     { $eq: ['$is_active','YES']},
                     { $eq: ['$is_delete','NO']}
-                  ]
-                }
+                  ]  
+                },
+                $or: [
+                    { financial_year: fYear },
+                    { financial_year: { $exists: false } }
+                ]
               }
             }
           ]

@@ -118,7 +118,7 @@ router.post('/create',(req,res,next)=>{
         });
     });
 
-    rate.collection.insert(rows,(err,rate)=>{
+    rate.insertMany(rows,(err,rate)=>{
         if(err){
             res.json(err);
         }else{

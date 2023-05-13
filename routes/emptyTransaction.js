@@ -4,6 +4,7 @@ const router = express.Router();
 const mtTrans = require('../models/emptyTransaction');
 const mtMngmt = require('../models/emptymanagement');
 const customer = require('../models/customer');
+const common = require('./common');
 
 var genResp = function() {
     return {
@@ -35,6 +36,7 @@ router.get('/mngmtList',(req,res,next)=>{
 router.get('/transList',(req,res,next)=>{
     //mtTrans
     let _resp = genResp();
+    const fYear = common.getFinancialYear(req.query.q_date);
     customer.aggregate([
         {"$match":{
             'is_active':'YES'
@@ -53,6 +55,7 @@ router.get('/transList',(req,res,next)=>{
               {$addFields:{
                 'createdDate' : {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
               }},
+              {$match:{ financial_year: fYear}},
               {$match:{
                   $expr:{
                       $and:[
@@ -161,11 +164,12 @@ router.post('/transSave',(req,res,next)=>{
     if(req.body){
         if(req.body.trans.length > 0){
             req.body.trans.map(t => {   
+                let fYear = common.getFinancialYear(t.t_date);
                 t['updatedBy'] = req.body.createdBy;  
                 t['createdBy'] = req.body.createdBy;    
                 temp.push({
                     "updateOne": {
-                        "filter": {"t_date":t.t_date,"customer_id":t.customer_id,"transaction":t.transaction},
+                        "filter": {"financial_year":fYear,"t_date":t.t_date,"customer_id":t.customer_id,"transaction":t.transaction},
                         "update": { "$set": t },
                         "upsert": true,
                         "setDefaultsOnInsert": true
@@ -193,7 +197,8 @@ router.post('/transSave',(req,res,next)=>{
         }
     }
     //res.json(temp);
-    mtTrans.bulkWrite(temp).then(state => {
+    mtTrans.bulkWrite(temp,  { setDefaultsOnInsert: true }).then(state => {
+        console.log(state);
         _resp.code = 200;
         _resp.message = "Successfully updated!!";
         res.json(_resp);

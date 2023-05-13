@@ -7,7 +7,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { PrinterService } from 'src/app/services/printer.service';
 import { environment } from 'src/environments/environment';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts'
+import { BaseChartDirective, Color } from 'ng2-charts'
 import { CATEGORY } from 'src/app/constants/contants';
 import { UserService } from 'src/app/services/user.service';
 @Pipe({name: 'round'})

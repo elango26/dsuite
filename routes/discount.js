@@ -14,7 +14,6 @@ var genResp = function() {
 }
 
 router.get('/getDiscountTrans',(req,res,next)=>{
-    console.log(req.query);
     let _resp = genResp();
     discounttransaction.aggregate([
         {"$addFields":{

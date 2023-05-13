@@ -18,6 +18,7 @@ var genResp = function() {
 
 router.get('/detailed-payment',(req,res,next)=>{
     //console.log(req.query)
+    const fYear = common.getFinancialYear(req.query.fdate);
     let _resp = genResp();
     customer.aggregate([
         {"$lookup":{
@@ -42,6 +43,7 @@ router.get('/detailed-payment',(req,res,next)=>{
                 {$match:{
                     $expr:{
                         $and:[
+                            {$gte:['$financial_year',fYear]},
                             {$eq:['$customer_id','$$cust_id']},
                             {$eq:['$is_active','YES']},
                             {$eq:['$is_delete','NO']},
@@ -97,6 +99,7 @@ router.get('/detailed-payment',(req,res,next)=>{
 
 router.get('/getOutstanding',(req,res,next)=>{
     let _resp = genResp();
+    const fYear = common.getFinancialYear();
     customer.aggregate([
         {"$match":{
             '_id': ObjectId(req.query.cust_id),
@@ -114,6 +117,7 @@ router.get('/getOutstanding',(req,res,next)=>{
               {$match:{
                   $expr:{
                       $and:[
+                          {$eq:['$financial_year',fYear]},
                           {$eq:['$customer_id','$$cust_id']},
                           {$eq:['$is_active','YES']},
                           {$eq:['$is_delete','NO']},
@@ -135,6 +139,7 @@ router.get('/getOutstanding',(req,res,next)=>{
               {$match:{
                   $expr:{
                       $and:[
+                          {$eq:['$financial_year',fYear]},
                           {$eq:['$customer_id','$$cust_id']},
                           {$eq:['$is_active','YES']},
                           {$eq:['$is_delete','NO']},
@@ -155,6 +160,7 @@ router.get('/getOutstanding',(req,res,next)=>{
               {$match:{
                   $expr:{
                       $and:[
+                          {$eq:['$financial_year',fYear]},
                           {$eq:['$customer_id','$$cust_id']},
                           {$eq:['$is_active','YES']},
                           {$eq:['$is_delete','NO']},
@@ -292,7 +298,7 @@ router.get('/getOutstanding11',(req,res,next)=>{
     })
 });
 
-router.get('/list',(req,res,next)=>{
+router.get('/list',(req,res,next)=>{ // fyear not needed since both multiple and single date match is in this method
     let aggregateArr = [
         {    
         "$lookup": {

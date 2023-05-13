@@ -7,16 +7,19 @@ const expenses = require('../models/expense');
 const purchase = require('../models/purchase');
 const damage = require('../models/damage');
 const payments = require('../models/payments');
+const common = require('./common');
 
 router.get('/grids',(req,res,next)=>{
     var cur_date = req.query.date;
+    const fYear = common.getFinancialYear(cur_date);
     var _resp = {};
     var resp_data = {};
     promise1 = new Promise((resolve, reject) => {
         sales.aggregate([
             {"$match":{
                 "is_active": "YES",
-                "is_delete": "NO"
+                "is_delete": "NO",
+                "financial_year": fYear
             }},
             {"$addFields":{
                 localDate: {$dateToString:{format:'%Y-%m-%d',date:'$sale_date',timezone:'+05:30'}}
@@ -44,6 +47,11 @@ router.get('/grids',(req,res,next)=>{
 
     promise2 = new Promise((resolve, reject) => {
         expenses.aggregate([
+            {"$match":{
+                "is_active": "YES",
+                "is_delete": "NO",
+                "financial_year": fYear
+            }},
             {"$addFields":{
                 localDate: {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
             }},
@@ -70,6 +78,11 @@ router.get('/grids',(req,res,next)=>{
 
     promise3 = new Promise((resolve, reject) => {
         purchase.aggregate([
+            {"$match":{
+                "is_active": "YES",
+                "is_delete": "NO",
+                "financial_year": fYear
+            }},
             {"$addFields":{
                 localDate: {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
             }},
@@ -96,6 +109,11 @@ router.get('/grids',(req,res,next)=>{
 
     promise4 = new Promise((resolve, reject) => {
         damage.aggregate([
+            {"$match":{
+                "is_active": "YES",
+                "is_delete": "NO",
+                "financial_year": fYear
+            }},
             {"$addFields":{
                 localDate: {$dateToString:{format:'%Y-%m-%d',date:'$damage_date',timezone:'+05:30'}}
             }},
@@ -141,11 +159,10 @@ router.get("/totalCredits",(req,res,next)=>{
     let resp_data = {};
     let user_id = req.query.user_id;
     let date = req.query.date;
+    const fYear = common.getFinancialYear(date);
     let user_match = {};
     if(user_id && user_id != ''){
-        user_match = {
-            'user_id': user_id
-        }
+        user_match['user_id'] = user_id;
     }
     pro_payment = new Promise((resolve,reject)=>{
         user.aggregate([
@@ -157,6 +174,9 @@ router.get("/totalCredits",(req,res,next)=>{
                 pipeline:[
                     {$addFields:{
                        createdDate : {$dateToString:{format:'%Y-%m-%d',date:'$createdAt',timezone:'+05:30'}}
+                    }},
+                    {"$match":{
+                        "financial_year": fYear
                     }},
                     {$match:{
                         $expr:{
@@ -205,6 +225,9 @@ router.get("/totalCredits",(req,res,next)=>{
                 pipeline:[
                     {$addFields:{
                         saleDate : {$dateToString:{format:'%Y-%m-%d',date:'$sale_date',timezone:'+05:30'}}
+                    }},
+                    {"$match":{
+                        "financial_year": fYear
                     }},
                     {$match:{
                         $expr:{
