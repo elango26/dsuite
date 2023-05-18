@@ -41,12 +41,13 @@ export class CustomModalComponent {
           this.productList.push(keyarr);
         }
         if(form_value.editRate){
-          console.log(form_value.editRate);
+          // console.log(form_value.editRate);
           this.edit_form = form_value.editRate;
           this.isEdit = true;
           let cur_prod = {
             key: form_value.editRate.product._id,
-            value: form_value.editRate.product.prod_name
+            value: form_value.editRate.product.prod_name,
+            retail_only: form_value.editRate.product.retail_only || null
           }
           this.fieldList.rates = this.requestFormat(cur_prod);
         }
@@ -107,9 +108,14 @@ export class CustomModalComponent {
 
   requestFormat(value:any){
     let result = [];    
-    let rateType = RATE_TYPE.rate_type.map(val => {return {key: val,value: val};});
+    let rateType = RATE_TYPE.rate_type.filter((vl) => {
+      if(value.retail_only && value.retail_only == 'YES')
+        return ["Retail","Purchase"].indexOf(vl) > -1;
+      return vl;
+    }).map(val => { return {key: val,value: val}});
+    
     let rate = [];
-    for (let type of rateType) {
+    for (let type of rateType) {      
       rate.push(
         {
           type : type.key,

@@ -50,6 +50,11 @@
           <td mat-cell *matCellDef="let row"> {{row.brand_name}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="params">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> LV | IR | IA </th>
+        <td mat-cell *matCellDef="let row"> {{row.leads_view}} | {{row.retail_only}} | {{row.is_active}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
             <td mat-cell *matCellDef="let row">

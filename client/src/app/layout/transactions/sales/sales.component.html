@@ -35,7 +35,7 @@
               <!-- </button> -->
               <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                 <mat-option *ngFor="let option of filteredOptions | async"  [value]="option">
-                  {{option.prod_name}}
+                  {{option.prod_name}} *** <span>{{option.rate.price|currency:'INR'}}</span>
                 </mat-option>
               </mat-autocomplete>
           </mat-form-field>

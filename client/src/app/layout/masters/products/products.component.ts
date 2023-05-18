@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  displayedColumns = ['prod_name', 'alias', 'brand_name', 'category', 'sub_category','action'];
+  displayedColumns = ['prod_name', 'alias', 'brand_name', 'category', 'sub_category','params','action'];
   dataSource: MatTableDataSource<Product>;
 
   productList: Product[];
@@ -164,9 +164,20 @@ export class ProductsComponent implements OnInit {
           "required": true
         },
         "options": [{key:'YES',value:'YES'},{key:'NO',value:'NO'}]
+      },{
+        "order": 11,
+        "type": "select",
+        "inputType": "dropdown",
+        "name": "retail_only",
+        "value":"",
+        "placeholder": "Is Retail Only",
+        "validation": {
+          "required": true
+        },
+        "options": [{key:'YES',value:'YES'},{key:'NO',value:'NO'}]
       },
       {
-        "order": 11,
+        "order": 12,
         "type": "input",
         "inputType": "number",
         "name": "barcode",

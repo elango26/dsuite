@@ -35,7 +35,7 @@ export class RateComponent implements OnInit {
     this.load();
     this.commonService.getMethod(environment.urls.getRateProducts).subscribe((data:Product[]) => {
       for(let val of data){
-        let keyarr = {key:val._id,value:val.prod_name};
+        let keyarr = {key:val._id,value:val.prod_name,retail_only: val.retail_only};
         this.products.push(keyarr);
       }
     });

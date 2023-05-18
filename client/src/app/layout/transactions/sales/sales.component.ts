@@ -119,13 +119,9 @@ export class SalesComponent implements OnInit {
 
   ngAfterViewInit()
   {
-    
     this.autoTrigger.panelClosingActions.subscribe( x =>{
-      console.log('xxxxxx',x);
-      console.log(this.autoTrigger);
       if (this.autoTrigger.activeOption)
       {
-        console.log(this.autoTrigger.activeOption.value);
         this.form.patchValue({'productName':this.autoTrigger.activeOption.value});
         this.form.patchValue({'quantity':1});
         this.quanField.nativeElement.focus();
@@ -160,6 +156,11 @@ export class SalesComponent implements OnInit {
 
   loadProduct(){
     this.commonService.getMethod(environment.urls.getProduct).subscribe((data:Product[]) => {
+      if(data){
+        data.map((prod)=>{
+          prod['rate'] = this.commonService.getProductPrice(prod._id,'Retail')
+        }); 
+      }
       this.productList = data;
       this._callFilter();  
     });
@@ -227,14 +228,18 @@ export class SalesComponent implements OnInit {
     // console.log('submit');
     if(this.form.status == "VALID" && this.form.value.quantity > 0){
       let product = this.form.value.productName;
-      if(this.sale_type_arr){
-        let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id)[0]; //find customer rate type
-        if(customer_rate_type){
-          this.sale_type = customer_rate_type.type;
-        } else { //take common rate_type for this customer
-          this.sale_type = this.common_rate_type;
-        }          
-      }
+      if(product.retail_only && product.retail_only == 'YES'){ // forcing to select retail
+        this.sale_type = DEFAULT_RATE_TYPE;
+      } else{
+        if(this.sale_type_arr){
+          let customer_rate_type = this.sale_type_arr.filter(key => key.prod_id == product._id)[0]; //find customer rate type
+          if(customer_rate_type){
+            this.sale_type = customer_rate_type.type;
+          } else { //take common rate_type for this customer
+            this.sale_type = this.common_rate_type;
+          }          
+        }
+      }    
       let rate = this.commonService.getProductPrice(product._id,this.sale_type); // find rate based oo type
 
       if(rate == null){
@@ -281,7 +286,7 @@ export class SalesComponent implements OnInit {
       this.transaction_desc.push(trans_desc);
       this.getTotalCost();
 
-      this.form.reset();      
+      this.form.reset();
       this.dataSource = new MatTableDataSource(this.transaction_desc);      
       //console.log(this.transaction_desc.length);
       this._callFilter();
@@ -463,6 +468,7 @@ export class SalesComponent implements OnInit {
       });
     });   
     this.form.reset();
+    this.sale_type = DEFAULT_RATE_TYPE;
     this.getTotalCost();
     //reset form
     this.custForm = new FormGroup({
@@ -493,6 +499,7 @@ export class SalesComponent implements OnInit {
     this.discount_desc = [];
     this.dataSource = new MatTableDataSource(this.transaction_desc);
     this.default_payment_type = DEFAULT_PAYMENT_TYPE;
+    this.sale_type = DEFAULT_RATE_TYPE;
     this.custForm.setValue({'customerName':'','curDate':new Date()});
     this.gross_amt = {
       discount: 0,

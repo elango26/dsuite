@@ -106,7 +106,7 @@ export class ProdtableComponent implements OnInit {
   }
 
   public repeatOrder(){
-    console.log('repeat order');
+    // console.log('repeat order');
     // let prevDate = new Date();
     // prevDate.setDate(this.delDate.getDate() - 1);
     // commentted since day first of every month got issues
@@ -200,9 +200,16 @@ export class ProdtableComponent implements OnInit {
       for (let key in this.form.value) {
         let quan = this.form.value[key];
         if(quan > 0){          
-          let product = this.productList[key];  
-          let rate_type = this.sale_type_arr.filter(key => key.prod_id == product.id);
-          let rate_type_iden = (rate_type.length > 0)?rate_type[0].type:this.common_rate_type;
+          let product = this.productList[key];
+          var rate_type_iden = DEFAULT_RATE_TYPE;
+          // set to 'Retail' if product is set to 'retail_only'
+          if(product.retail_only && product.retail_only == 'YES'){ // forcing to select retail
+            rate_type_iden = DEFAULT_RATE_TYPE;
+          }else{
+            let rate_type = this.sale_type_arr.filter(key => key.prod_id == product.id);
+            rate_type_iden = (rate_type.length > 0)?rate_type[0].type:this.common_rate_type;
+          }
+          
           // let vars = {
           //   quantity: quan,
           //   customer_id: this.customer._id,

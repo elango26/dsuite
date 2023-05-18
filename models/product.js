@@ -49,6 +49,12 @@ const productSchema = mongoose.Schema({
         enum: ['YES','NO'],
         default: 'NO'
     },
+    retail_only : {
+        type : String,
+        require : true,
+        enum: ['YES','NO'],
+        default: 'YES'
+    },
     is_active : {
         type : String,
         require : true,

@@ -42,7 +42,7 @@ export class ProductsComponent {
 
   loadProduct(url:string){
     this.commonService.getMethod(url).subscribe((data:Product[]) => {
-      this.productList = data;
+      this.productList = data.filter((p:Product) => p.leads_view == 'YES');
       //this.productList.sort((a, b) => a.index - b.index)
     });
   }
