@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
 export class UploadFileService {
   private uploadUrl = environment.urls.prodBulkUpload;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userservice: UserService,) { }
   upload(file: File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
     formData.append('file', file);
+    formData.append('createdBy', this.userservice.user._id);
     const req = new HttpRequest('POST', `${this.uploadUrl}`, formData, {
       reportProgress: true,
       responseType: 'json'

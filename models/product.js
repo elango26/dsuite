@@ -77,7 +77,7 @@ const productSchema = mongoose.Schema({
     },
     index : {
         type: Number,
-        require : true
+        // require : true
     },
     barcode: {
         type : Number,

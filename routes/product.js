@@ -6,6 +6,8 @@ const product = require('../models/product');
 const common = require('./common');
 const upload = multer({ dest: 'uploads/' })
 const path = require('path');
+const {ObjectId} = require('mongodb');
+const mongoose = require('mongoose');
 const { error } = require('console');
 
 router.get('/list',(req,res,next)=>{
@@ -179,11 +181,105 @@ router.post('/bulkUpload',upload.single('file'), (req,res,next)=>{
     const filePath = path.join(__basedir,'uploads') + '/' + req.file.filename;
    
     readXlsxFile(filePath).then((rows) => {
-        console.log(rows);
-        // Remove Header ROW
-        rows.shift();
-        res.json("success");
-    }).catch(error => res.json(error));
+        if(rows && rows.length > 0){
+            product.countDocuments(function(err, count) {
+                if(!err){
+                    /** TODO
+                     * it is danger to use like this
+                     * if so, make sure another save should not happen
+                     */ 
+                    var current_count  = count;
+                    var newRows = rows.map(row => {
+                        // console.log(row);
+                        const [prod_name,alias,brand_name,category,measure_unit,volume_per_unit,quan_per_grade,sub_category,is_retail,leads_view,barcode,price] = row; 
+                        let product_id_generated = common.padding(++current_count,7,'SKU');
+                        return {
+                            product: {
+                                product_id:product_id_generated,
+                                prod_name:prod_name,
+                                alias:alias,
+                                brand_name:brand_name,
+                                category:category,
+                                measure_unit:measure_unit,
+                                volume_per_unit:volume_per_unit,
+                                quan_per_grade:quan_per_grade,
+                                sub_category:sub_category,
+                                is_retail:is_retail,
+                                leads_view:leads_view,
+                                barcode:barcode,
+                                index:current_count
+                            },
+                            rate: {
+                                product_id:product_id_generated,
+                                price:price
+                            }
+                        }
+                    });
+                    // console.log("new rows",newRows);
+                    //try map for both product and rate inserts
+                    
+                    const promiseRows = newRows.map( async (row) => {
+                        return await new product(row.product).save();
+                    });
+                    Promise.all(promiseRows).then((result) => {
+                        console.log("result",result);
+                        const rateEntries = newRows.map( (r) => {
+                            return {
+                                prod_id: result.filter(pr => pr.product_id == r.rate.product_id)[0]._id,
+                                type: 'Retail',
+                                tax: 0,
+                                price: r.rate.price,
+                                createdBy: ObjectId(req.createdBy),
+                                effective_date: new Date(),
+                            }
+                        });
+                        console.log(rateEntries);
+                        const rateObj = mongoose.model("Rate");
+                        try {
+                            rateObj.insertMany(rateEntries,{ordered:false});
+                            let resp = {
+                                code : 200,
+                                message : "Product uploaded successfully!",
+                                data: {}
+                            }
+                            res.json(resp);
+                        } catch(error) {
+                            let resp = {
+                                code : 201,
+                                message : "Product uploaded failed on rate entry!",
+                                data: error
+                            }
+                            res.json(resp);
+                        }
+                    }).catch(error => {
+                        let resp = {
+                            code : 201,
+                            message : "Upload failed!",
+                            data: error
+                        }
+                        res.json(resp);
+                    });
+                   
+                } else {
+                    let resp = {
+                        code : 201,
+                        message : "Error in count documents",
+                        data: {}
+                    }
+                    res.json(resp);
+                }
+            });
+            
+            
+        }
+    }).catch(error => {
+        let resp = {
+            code : 201,
+            message : "Error in file read!",
+            data: error
+        }
+        res.json(resp);
+    });
 });
 
 
