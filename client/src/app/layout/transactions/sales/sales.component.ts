@@ -166,7 +166,6 @@ export class SalesComponent implements OnInit {
   }
 
   displayFn(prod?: Product): string | undefined {
-    console.log(prod);
     return prod ? prod.prod_name : undefined;
   }
 
@@ -245,16 +244,6 @@ export class SalesComponent implements OnInit {
         return false;
       }
 
-      if(DEFAULT_RATE_TYPE != this.sale_type && rate){
-        let default_rate_value = this.commonService.getProductPrice(product._id,DEFAULT_RATE_TYPE);
-        if(default_rate_value == null){
-          this.snackBar.open("Default rate not found for this product!!", "Notice", {
-            duration: 1000,
-          });
-          return false;
-        }
-        rate.price = default_rate_value.price - rate.price;
-      }
       //replace and sum the existing product added
       // let descs = this.transaction_desc;
       // let exist_quan = 0;

@@ -82,7 +82,7 @@ app.use('/api/scripts',mScripts);
 app.use('/api/route',route);
 
 //middleware
-// app.use(middleware.checkToken);
+app.use(middleware.checkToken);
 
 // adding router to app with initial path
 app.use('/api/user',user);

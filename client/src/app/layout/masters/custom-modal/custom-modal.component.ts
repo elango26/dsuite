@@ -112,15 +112,12 @@ export class CustomModalComponent {
     let rateType = RATE_TYPE.rate_type.map(val => {return {key: val,value: val};});
     let rate = [];
     for (let type of rateType) {
-      let tempAttr = {
+      rate.push({
         type : type.key,
         price : '',
         tax : '',
         title : type.value
-      }
-      if(type.value != DEFAULT_RATE_TYPE)
-        tempAttr['margin_type'] = '';
-      rate.push(tempAttr);
+      });
     }
     let row = {
       prod_id : value.key,
@@ -142,7 +139,7 @@ export class CustomModalComponent {
   }
 
   onSubmit(){    
-    if(this.isEdit){
+    if(this.isEdit){ //this call is for edit i.e we can set active/deactive of prev rates
       let data = {
         edit_form: this.edit_form.product.rate_avail
       }
@@ -158,7 +155,7 @@ export class CustomModalComponent {
         });
       });
     }
-    this.fieldList['defaultType'] = DEFAULT_RATE_TYPE;
+    // this is to create new entry
     this.commonService.postMethod(this.url,this.fieldList).subscribe((data: GenericResp) =>{
       if(data.code == 200){
         this.onNoClick();
