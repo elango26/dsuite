@@ -106,7 +106,6 @@ export class ProdtableComponent implements OnInit {
   }
 
   public repeatOrder(){
-    console.log('repeat order');
     // let prevDate = new Date();
     // prevDate.setDate(this.delDate.getDate() - 1);
     // commentted since day first of every month got issues

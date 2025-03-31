@@ -45,7 +45,7 @@ const customerSchema = mongoose.Schema({
     },
     route : {
         type: Schema.ObjectId,
-        ref:'Routes'
+        ref:'Route'
     },
     common_ratetype : {
         type : String,

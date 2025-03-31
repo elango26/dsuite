@@ -24,7 +24,7 @@ export class ReportComponent implements OnInit {
   @Input() data:any;
   products: Product[];
   report: any[];
-  summary: any[];
+  summary: Record<string, number>;
   reportDate: Date;
   route: string;
 
@@ -48,30 +48,34 @@ export class ReportComponent implements OnInit {
     this.report = [];
     switch(this.data.type){
       case 'SALES':
-        if(this.data.data.length > 0){
-          let summary = [];  
-          for(let i=0;i<this.data.data.length;i++){
-            let det = [];
-            let rawdata = this.data.data;
-            det['customername']=rawdata[i]._id.customer.customerName;        
-            this.products.forEach(function(obj){
-              let quantity = rawdata[i].details.filter((orders:any)=>orders.prod_id==obj._id).reduce((acc,val)=>acc+val.prod_quan,0);
-              det[obj._id] = quantity > 0?quantity:0;
-              if(!summary[obj._id])
-                summary[obj._id] = 0;
-              summary[obj._id] += quantity;
-            });   
+        if (this.data.data.length > 0) {
+          const summary: Record<string, number> = {};
+          const rawdata = this.data.data;
+
+          rawdata.forEach((entry: any) => {
+            const det: Record<string, any> = {
+              customername: entry.customer.customerName,
+            };
+
+            this.products.forEach((product) => {
+              const quantity = entry.orders ? entry.orders.details.filter((order: any) => order.prod_id._id === product._id)
+          .reduce((acc: number, val: any) => acc + val.prod_quan, 0) : 0;
+
+              det[product._id] = quantity;
+              summary[product._id] = (summary[product._id] || 0) + quantity;
+            });
+
             this.report.push(det);
-          }
+          });
+
           this.summary = summary;
-          // console.log(this.summary);
         }
         break;
       case 'LEADS':
         if(this.data.data.sales.length > 0){      
+          let rawdata = this.data.data.sales;
           for(let i=0;i<this.data.data.sales.length;i++){
             let det = [];
-            let rawdata = this.data.data.sales;
             det['customername']=rawdata[i]._id.customer.customerName;        
             this.products.forEach(function(obj){
               let quantity = rawdata[i].details.filter((orders:any)=>orders.prod_id==obj._id).reduce((acc,val)=>acc+val.prod_quan,0);

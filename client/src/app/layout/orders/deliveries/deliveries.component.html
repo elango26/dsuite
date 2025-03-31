@@ -69,17 +69,17 @@
         <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" >            
           <mat-expansion-panel-header>
             <mat-panel-title >
-              {{row._id.customer.customerName}}
-              <span class="cus-title">-{{row._id.customer.routes[0].areaName}}</span>
+              {{row.customer.customerName}}
+              <span class="cus-title">-{{row.customer.route.areaName}}</span>
             </mat-panel-title>
             <mat-panel-description>
               <span>&nbsp;</span>
-              <span *ngIf="row._id.orders">Order Received</span>
+              <span *ngIf="row.orders?.details">Order Received</span>
               <mat-icon>account_circle</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <mat-chip-list *ngIf="row._id.orders">
-              <mat-chip *ngFor="let order of row.details">{{order.products.prod_name}}: <span class="highlight-text">{{order.prod_quan}}</span> </mat-chip>                                           
+          <mat-chip-list *ngIf="row.orders">
+              <mat-chip *ngFor="let detail of row.orders.details">{{detail.prod_id.prod_name}}: <span class="highlight-text">{{detail.prod_quan}}</span> </mat-chip>                                           
           </mat-chip-list>   
           <div class="example-button-row">        
             <button mat-stroked-button color="warn" (click)="editOrder(i,row)">Edit</button>      

@@ -89,7 +89,7 @@ export class CustomersComponent implements OnInit {
   }
 
   openOrderModal(customer:Leads){
-    console.log(customer);
+    // console.log(customer);
     const dialogRef = this.dialog.open(ProdtableComponent, {
       width: '90%',
       height:'80%',

@@ -5,84 +5,10 @@ const orders = require('../models/order');
 const transactionDetails = require('../models/transactiondetails');
 const customer = require('../models/customer');
 const product = require('../models/product');
+const route = require('../models/route');
 const common = require('./common');
 
-router.get('/list',(req,res,next)=>{
-  // //customers
-  // var customerMatchArr = [{"is_active":"YES"}];
-  // if(req.query.route != 'all'){    
-  //   let routes = req.query.route;
-  //   let matArr = [];
-  //   routes.split(',').forEach(element => {
-  //     matArr.push({"route":ObjectId(element)});
-  //   });
-  //   customerMatchArr.push({"$or": matArr}); 
-  // }
-  // if(req.query.search_key != ""){
-  //   customerMatchArr.push({"customerName":RegExp(req.query.search_key, 'i')});      
-  // }
-  // customerPromise = new Promise((resolve,reject)=>{
-  //   customer.aggregate([   
-  //     {"$match":{
-  //       "$and": customerMatchArr
-  //     }}
-  //   ]).exec((err,customers) => {
-  //     if(!err){
-  //       resolve(customers);
-  //     }else{
-  //       reject(err);
-  //     }
-  //   });
-  // });
-  // //order trans prods
-  // const fYear = common.getFinancialYear(req.query.order_date);
-  // ordersPromise = new Promise((resolve,reject)=>{
-  //   orders.aggregate([
-  //     {$match:
-  //       {
-  //         $expr:{
-  //           $and:[
-  //             { $eq:[ '$financial_year', fYear]},  
-  //             { $eq:[{ $dateToString: { format: '%Y-%m-%d', date: '$order_date' } }, req.query.order_date]}
-  //           ]
-  //         }
-  //       }
-  //     },
-  //     {$lookup:{
-  //       from: 'transactiondetails',
-  //       as: 'orders.details',
-  //       let: { parent_id: '$orders._id' },
-  //       pipeline: [
-  //         {$match: {$or: [
-  //           { financial_year: fYear },
-  //           { financial_year: { $exists: false } }
-  //         ]}},
-  //         {
-  //           $match: {
-  //             $expr: {
-  //               $and: [
-  //                 { $eq: ['$parent_id', '$$parent_id'] },
-  //                 { $eq: ['$is_active','YES']},
-  //                 { $eq: ['$is_delete','NO']}
-  //               ]
-  //             }
-  //           }
-  //         }
-  //       ]
-  //     }},
-  //   ]).exec((err, ordersList) => {
-  //     if(!err){
-  //       resolve(ordersList);
-  //     }else{
-  //       reject(err);
-  //     }
-  //   });
-  // });
-
-  // Promise.all([customerPromise,ordersPromise]).then((results)=>{
-  //   res.json(results);
-  // })
-  // ___________________
+router.get('/list2',(req,res,next)=>{
     var customerMatchArr = [{"is_active":"YES"}];
     const fYear = common.getFinancialYear(req.query.order_date);
     var orderMatchArr = [
@@ -133,15 +59,8 @@ router.get('/list',(req,res,next)=>{
           }},
         {"$unwind":{
             path: '$orders',
-            //includeArrayIndex: '<<string>>',
             preserveNullAndEmptyArrays: true
           }},        
-        // {"$addFields":{
-        //   'orders.localdate': { "$dateToString": { format: "%Y-%m-%d", date: "$orders.order_date", timezone: "+05:30" } }
-        // }},
-        // {"$match":{
-        //   'orders.localdate':req.query.order_date
-        // }},
         {"$lookup":{
             from: 'transactiondetails',
             as: 'orders.details',
@@ -159,24 +78,12 @@ router.get('/list',(req,res,next)=>{
                     { is_active: "YES" },
                     { is_delete: "NO" }
                   ]
-                  // parent_id: '{{$$parent_id}}',
-                  // 'parent_id':'$$parent_id',
-                  // '$parent_date': '$$search_date'
-                  // $expr: {
-                  //   $and: [
-                  //     { $eq: ['$parent_id', '$$parent_id'] },
-                  //     { $eq: ['$is_active','YES']},
-                  //     { $eq: ['$is_delete','NO']},
-                  //     { $eq: [{$dateToString: {format: "%Y-%m-%d", date: "$parent_date", timezone: "+05:30"}}, '$$search_date']}
-                  //   ]
-                  // }
                 }
               }
             ]
           }},
         {"$unwind":{
             path: '$orders.details',
-            //includeArrayIndex: '<<string>>',
             preserveNullAndEmptyArrays: true
           }},
         {"$lookup":{
@@ -187,13 +94,10 @@ router.get('/list',(req,res,next)=>{
           }},
         {"$unwind":{
             path: '$orders.details.products',
-            //includeArrayIndex: '<<string>>',
             preserveNullAndEmptyArrays: true
           }},
         {"$group":{
             _id: {customer:'$_id',orders:'$orders._id'},
-            //orders: {$push:'$orders._id'},
-
             details: {
               $push:'$orders.details'
             }
@@ -239,6 +143,91 @@ router.get('/list',(req,res,next)=>{
     });
 });
 
+router.get('/list', async (req, res) => {
+  try {
+      const fYear = common.getFinancialYear(req.query.order_date);
+
+      let customerMatchArr = [{ "is_active": "YES" }];
+      if (req.query.route !== 'all') {
+          customerMatchArr.push({
+              "$or": req.query.route.split(',').map(routeId => ({ "route": ObjectId(routeId) }))
+          });
+      }
+      if (req.query.search_key) {
+          customerMatchArr.push({ "customerName": new RegExp(req.query.search_key, 'i') });
+      }
+
+      const customers = await customer.find({ "$and": customerMatchArr }, { _id: 1, customerName: 1, route: 1 }).sort({ route: 1, index: 1 }).populate("route");
+      
+      if (customers.length === 0) return res.json('empty customers');
+      
+      const customerIds = customers.map(c => c._id);
+      
+      const localDate = new Date(req.query.order_date + "T00:00:00+05:30"); // Converts '2025-03-30' to local time
+
+      // Convert to UTC (subtract 5 hours 30 minutes)
+      const startISO = new Date(localDate.getTime()); // Now in UTC
+      const endISO = new Date(startISO.getTime() + 24 * 60 * 60 * 1000 - 1);
+
+      const orderIds = await orders.find({
+          customer_id: { $in: customerIds },
+          order_date: { $gte: startISO, $lte: endISO },
+          financial_year: fYear,
+          is_delivered: "NO",
+          is_active: "YES",
+          is_delete: "NO"
+      });
+      
+      // return res.json(orderIds);
+      if (orderIds.length === 0) {
+          const finalResult = customers.map(c => ({
+          customer: c,
+          orders: null
+          }));
+          return res.json(finalResult);
+      }
+
+      const orderIdsList = orderIds.map(o => o._id);
+
+      const transactionDetailsRes = await transactionDetails.find({
+          parent_id: { $in: orderIdsList },
+          financial_year: fYear,
+          is_active: "YES",
+          is_delete: "NO"
+      }).populate("prod_id");
+
+      // Group transaction details by order_id
+      const transactionsByOrder = transactionDetailsRes.reduce((acc, t) => {
+          (acc[t.parent_id.toString()] ||= []).push(t);
+          return acc;
+      }, {});
+
+      // Attach transaction details to orders
+      const ordersWithDetails = orderIds.map(o => ({
+          ...o.toObject(),
+          details: transactionsByOrder[o._id.toString()] || []
+      }));
+
+      
+      // Group orders by customer_id
+      const ordersByCustomer = ordersWithDetails.reduce((acc, o) => {
+          acc[o.customer_id.toString()] = o;
+          return acc;
+      }, {});
+
+      // Attach orders to customers
+      const finalResult = customers.map(c => ({
+          customer: c,
+          orders: ordersByCustomer[c._id.toString()] || null
+      }));
+
+      res.json(finalResult);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+
 router.get('/consolidatelist',(req,res,next)=>{
   const fYear = common.getFinancialYear(req.query.order_date);
   var consMatchArr = {
@@ -246,7 +235,6 @@ router.get('/consolidatelist',(req,res,next)=>{
     'is_delete':'NO',
     'is_delivered':'NO',
     'local_date':req.query.order_date,
-    //'customers.route': ObjectId(req.query.route)
   };
 
   if(req.query.route && req.query.route != 'all'){
@@ -266,7 +254,6 @@ router.get('/consolidatelist',(req,res,next)=>{
     }},
     {"$unwind":{
       path: '$customers',
-      //includeArrayIndex: 'string',
       preserveNullAndEmptyArrays: true
     }},
     {"$addFields":{
@@ -297,7 +284,6 @@ router.get('/consolidatelist',(req,res,next)=>{
     }},
     {"$unwind":{
       path: '$details',
-      //includeArrayIndex: '<<string>>',
       preserveNullAndEmptyArrays: true
     }},
     {"$group":{
@@ -314,85 +300,6 @@ router.get('/consolidatelist',(req,res,next)=>{
     }},
     {"$unwind":{
       path: '$products',
-      //includeArrayIndex: '<<string>>',
-      preserveNullAndEmptyArrays: true
-    }}
-  ]).exec((err,list) => {
-    if(err){
-      res.json(err);
-  }else{
-      res.json(list);
-  }
-  });
-});
-
-router.get('/newconsolidatelist',(req,res,next)=>{
-  product.aggregate([
-    {"$lookup":{
-      from: 'transactiondetails',
-      as: 'details',
-      let: { parent_id: '$_id' },
-      pipeline: [
-        {
-          $match: {
-            $expr: {
-              $and: [
-                { $eq: ['$prod_id', '$$parent_id'] },
-                { $eq: ['$is_active','YES']},
-                { $eq: ['$is_delete','NO']}
-              ]
-            }
-          }
-        }
-      ]
-    }},
-    {"$unwind":{
-      path: '$details',
-     // includeArrayIndex: '<<string>>',
-      preserveNullAndEmptyArrays: true
-    }},
-    {"$lookup":{
-      from: 'orders',
-          // localField: 'details.parent_id',
-          // foreignField: '_id',
-          as: 'details.orders',
-          let: { order_id: '$details.parent_id' },
-          pipeline: [
-            {
-              $addFields:{
-                  'local_date': { "$dateToString": { format: "%Y-%m-%d", date: "$order_date", timezone: "+05:30" } }
-              }
-            },
-            {$match:{
-              $expr:{
-                $and:[
-                  { $eq: ['$_id', '$$order_id'] },
-                  { $eq: ['$local_date','2019-09-02']}
-                  ]
-              }
-            }}
-          ]
-    }},
-    {"$unwind":{
-      path: '$details.orders',
-      //includeArrayIndex: '<<string>>',
-      preserveNullAndEmptyArrays: true
-    }},
-    {"$group":{
-      _id: {product:'$_id'},
-      count: {
-        $sum: '$details.prod_quan'
-      }
-    }},
-    {"$lookup":{
-      from: 'products',
-      localField: '_id.product',
-      foreignField: '_id',
-      as: '_id.product'
-    }},
-    {"$unwind":{
-      path: '$_id.product',
-      //includeArrayIndex: '<<string>>',
       preserveNullAndEmptyArrays: true
     }}
   ]).exec((err,list) => {
