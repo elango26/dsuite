@@ -198,8 +198,12 @@ router.get('/list', async (req, res) => {
 
       // Group transaction details by order_id
       const transactionsByOrder = transactionDetailsRes.reduce((acc, t) => {
-          (acc[t.parent_id.toString()] ||= []).push(t);
-          return acc;
+        const key = t.parent_id.toString();
+        if (!acc[key]) {
+            acc[key] = [];
+        }
+        acc[key].push(t);
+        return acc;
       }, {});
 
       // Attach transaction details to orders
