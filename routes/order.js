@@ -102,11 +102,11 @@ router.get("/searchOrders", async (req, res, next) => {
       })
       .lean();
 
-      // return res.json(ordersList);
+    // return res.json(ordersList);
     if (!ordersList.length) return res.json([]);
 
     // ✅ Step 2: Extract Order IDs
-    const orderIds = ordersList.map(order => order._id);
+    const orderIds = ordersList.map((order) => order._id);
 
     // ✅ Step 3: Find Transaction Details separately
     const transactionDetailsList = await transactionDetails
@@ -125,7 +125,7 @@ router.get("/searchOrders", async (req, res, next) => {
       return acc;
     }, {});
 
-    const response = ordersList.map(order => ({
+    const response = ordersList.map((order) => ({
       ...order,
       details: transactionMap[order._id] || [],
     }));
@@ -135,7 +135,6 @@ router.get("/searchOrders", async (req, res, next) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 function calculateTransactionDetails(rate_type_arr, discount_available, list) {
   // console.log(list);
@@ -277,59 +276,65 @@ router.post("/placeOrders", async (req, res) => {
     // Convert to UTC (subtract 5 hours 30 minutes)
     const startISO = new Date(localDate.getTime()); // Now in UTC
     const endISO = new Date(startISO.getTime() + 24 * 60 * 60 * 1000 - 1);
+    const fyear = common.getFinancialYear(localDate);
 
     // Fetch Orders with required data
     console.time("Aggregation Query");
-    const ordersList = await orders.aggregate([
-      {
-        $match: {
+    const optimizedOrdersList = await orders
+      .find(
+        {
           is_active: "YES",
           is_delete: "NO",
           is_delivered: "NO",
+          financial_year: fyear,
           order_date: { $gte: startISO, $lt: endISO },
-        },
-      },
-      {
-        $lookup: {
-          from: "customers",
-          let: { customerId: "$customer_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$_id", "$$customerId"] },
-              },
-            },
-            { $project: { customer_id: 1 } },
-          ],
-          as: "customer",
-        },
-      },
-      {
-        $lookup: {
-          from: "transactiondetails",
-          let: { orderId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$parent_id", "$$orderId"] },
-                is_active: "YES",
-                is_delete: "NO",
-              },
-            },
-            // { $project: { parent_id: 1, amount: 1 } },
-          ],
-          as: "details",
-        },
-      },
-    ]);
+        }
+        // { _id: 1, customer_id: 1, order_date: 1, order_id: 1 } // Fetch only required fields
+      )
+      .populate("customer_id", "customer_id _id") // Populate only necessary fields
+      .lean(); // Convert to plain JavaScript objects
+
     console.timeEnd("Aggregation Query");
 
-    if (!ordersList.length) {
+    if (!optimizedOrdersList.length) {
       return res
-        .status(404)
-        .json({ success: false, message: "No orders found" });
+        .status(200)
+        .json({ code: 201, success: false, message: "No orders found" });
     }
 
+    // Extract order IDs for transactions
+    const orderIds = optimizedOrdersList.map((o) => o._id);
+
+    // Fetch transaction details in parallel
+    console.time("Transaction Query");
+    const transactiondetails = await transactionDetails
+      .find({
+        parent_id: { $in: orderIds },
+        is_active: "YES",
+        is_delete: "NO",
+        financial_year: fyear,
+      })
+      .lean();
+    console.timeEnd("Transaction Query");
+
+    // Map transactions by order ID
+    const transactionsMap = new Map();
+    transactiondetails.forEach((t) => {
+      const id = t.parent_id.toString();
+      if (!transactionsMap.has(id)) transactionsMap.set(id, []);
+      transactionsMap.get(id).push(t);
+    });
+
+    // Attach transactions to orders
+    const ordersList = optimizedOrdersList.map((order) => {
+      const orderId = order._id.toString();
+      const transactionDetails = transactionsMap.get(orderId) || [];
+      return {
+        ...order,
+        customer: order.customer_id,
+        details: transactionDetails,
+      };
+    });
     // return res.status(200).json(ordersList); // Send the orders list as response
 
     console.time("Processing Discounts & Transactions");
@@ -351,7 +356,7 @@ router.post("/placeOrders", async (req, res) => {
 
       return {
         sale_id: "POS" + order.order_id,
-        customer_id: order.customer_id,
+        customer_id: order.customer._id,
         sale_date: order.order_date,
         total_amount: newTransactionDetails.totalAmount,
         roundOff: newTransactionDetails.roundOff,
@@ -363,21 +368,12 @@ router.post("/placeOrders", async (req, res) => {
 
     const salesData = salesDataPromises; // await Promise.all(salesDataPromises); // Execute all async functions in parallel
     console.timeEnd("Processing Discounts & Transactions");
-    // console.log("salesData", salesData);
-    // return res.status(200).json(salesData);
 
     // Extract transaction details separately for batch insert
     const allTransactionDetails = salesData.flatMap(
       (sale) => sale.transactions.newDetails
     );
 
-    // Batch Insert Sales and Transactions
-    // console.time("Batch Insert Sales & Transactions");
-    // await Promise.all([
-    //   sales.insertMany(salesData.map(({ transactions, ...sale }) => sale)), // Insert sales
-    //   transactionDetails.insertMany(allTransactionDetails), // Insert transactions
-    // ]);
-    // console.timeEnd("Batch Insert Sales & Transactions");
     console.time("Batch Insert Sales");
     // Insert sales first and retrieve inserted sales with their IDs
     const insertedSales = await sales.insertMany(
@@ -425,7 +421,7 @@ router.post("/placeOrders", async (req, res) => {
     // Update existing transactions in batch (avoid multiple DB calls)
     await orders.updateMany(
       {
-      _id: { $in: ordersList.map((o) => ObjectId(o._id)) },
+        _id: { $in: ordersList.map((o) => ObjectId(o._id)) },
       },
       { $set: { is_delivered: "YES" } }
     );
@@ -433,9 +429,11 @@ router.post("/placeOrders", async (req, res) => {
 
     console.timeEnd("Total Execution Time");
 
-    return res
-      .status(200)
-      .json({ code: 200, success: true, message: "Sales generated successfully" });
+    return res.status(200).json({
+      code: 200,
+      success: true,
+      message: "Sales generated successfully",
+    });
   } catch (error) {
     console.error("Error generating sales:", error);
     return res
@@ -950,15 +948,25 @@ router.post("/create", async (req, res) => {
 
     if (!req.body._id) {
       // Avoid unnecessary countDocuments call
-      const lastOrder = await orders.findOne({}, { order_id: 1 }).sort({ order_id: -1 }).lean();
-      const lastOrderId = lastOrder ? parseInt(lastOrder.order_id.replace("SO", "")) || 0 : 0;
+      const lastOrder = await orders
+        .findOne({}, { order_id: 1 })
+        .sort({ order_id: -1 })
+        .lean();
+      const lastOrderId = lastOrder
+        ? parseInt(lastOrder.order_id.replace("SO", "")) || 0
+        : 0;
       req.body["order_id"] = common.padding(lastOrderId + 1, 7, "SO");
     }
 
     // Upsert Order (create or update)
     const order = await orders.findOneAndUpdate(
       { _id: req.body._id ? ObjectId(req.body._id) : new ObjectId() },
-      { $set: {...req.body, financial_year: common.getFinancialYear(req.body.order_date)} },
+      {
+        $set: {
+          ...req.body,
+          financial_year: common.getFinancialYear(req.body.order_date),
+        },
+      },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
 
@@ -966,7 +974,7 @@ router.post("/create", async (req, res) => {
 
     // Prepare transaction details
     if (req.body.details && req.body.details.length > 0) {
-      let newTransObj = req.body.details.map(detail => ({
+      let newTransObj = req.body.details.map((detail) => ({
         ...detail,
         parent_id: order._id,
         parent_date: order.order_date,
@@ -976,12 +984,16 @@ router.post("/create", async (req, res) => {
       // Remove existing transactions and insert new ones
       await transactionDetails.deleteMany({ parent_id: order._id });
       let insertedDetails = await transactionDetails.insertMany(newTransObj);
-      insertedDetails = await transactionDetails.populate(insertedDetails, { path: "prod_id" });
+      insertedDetails = await transactionDetails.populate(insertedDetails, {
+        path: "prod_id",
+      });
       resultantObj.details = insertedDetails;
     }
 
     _resp.code = 200;
-    _resp.message = req.body._id ? "Order updated successfully" : "Order created successfully";
+    _resp.message = req.body._id
+      ? "Order updated successfully"
+      : "Order created successfully";
     _resp.data = resultantObj;
     res.json(_resp);
   } catch (err) {
@@ -991,7 +1003,6 @@ router.post("/create", async (req, res) => {
     res.status(500).json(_resp);
   }
 });
-
 
 router.put("/update/:id", (req, res, next) => {
   orders.findByIdAndUpdate(req.params.id, { $set: req.body }, (err, orders) => {
